@@ -188,7 +188,6 @@ public class QRCodePushActivity extends Activity {
 								String qrTicket = dataJs.get("qrTicket").getAsString();
 								scanId = dataJs.get("scanid").getAsString();
 								String mQrCodeUrl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + qrTicket;
-								Log.i("shen", "mQrCodeUrl:" + mQrCodeUrl);
 								if (callback != null) {
 									callback.onSuccess(
 											"https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + qrTicket, scanId);

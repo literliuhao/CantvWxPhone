@@ -5,11 +5,9 @@ import java.util.List;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.cantv.wechatphoto.activity.BasePlayerActivity;
 import com.cantv.wechatphoto.activity.GridViewActivity;
 import com.cantv.wechatphoto.activity.QRCodePushActivity;
 import com.cantv.wechatphoto.push.domain.IPushMessage;
@@ -41,7 +39,8 @@ public class PushMsgHandler {
 	public static final String KEY_PLAY_TYPE = "playType";// 取值为PlayConstants中"PLAY_TYPE"，其他非法
 	public static final String KEY_PROGRAM_ID = "programId";
 	public static final String KEY_VIDEO = "videoInfo";// 进播放器默认播放的剧集数据
-
+	public static final String KEY_VIDEO_INFO = "videoInfo";
+	
 	public static final String ACTION_START_CAN_PLAYER = "cn.cibntv.ott.canplayer";
 	public static final String ACTION_START_YOUKU_PLAYER = "cn.cibntv.ott.sohuplayer";
 	public static final String ACTION_START_SOHU_PLAYER = "cn.cibntv.ott.yokuplayer";
@@ -111,51 +110,23 @@ public class PushMsgHandler {
 
 		Intent intent = null;
 		if (type == PUSH_TYPE_PUSH_YOUKU_PROGRAM) {
-			//closeOnShowProgramPage(context, YokuPlayerActivity.class);
+			closeOnShowProgramPage(context);
 			PushYokuProgramMsg msg = (PushYokuProgramMsg) pushMsg;
-			intent = new Intent("cn.cibntv.ott.yokuplayer");
-			
-			/*Bundle bundle = new Bundle();
-			bundle.putInt(BasePlayerActivity.KEY_PLAY_TYPE, PlayConstants.PLAY_TYPE.PUSH);
-			bundle.putString(BasePlayerActivity.KEY_PROGRAM_ID, msg.getProgramId());
-			bundle.putString(BasePlayerActivity.KEY_CHARGE_TYPE, String.valueOf(msg.getChargeType()));
-			bundle.putInt(BasePlayerActivity.KEY_SPECIFIED_PLAY_INDEX, msg.getPlayIndex());
-			bundle.putInt(BasePlayerActivity.KEY_FREE_PLAY_EPISODE, msg.getFreePlayEpisode());
-			bundle.putInt(BasePlayerActivity.KEY_FREE_PLAY_TIME, msg.getFreePlayTime() * 60000);
-			bundle.putParcelable(BasePlayerActivity.KEY_VIDEO, msg.getVideo());
-			intent.putExtra(BasePlayerActivity.KEY_BUNDLE, bundle);*/
-			
-			intent.putExtra(BasePlayerActivity.KEY_PLAY_TYPE, PlayConstants.PLAY_TYPE.PUSH);
-			intent.putExtra(BasePlayerActivity.KEY_PROGRAM_ID, msg.getProgramId());
-			intent.putExtra(BasePlayerActivity.KEY_CHARGE_TYPE, String.valueOf(msg.getChargeType()));
-			intent.putExtra(BasePlayerActivity.KEY_SPECIFIED_PLAY_INDEX, msg.getPlayIndex());
-			intent.putExtra(BasePlayerActivity.KEY_FREE_PLAY_EPISODE, msg.getFreePlayEpisode());
-			intent.putExtra(BasePlayerActivity.KEY_FREE_PLAY_TIME, msg.getFreePlayTime() * 60000);
-			intent.putExtra(BasePlayerActivity.KEY_VIDEO, msg.getVideo());
+			intent = new Intent("com.cantv.action.YOKUPLAYER");
+			intent.putExtra(KEY_VIDEO_INFO, msgStr);
 
 		} else if (type == PUSH_TYPE_PUSH_SOHU_PROGRAM) {
-			//closeOnShowProgramPage(context, SohuPlayerActivity.class);
+			closeOnShowProgramPage(context);
 			PushSohuProgramMsg msg = (PushSohuProgramMsg) pushMsg;
-			intent = new Intent("cn.cibntv.ott.sohuplayer");
-			intent.putExtra(BasePlayerActivity.KEY_PLAY_TYPE, PlayConstants.PLAY_TYPE.PUSH);
-			intent.putExtra(BasePlayerActivity.KEY_PROGRAM_ID, msg.getProgramId());
-			intent.putExtra(BasePlayerActivity.KEY_CHARGE_TYPE, String.valueOf(msg.getChargeType()));
-			intent.putExtra(BasePlayerActivity.KEY_SPECIFIED_PLAY_INDEX, msg.getPlayIndex());
-			intent.putExtra(BasePlayerActivity.KEY_FREE_PLAY_EPISODE, msg.getFreePlayEpisode());
-			intent.putExtra(BasePlayerActivity.KEY_FREE_PLAY_TIME, msg.getFreePlayTime() * 60000);
-			intent.putExtra(BasePlayerActivity.KEY_VIDEO, msg.getVideo());
+			intent = new Intent("com.cantv.action.SOHUPLAYER");
+			intent.putExtra(KEY_VIDEO_INFO, msgStr);
 
 		} else if (type == PUSH_TYPE_PUSH_CAN_PROGRAM) {
-			//closeOnShowProgramPage(context, CanPlayerActivity.class);
+			closeOnShowProgramPage(context);
 			PushCANProgramMsg msg = (PushCANProgramMsg) pushMsg;
-			intent = new Intent("cn.cibntv.ott.canplayer");
-			intent.putExtra(BasePlayerActivity.KEY_PLAY_TYPE, PlayConstants.PLAY_TYPE.PUSH);
-			intent.putExtra(BasePlayerActivity.KEY_PROGRAM_ID, msg.getProgramId());
-			intent.putExtra(BasePlayerActivity.KEY_CHARGE_TYPE, String.valueOf(msg.getChargeType()));
-			intent.putExtra(BasePlayerActivity.KEY_SPECIFIED_PLAY_INDEX, msg.getPlayIndex());
-			intent.putExtra(BasePlayerActivity.KEY_FREE_PLAY_EPISODE, msg.getFreePlayEpisode());
-			intent.putExtra(BasePlayerActivity.KEY_FREE_PLAY_TIME, msg.getFreePlayTime() * 60000);
-			intent.putExtra(BasePlayerActivity.KEY_VIDEO, msg.getVideo());
+			intent = new Intent("com.cantv.action.CANPLAYER");
+			intent.putExtra(KEY_VIDEO_INFO, msgStr);
+			
 		}
 
 		if (intent != null) {
@@ -192,24 +163,8 @@ public class PushMsgHandler {
 	}
 
 	@SuppressWarnings("deprecation")
-	private static void closeOnShowProgramPage(Context context,
-			Class<? extends BasePlayerActivity<? extends IVideo>> clazz) {
-		ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-		String topActClassName = am.getRunningTasks(1).get(0).topActivity.getClassName();
-
-		/*boolean topPageIsPlayerPage = topActClassName.equals(YokuPlayerActivity.class.getName())
-				|| topActClassName.equals(SohuPlayerActivity.class.getName())
-				|| topActClassName.equals(CanPlayerActivity.class.getName())
-				|| topActClassName.equals(LivePlayerActivity.class.getName());
-		if (topPageIsPlayerPage) {
-			String cmpActClassName = clazz.getName();
-			// 如果当前正在播该节目类型，则不用关闭，直接播放即可
-			if (!cmpActClassName.equals(topActClassName)) {
-				Intent closePlayerPageIntent = new Intent(BasePlayerActivity.ACTION_CLOSE_ONSHOW_PLAYER);
-				context.sendBroadcast(closePlayerPageIntent);
-			}
-		}*/
-
+	private static void closeOnShowProgramPage(Context context) {
+		
 		Intent closeQRCodePageIntent = new Intent(ACTION_CLOSE_QRCODE_PAGE);
 		context.sendBroadcast(closeQRCodePageIntent);
 	}
