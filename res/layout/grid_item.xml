@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/px_504"
+    android:layout_height="@dimen/px_380" >
+
+    <ImageView
+        android:id="@+id/iv_bg"
+        android:layout_width="@dimen/px_504"
+        android:layout_height="@dimen/px_380"
+        android:layout_marginTop="@dimen/px_15" />
+
+    <com.cantv.wechatphoto.view.RoundCornerImageView
+        android:id="@+id/id_imgView"
+        android:layout_width="@dimen/px_504"
+        android:layout_height="@dimen/px_380"
+        android:layout_marginTop="@dimen/px_15"
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:id="@+id/linearAll"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/px_106"
+        android:layout_alignParentBottom="true" >
+
+        <com.cantv.wechatphoto.view.BottomRoundImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/grid_item_mask" />
+
+        <com.cantv.wechatphoto.view.CircleImageView
+            android:id="@+id/img_head"
+            android:layout_width="@dimen/dimen_70px"
+            android:layout_height="@dimen/dimen_70px"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dimen_20px"
+            android:layout_marginStart="@dimen/dimen_30px"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/txt_Name"
+            android:layout_width="@dimen/dimen_230px"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="@dimen/dimen_35px"
+            android:layout_marginStart="@dimen/dimen_26px"
+            android:layout_toEndOf="@id/img_head"
+            android:ellipsize="marquee"
+            android:includeFontPadding="true"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:singleLine="true"
+            android:textColor="@color/fontColor"
+            android:textSize="@dimen/fontsize_30px" />
+
+        <TextView
+            android:id="@+id/txt_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="@dimen/dimen_39px"
+            android:layout_marginEnd="@dimen/dimen_25px"
+            android:includeFontPadding="true"
+            android:textColor="@color/fontColor"
+            android:textSize="@dimen/px_20" />
+
+        <TextView
+            android:id="@+id/tv_tips"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="@dimen/dimen_26px"
+            android:includeFontPadding="true"
+            android:singleLine="true"
+            android:textColor="@color/fontColor"
+            android:textSize="@dimen/fontsize_30px"
+            android:visibility="gone" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_delete"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="@dimen/dimen_18px"
+        android:visibility="gone" >
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dimen_65px"
+            android:layout_centerVertical="true"
+            android:background="@drawable/bg_tips_delete_photo"
+            android:gravity="center"
+            android:text="@string/gridView_ok_delete"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/fontsize_33px" />
+    </RelativeLayout>
+
+</RelativeLayout>
