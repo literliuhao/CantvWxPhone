@@ -45,7 +45,7 @@ public class QRCodePushActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		// 进行判断，选择打开界面
 		DaoOpenHelper pushDaoOpenHelper = DaoOpenHelper.getInstance(getApplicationContext());
 		long count = pushDaoOpenHelper.queryExpiredUserCount();
@@ -55,7 +55,7 @@ public class QRCodePushActivity extends Activity {
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 		}
-		 
+
 		this.getWindow().setBackgroundDrawableResource(R.drawable.new_bg_qr_push);
 		setContentView(R.layout.activity_qr_push_play);
 		mQRCodeIv = (ImageView) findViewById(R.id.iv_qrcode);
@@ -187,7 +187,6 @@ public class QRCodePushActivity extends Activity {
 								JsonObject dataJs = respJs.get("data").getAsJsonObject();
 								String qrTicket = dataJs.get("qrTicket").getAsString();
 								scanId = dataJs.get("scanid").getAsString();
-								String mQrCodeUrl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + qrTicket;
 								if (callback != null) {
 									callback.onSuccess(
 											"https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + qrTicket, scanId);

@@ -182,29 +182,29 @@ public class ZoomImageView extends ImageView implements ViewTreeObserver.OnGloba
 	@Override
 	public void onGlobalLayout() {
 		// if (once) {
-		Drawable d = getDrawable();
-		if (d == null)
-			return;
-		// Log.e(TAG, d.getIntrinsicWidth() + " , " + d.getIntrinsicHeight());
-		int width = getWidth();
-		int height = getHeight();
-		// 拿到图片的宽和高
-		int dw = d.getIntrinsicWidth();
-		int dh = d.getIntrinsicHeight();
+//		Drawable d = getDrawable();
+//		if (d == null)
+//			return;
+//		// Log.e(TAG, d.getIntrinsicWidth() + " , " + d.getIntrinsicHeight());
+//		int width = getWidth();
+//		int height = getHeight();
+//		// 拿到图片的宽和高
+//		int dw = d.getIntrinsicWidth();
+//		int dh = d.getIntrinsicHeight();
 
-		// setScaleType(ScaleType.CENTER);
-		float scale = 1.0f;
-		// 如果图片的宽或者高大于屏幕，则缩放至屏幕的宽或者高
-		if (dw > width && dh <= height) {
-			scale = width * 1.0f / dw;
-		}
-		if (dh > height && dw <= width) {
-			scale = height * 1.0f / dh;
-		}
-		// 如果宽和高都大于屏幕，则让其按按比例适应屏幕大小
-		if (dw > width && dh > height) {
-			scale = Math.min(width * 1.0f / dw, height * 1.0f / dh);
-		}
+//		// setScaleType(ScaleType.CENTER);
+//		float scale = 1.0f;
+//		// 如果图片的宽或者高大于屏幕，则缩放至屏幕的宽或者高
+//		if (dw > width && dh <= height) {
+//			scale = width * 1.0f / dw;
+//		}
+//		if (dh > height && dw <= width) {
+//			scale = height * 1.0f / dh;
+//		}
+//		// 如果宽和高都大于屏幕，则让其按按比例适应屏幕大小
+//		if (dw > width && dh > height) {
+//			scale = Math.min(width * 1.0f / dw, height * 1.0f / dh);
+//		}
 	}
 
 	/**

@@ -18,7 +18,6 @@ import com.cantv.wechatphoto.bridge.OpenEffectBridge;
 
 public class PopView extends FrameLayout {
 
-	private final String TAG = "PopView";
 	private final float DEFUALT_SCALE = 1.0f;
 
 	private BaseEffectBridge mEffectBridge;

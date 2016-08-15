@@ -27,9 +27,6 @@ public class FileUtils {
 	 */
 	private final static String FOLDER_NAME = "/GlideCache";
 
-	private FileUtils() {
-	}
-
 	private static FileUtils fileUtils;
 
 	public static FileUtils getInstance(Context mContext) {

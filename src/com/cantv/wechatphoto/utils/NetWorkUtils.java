@@ -14,87 +14,10 @@ import java.util.Enumeration;
 import java.util.Locale;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
 
-import com.cantv.wechatphoto.R;
-
 public class NetWorkUtils {
-
-	static long mLastBytes = 0;
-	static long mLastSystemTime = 0;
-
-	public static long getNetSpeedNum() {
-		return syncFetchReceivedBytes();
-	}
-
-//	public static long getTotalRxBytes() {
-//		long nowBytes = TrafficStats.getTotalRxBytes();
-//		long nowSystemTime = System.currentTimeMillis();
-//		long speed = 0;
-//		if (mLastSystemTime != 0) {
-//			speed = (nowBytes - mLastBytes) / (nowSystemTime - mLastSystemTime);
-//		}
-//		mLastBytes = nowBytes;
-//		mLastSystemTime = nowSystemTime;
-//		return speed;
-//	}
-	
-	/**
-	 * 计算当前网络码率
-	 * 
-	 * @author dw
-	 * @return
-	 */
-	public static long syncFetchReceivedBytes() {
-		// TODO Auto-generated method stub
-		ProcessBuilder cmd;
-		long readBytes = 0;
-		BufferedReader rd = null;
-		try {
-			String[] args = { "/system/bin/cat", "/proc/net/dev" };
-			cmd = new ProcessBuilder(args);
-			Process process = cmd.start();
-			rd = new BufferedReader(new InputStreamReader(process.getInputStream()));
-			String line;
-			while ((line = rd.readLine()) != null) {
-				if (line.contains("lan0") || line.contains("eth0") || line.contains("wlan0")) {
-					String[] delim = line.split(":");
-					if (delim.length >= 2) {
-						readBytes = parserNumber(delim[1].trim());
-						if (readBytes == 0) {
-							continue;
-						} else {
-							break;
-						}
-					}
-				}
-			}
-			rd.close();
-		} catch (Exception ex) {
-			ex.printStackTrace();
-		} finally {
-			if (rd != null) {
-				try {
-					rd.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
-		return readBytes;
-	}
-
-	private static long parserNumber(String line) throws Exception {
-		long ret = 0;
-		String[] delim = line.split(" ");
-		if (delim.length >= 1) {
-			ret = Long.parseLong(delim[0]);
-		}
-		return ret;
-	}
 
 	/**
 	 * @category 判断是否有外网连接（普通方法不能判断外网的网络是否连接，比如连接上局域网）
@@ -133,58 +56,6 @@ public class NetWorkUtils {
 		return false;
 	}
 
-	// 处理页面跳转间的网络请求onError事件
-	/*public static void handlerError(final String errorMessage, final BasePage page) {
-		// HttpRequestWrapper.stopVolley();
-		Gdx.app.postRunnable(new Runnable() {
-
-			@Override
-			public void run() {
-				if (errorMessage != null && errorMessage.equals("000")) {
-					com.luxtone.lib.utils.Utils.showToast(R.string.unknown_internet_error);// 未知网络错误
-				} else if (errorMessage != null && errorMessage.equals("800")) {
-					com.luxtone.lib.utils.Utils.showToast(R.string.timeout_internet_error);// 网络连接超时
-				} else if (errorMessage != null && errorMessage.equals("802")) {
-					com.luxtone.lib.utils.Utils.showToast(R.string.no_internet_error);// 网络已断开连接
-				} else {
-					com.luxtone.lib.utils.Utils.showToast(R.string.server_down_error);// 服务器访问异常
-				}
-				page.finish();
-			}
-		});
-	}
-
-	public static void handlerAppSearchError(final String errorMessage, final BasePage page) {
-		// HttpRequestWrapper.stopVolley();
-		Gdx.app.postRunnable(new Runnable() {
-
-			@Override
-			public void run() {
-				if (errorMessage != null && errorMessage.equals("000")) {
-					com.luxtone.lib.utils.Utils.showToast(R.string.unknown_internet_error);// 未知网络错误
-				} else if (errorMessage != null && errorMessage.equals("800")) {
-					com.luxtone.lib.utils.Utils.showToast(R.string.timeout_internet_error);// 网络连接超时
-				} else if (errorMessage != null && errorMessage.equals("802")) {
-					com.luxtone.lib.utils.Utils.showToast(R.string.no_internet_error);// 网络已断开连接
-				} else {
-					com.luxtone.lib.utils.Utils.showToast(R.string.response_error);// 服务器访问异常
-				}
-			}
-		});
-	}*/
-
-	/*public static String getErrorMessage(Context context, final String errorMessage) {
-		if (errorMessage != null && errorMessage.equals("000")) {
-			return context.getResources().getString(R.string.unknown_internet_error);// 未知网络错误
-		} else if (errorMessage != null && errorMessage.equals("800")) {
-			return context.getResources().getString(R.string.timeout_internet_error);// 网络连接超时
-		} else if (errorMessage != null && errorMessage.equals("802")) {
-			return context.getResources().getString(R.string.no_internet_error);// 网络已断开连接
-		} else {
-			return context.getResources().getString(R.string.server_down_error);// 服务器访问异常
-		}
-	}
-*/
 	/**
 	 * 获取当前系统连接网络的网卡的mac地址
 	 * 
@@ -231,7 +102,7 @@ public class NetWorkUtils {
 		String s = "00" + Integer.toHexString(b) + ":";
 		return s.substring(s.length() - 3);
 	}
-	
+
 	public static String getEthernetMac() {
 		// return "C8:0E:77:30:77:62";
 		String macAddr = null;
@@ -247,7 +118,7 @@ public class NetWorkUtils {
 		}
 		return macAddr;
 	}
-	
+
 	/*
 	 * PRIVATE METHODS
 	 */
@@ -316,7 +187,7 @@ public class NetWorkUtils {
 
 		return mac;
 	}
-	
+
 	private static String _loadFileAsString(String filePath) {
 		try {
 			if (new File(filePath).exists()) {
