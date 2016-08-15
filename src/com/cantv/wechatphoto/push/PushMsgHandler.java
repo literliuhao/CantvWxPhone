@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.cantv.wechatphoto.activity.GridViewActivity;
 import com.cantv.wechatphoto.activity.QRCodePushActivity;
@@ -17,8 +16,6 @@ import com.cantv.wechatphoto.push.domain.PushPhotoProgramMsg;
 import com.cantv.wechatphoto.push.domain.PushSohuProgramMsg;
 import com.cantv.wechatphoto.push.domain.PushSuccessProgramMsg;
 import com.cantv.wechatphoto.push.domain.PushYokuProgramMsg;
-import com.cantv.wechatphoto.push.domainvideo.IVideo;
-import com.cantv.wechatphoto.push.domainvideo.PlayConstants;
 import com.cantv.wechatphoto.utils.ToastUtils;
 import com.cantv.wechatphoto.utils.greendao.DaoOpenHelper;
 import com.cantv.wechatphoto.utils.greendao.PhotoBean;
@@ -31,7 +28,7 @@ public class PushMsgHandler {
 	public static int PUSH_TYPE_PUSH_SOHU_PROGRAM = 2;// 播搜狐节目
 	public static int PUSH_TYPE_PUSH_CAN_PROGRAM = 3;// 播CIBN节目
 	public static int PUSH_TYPE_PUSH_WECHAT_PHOTO = 4;// 发送微信照片
-	public static int PUSH_TYPE_REGISTER_SUCCESS = 5;//登陆成功
+	public static int PUSH_TYPE_REGISTER_SUCCESS = 5;// 登陆成功
 	public static final String KEY_CLIENT_ID = "clientId";// 个推clientId
 	public static final String KEY_MOVIE_DETAIL = "moviedetail";
 	public static final String KEY_SPECIFIED_PLAY_INDEX = "specifiedPlayIndex";
@@ -42,16 +39,16 @@ public class PushMsgHandler {
 	public static final String KEY_PROGRAM_ID = "programId";
 	public static final String KEY_VIDEO = "videoInfo";// 进播放器默认播放的剧集数据
 	public static final String KEY_VIDEO_INFO = "videoInfo";
-	
+
 	public static final String ACTION_START_CAN_PLAYER = "cn.cibntv.ott.canplayer";
 	public static final String ACTION_START_YOUKU_PLAYER = "cn.cibntv.ott.sohuplayer";
 	public static final String ACTION_START_SOHU_PLAYER = "cn.cibntv.ott.yokuplayer";
 	public static final String ACTION_CLOSE_QRCODE_PAGE = "com.cantv.wechatphoto.ACTION_CLOSE_QRCODE_PAGE";
-															
+
 	private static final String TAG = "PushMsgHandler";
 	private static DaoOpenHelper mPhotoHelper;
 	private static long queryExpiredUserCount;
-	
+
 	/**
 	 * 解析推送消息，并执行相应意图操作
 	 * 
@@ -75,11 +72,11 @@ public class PushMsgHandler {
 				pushMsg = new PushSohuProgramMsg().parse(dataJs);
 			} else if (type == PUSH_TYPE_PUSH_CAN_PROGRAM) {
 				pushMsg = new PushCANProgramMsg().parse(dataJs);
-			}else if(type == PUSH_TYPE_REGISTER_SUCCESS){
+			} else if (type == PUSH_TYPE_REGISTER_SUCCESS) {
 				pushMsg = new PushSuccessProgramMsg().parse(dataJs);
-			}else if(type == PUSH_TYPE_PUSH_WECHAT_PHOTO){
+			} else if (type == PUSH_TYPE_PUSH_WECHAT_PHOTO) {
 				Log.i(TAG, "received push message. " + "收到推送");
-				
+
 				mPhotoHelper = DaoOpenHelper.getInstance(context.getApplicationContext());
 				long number = mPhotoHelper.queryAllUserCount();
 				queryExpiredUserCount = mPhotoHelper.queryExpiredUserCount();
@@ -87,12 +84,12 @@ public class PushMsgHandler {
 				PushPhotoProgramMsg msg = (PushPhotoProgramMsg) pushMsg;
 				List<PhotoBean> photoList = msg.getPhotoList();
 				mPhotoHelper.photoBatchInsertWithTransaction(photoList);
-				
+
 				Intent intent = new Intent();
 				intent.setAction("com.cibn.ott.action.WECHAT_PHOTO");
 				intent.putExtra("number", number);
 				context.sendBroadcast(intent);
-			}else {
+			} else {
 				Log.w(TAG, "Failed to solve PushMessage [Unknown push type : " + type + "].");
 				return;
 			}
@@ -107,7 +104,7 @@ public class PushMsgHandler {
 		}
 		if (!pushMsg.isLegal()) {
 			Log.w(TAG, "Failed to solve pushMessage [Illegal pushMessage]. " + pushMsg.toString());
-			return;	
+			return;
 		}
 
 		Intent intent = null;
@@ -115,9 +112,9 @@ public class PushMsgHandler {
 			closeOnShowProgramPage(context);
 			PushYokuProgramMsg msg = (PushYokuProgramMsg) pushMsg;
 			String videoid = msg.getVideo().getVideoid();
-			if(null == videoid){
+			if (null == videoid) {
 				ToastUtils.showMessage(context, "数据格式异常");
-				return ;
+				return;
 			}
 			intent = new Intent("com.cantv.action.YOKUPLAYER");
 			intent.putExtra(KEY_VIDEO_INFO, msgStr);
@@ -126,9 +123,9 @@ public class PushMsgHandler {
 			closeOnShowProgramPage(context);
 			PushSohuProgramMsg msg = (PushSohuProgramMsg) pushMsg;
 			String videoid = msg.getVideo().getSohu().getVid();
-			if(null == videoid){
+			if (null == videoid) {
 				ToastUtils.showMessage(context, "数据格式异常");
-				return ;
+				return;
 			}
 			intent = new Intent("com.cantv.action.SOHUPLAYER");
 			intent.putExtra(KEY_VIDEO_INFO, msgStr);
@@ -137,38 +134,39 @@ public class PushMsgHandler {
 			closeOnShowProgramPage(context);
 			PushCANProgramMsg msg = (PushCANProgramMsg) pushMsg;
 			String videoid = msg.getVideo().getVideoid();
-			if(null == videoid){
+			if (null == videoid) {
 				ToastUtils.showMessage(context, "数据格式异常");
-				return ;
+				return;
 			}
 			intent = new Intent("com.cantv.action.CANPLAYER");
 			intent.putExtra(KEY_VIDEO_INFO, msgStr);
-			
+
 		}
 
-		if (intent != null) {
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
-			context.startActivity(intent);
-			Log.i("shen", "视频投屏成功...");
-		}
-		
+		// if (intent != null) {
+		// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
+		// Intent.FLAG_ACTIVITY_NO_ANIMATION);
+		// context.startActivity(intent);
+		// Log.i("shen", "视频投屏成功...");
+		// }
+
 		Intent intentPhoto = null;
-		if(type == PUSH_TYPE_PUSH_WECHAT_PHOTO){
+		if (type == PUSH_TYPE_PUSH_WECHAT_PHOTO) {
 			closeQrcodePage(context);
 			intentPhoto = new Intent(context, GridViewActivity.class);
-			
+
 		}
-		if(intentPhoto != null){
+		if (intentPhoto != null) {
 			intentPhoto.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
 			ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
 			String topActClassName = am.getRunningTasks(1).get(0).topActivity.getClassName();
 			boolean topPageIsPhotoPage = topActClassName.equals(QRCodePushActivity.class.getName());
-			if(queryExpiredUserCount == 0 && topPageIsPhotoPage){
+			if (queryExpiredUserCount == 0 && topPageIsPhotoPage) {
 				context.startActivity(intentPhoto);
 			}
 		}
-		
-		if(type == PUSH_TYPE_REGISTER_SUCCESS){
+
+		if (type == PUSH_TYPE_REGISTER_SUCCESS) {
 			PushSuccessProgramMsg msg = (PushSuccessProgramMsg) pushMsg;
 			Intent registerIntent = new Intent();
 			registerIntent.putExtra("openid", msg.getOpenid());
@@ -181,12 +179,11 @@ public class PushMsgHandler {
 
 	@SuppressWarnings("deprecation")
 	private static void closeOnShowProgramPage(Context context) {
-		
+
 		Intent closeQRCodePageIntent = new Intent(ACTION_CLOSE_QRCODE_PAGE);
 		context.sendBroadcast(closeQRCodePageIntent);
 	}
-	
-	
+
 	private static void closeQrcodePage(Context context) {
 
 		Intent closeQRCodePageIntent = new Intent(ACTION_CLOSE_QRCODE_PAGE);

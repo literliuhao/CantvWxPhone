@@ -28,7 +28,7 @@ public class VolleyManager {
 	private ImageLoader mImageLoader;
 
 	private static class VolleyManagerHolder {
-		private static final VolleyManager INSTANCE = new VolleyManager(App.getContext());
+		private static final VolleyManager INSTANCE = new VolleyManager(App.getAppContext());
 	}
 
 	/**

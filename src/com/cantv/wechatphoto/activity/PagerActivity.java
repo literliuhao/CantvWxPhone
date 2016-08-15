@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -38,7 +35,6 @@ public class PagerActivity extends Activity implements IPositionListener {
 	private int totalCount;
 	private int mPosition;
 	private ImageAdapter imageAdapter;
-	private BroadcastReceiver mBroadcastReceiver = null;
 	private Runnable mHideBottomMaskRunnable;
 
 	@Override
@@ -110,23 +106,6 @@ public class PagerActivity extends Activity implements IPositionListener {
 	}
 
 	@Override
-	protected void onStart() {
-		super.onStart();
-		registerBroadcastReciver();
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-	}
-
-	@Override
-	protected void onDestroy() {
-		super.onDestroy();
-		unregisterBroadcastReciver();
-	}
-
-	@Override
 	public void onPosition(int position) {
 		this.mPosition = position;
 		if (position == 0 && mBottomMask.getVisibility() == View.VISIBLE) {
@@ -159,30 +138,5 @@ public class PagerActivity extends Activity implements IPositionListener {
 			break;
 		}
 		return super.onKeyDown(keyCode, event);
-	}
-
-	private void registerBroadcastReciver() {
-		if (mBroadcastReceiver == null) {
-			mBroadcastReceiver = new BroadcastReceiver() {
-				@Override
-				public void onReceive(Context context, Intent intent) {
-					String action = intent.getAction();
-					if (Intent.ACTION_CLOSE_SYSTEM_DIALOGS.equals(action)) {
-						HelperBean.photoList.clear();
-						PagerActivity.this.finish();
-					}
-				}
-			};
-			IntentFilter broadcastFilter = new IntentFilter();
-			broadcastFilter.addAction(Intent.ACTION_CLOSE_SYSTEM_DIALOGS);
-			registerReceiver(mBroadcastReceiver, broadcastFilter);
-		}
-	}
-
-	private void unregisterBroadcastReciver() {
-		if (mBroadcastReceiver != null) {
-			unregisterReceiver(mBroadcastReceiver);
-			mBroadcastReceiver = null;
-		}
 	}
 }

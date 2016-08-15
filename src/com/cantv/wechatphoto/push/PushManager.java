@@ -1,11 +1,10 @@
 package com.cantv.wechatphoto.push;
 
-import com.cantv.wechatphoto.App;
-import com.cantv.wechatphoto.utils.PreferencesUtils;
-
 import android.content.Context;
 import android.text.TextUtils;
 import android.util.Log;
+
+import com.cantv.wechatphoto.utils.PreferencesUtils;
 
 public class PushManager {
 
@@ -45,7 +44,7 @@ public class PushManager {
 
 	public void init() {
 		gxPushManager = com.igexin.sdk.PushManager.getInstance();
-		gxPushManager.initialize(App.getContext());
+		gxPushManager.initialize(mContext);
 	}
 
 	public boolean isPushEnable() {

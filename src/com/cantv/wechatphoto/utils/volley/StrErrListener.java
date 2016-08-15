@@ -8,6 +8,6 @@ public class StrErrListener implements ErrorListener {
 
 	@Override
 	public void onErrorResponse(VolleyError arg0) {
-		VolleyErrorHelper.getMessage(arg0, App.getContext());
+		VolleyErrorHelper.getMessage(arg0, App.getAppContext());
 	}
 }

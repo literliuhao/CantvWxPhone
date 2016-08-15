@@ -20,7 +20,7 @@ import com.cantv.wechatphoto.App;
 public class GlideImageLoader implements BaseImageLoader {
 
 	// App.getContext().getCacheDir() + "/image_cache"
-	private final String ImageExternalCatchDir = App.getContext().getExternalCacheDir() + "/image_cache";
+	private final String ImageExternalCatchDir = App.getAppContext().getExternalCacheDir() + "/image_cache";
 
 	public GlideImageLoader() {
 		// initGlide();
@@ -190,11 +190,11 @@ public class GlideImageLoader implements BaseImageLoader {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						Glide.get(App.getContext()).clearDiskCache();
+						Glide.get(App.getAppContext()).clearDiskCache();
 					}
 				});
 			} else {
-				Glide.get(App.getContext()).clearDiskCache();
+				Glide.get(App.getAppContext()).clearDiskCache();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -207,7 +207,7 @@ public class GlideImageLoader implements BaseImageLoader {
 	public void clearImageMemoryCache() {
 		try {
 			if (Looper.myLooper() == Looper.getMainLooper()) { // 只能在主线程执行
-				Glide.get(App.getContext()).clearMemory();
+				Glide.get(App.getAppContext()).clearMemory();
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
