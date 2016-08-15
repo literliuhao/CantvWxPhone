@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.cantv.wechatphoto.activity.GridViewActivity;
 import com.cantv.wechatphoto.activity.QRCodePushActivity;
@@ -18,6 +19,7 @@ import com.cantv.wechatphoto.push.domain.PushSuccessProgramMsg;
 import com.cantv.wechatphoto.push.domain.PushYokuProgramMsg;
 import com.cantv.wechatphoto.push.domainvideo.IVideo;
 import com.cantv.wechatphoto.push.domainvideo.PlayConstants;
+import com.cantv.wechatphoto.utils.ToastUtils;
 import com.cantv.wechatphoto.utils.greendao.DaoOpenHelper;
 import com.cantv.wechatphoto.utils.greendao.PhotoBean;
 import com.google.gson.JsonObject;
@@ -112,18 +114,33 @@ public class PushMsgHandler {
 		if (type == PUSH_TYPE_PUSH_YOUKU_PROGRAM) {
 			closeOnShowProgramPage(context);
 			PushYokuProgramMsg msg = (PushYokuProgramMsg) pushMsg;
+			String videoid = msg.getVideo().getVideoid();
+			if(null == videoid){
+				ToastUtils.showMessage(context, "数据格式异常");
+				return ;
+			}
 			intent = new Intent("com.cantv.action.YOKUPLAYER");
 			intent.putExtra(KEY_VIDEO_INFO, msgStr);
 
 		} else if (type == PUSH_TYPE_PUSH_SOHU_PROGRAM) {
 			closeOnShowProgramPage(context);
 			PushSohuProgramMsg msg = (PushSohuProgramMsg) pushMsg;
+			String videoid = msg.getVideo().getSohu().getVid();
+			if(null == videoid){
+				ToastUtils.showMessage(context, "数据格式异常");
+				return ;
+			}
 			intent = new Intent("com.cantv.action.SOHUPLAYER");
 			intent.putExtra(KEY_VIDEO_INFO, msgStr);
 
 		} else if (type == PUSH_TYPE_PUSH_CAN_PROGRAM) {
 			closeOnShowProgramPage(context);
 			PushCANProgramMsg msg = (PushCANProgramMsg) pushMsg;
+			String videoid = msg.getVideo().getVideoid();
+			if(null == videoid){
+				ToastUtils.showMessage(context, "数据格式异常");
+				return ;
+			}
 			intent = new Intent("com.cantv.action.CANPLAYER");
 			intent.putExtra(KEY_VIDEO_INFO, msgStr);
 			
