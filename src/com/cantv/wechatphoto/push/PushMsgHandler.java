@@ -143,12 +143,10 @@ public class PushMsgHandler {
 
 		}
 
-		// if (intent != null) {
-		// intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK |
-		// Intent.FLAG_ACTIVITY_NO_ANIMATION);
-		// context.startActivity(intent);
-		// Log.i("shen", "视频投屏成功...");
-		// }
+		if (intent != null) {
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_NO_ANIMATION);
+			context.startActivity(intent);
+		}
 
 		Intent intentPhoto = null;
 		if (type == PUSH_TYPE_PUSH_WECHAT_PHOTO) {

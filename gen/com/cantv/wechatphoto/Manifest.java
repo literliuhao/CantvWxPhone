@@ -11,7 +11,6 @@ public final class Manifest {
     public static final class permission {
         /**  自定义provider读取权限 
          */
-        public static final String READ_PERMISSION="cibntv.permission.provicer.READ_PERMISSION";
         public static final String wechatphoto="getui.permission.GetuiService.com.cantv.wechatphoto";
     }
 }

@@ -18,7 +18,6 @@
     <uses-permission android:name="android.permission.BROADCAST_STICKY" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.GET_PACKAGE_SIZE" />
-    <uses-permission android:name="android.permission.INSTALL_PACKAGES"/>
     <uses-permission android:name="android.permission.GET_TASKS" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.SYSTEM_OVERLAY_WINDOW" />
@@ -31,10 +30,6 @@
     <!-- 自定义权限 -->
     <uses-permission android:name="getui.permission.GetuiService.com.cantv.wechatphoto" />
     <!-- 自定义provider读取权限 -->
-    <permission android:name="cibntv.permission.provicer.READ_PERMISSION"
-        android:protectionLevel="normal">
-    </permission>
-    
     <permission
         android:name="getui.permission.GetuiService.com.cantv.wechatphoto"
         android:protectionLevel="normal" >
