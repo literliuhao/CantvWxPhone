@@ -1677,6 +1677,7 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int shape_toast=0x7f020012;
         public static final int share_photo_page_bottom_mask=0x7f020013;
         public static final int success_qr_hint=0x7f020014;
+        public static final int video_share_icon=0x7f020015;
     }
     public static final class id {
         public static final int BOTTOM_LEFT=0x7f050013;

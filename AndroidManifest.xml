@@ -52,7 +52,7 @@
         android:name=".App"
         android:allowBackup="true"
         android:configChanges="locale|layoutDirection"
-        android:icon="@drawable/bg_share_phone_item"
+        android:icon="@drawable/video_share_icon"
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/AppTheme" >
