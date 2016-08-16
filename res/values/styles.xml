@@ -19,8 +19,8 @@
 	
     <style name="activityTheme" parent="android:style/Theme.Light.NoTitleBar.Fullscreen">
         <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowIsTranslucent">true</item>
-        <item name="android:windowEnterAnimation">@anim/bottom_in</item>
-        <item name="android:windowExitAnimation">@anim/bottom_out</item>
+        <!-- <item name="android:windowIsTranslucent">true</item> -->
+        <!-- <item name="android:windowEnterAnimation">@anim/bottom_in</item>
+        <item name="android:windowExitAnimation">@anim/bottom_out</item> -->
     </style>
 </resources>
