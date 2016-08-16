@@ -31,3 +31,5 @@ proguard/
 /bin
 /.classpath
 /bin
+*.class
+gen/com/cantv/wechatphoto/R.java

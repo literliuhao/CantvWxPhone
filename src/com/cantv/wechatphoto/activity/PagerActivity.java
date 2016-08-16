@@ -17,6 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.cantv.wechatphoto.App;
 import com.cantv.wechatphoto.R;
 import com.cantv.wechatphoto.adapter.ImageAdapter;
 import com.cantv.wechatphoto.entity.HelperBean;
@@ -126,12 +127,12 @@ public class PagerActivity extends Activity implements IPositionListener {
 		switch (keyCode) {
 		case KeyEvent.KEYCODE_DPAD_LEFT: // 左
 			if (mPosition == 0) {
-				ToastUtils.showMessage(this, getString(R.string.reach_first_page), Toast.LENGTH_LONG);
+				ToastUtils.showMessage(App.getAppContext(), getString(R.string.reach_first_page), Toast.LENGTH_LONG);
 			}
 			break;
 		case KeyEvent.KEYCODE_DPAD_RIGHT: // 右
 			if (mPosition == totalCount - 1) {
-				ToastUtils.showMessage(this, getString(R.string.reach_last_page), Toast.LENGTH_LONG);
+				ToastUtils.showMessage(App.getAppContext(), getString(R.string.reach_last_page), Toast.LENGTH_LONG);
 			}
 			break;
 		default:

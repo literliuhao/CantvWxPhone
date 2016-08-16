@@ -22,15 +22,6 @@ public class App extends Application {
 		mContext = getApplicationContext();
 		// 初始化个推服务
 		PushManager.getInstance(mContext).init();
-		//进行判断，选择打开界面
-		/*DaoOpenHelper pushDaoOpenHelper = DaoOpenHelper.getInstance(getApplicationContext());
-		long count = pushDaoOpenHelper.queryExpiredUserCount();
-		if (count >= 1) {
-			Intent intent = new Intent(getApplicationContext(), GridViewActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
-		}*/
-		
 	}
 
 	public static RequestQueue getVolleyRequestQueues() {
