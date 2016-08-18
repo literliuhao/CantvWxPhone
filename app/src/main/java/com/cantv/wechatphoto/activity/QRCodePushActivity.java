@@ -28,7 +28,7 @@ import com.google.gson.JsonParser;
 
 public class QRCodePushActivity extends Activity {
 
-	private final String TAG = "com.cantv.wechatphoto.activity.QRCodePushActivity";
+	private final String TAG = "QRCodePushActivity";
 
 	private static final String ACTION_CLOSE_QRCODE_PAGE = "com.cantv.wechatphoto.ACTION_CLOSE_QRCODE_PAGE";
 	private static final String ACTION_REGISTER_SUCCEED = "com.cantv.wechatphoto.action.REGISTER_SUCCESS";

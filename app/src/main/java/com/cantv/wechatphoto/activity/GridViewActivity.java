@@ -331,7 +331,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
 	/**
 	 * 获取微信推送二维码
 	 * 
-	 * @param callback
+	 * @param
 	 */
 	public void getWexinPushQRCode(String clientId) {
 		if (TextUtils.isEmpty(clientId)) {
