@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg_share_qrcode"
+     >
+    
+    <LinearLayout 
+        android:layout_width="@dimen/dimen_480px"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_marginTop="@dimen/dimen_235px"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        >
+	    <com.cantv.wechatphoto.view.ZoomImageView 
+	        android:id="@+id/iv_qrcode"
+	        android:layout_width="wrap_content"
+	        android:layout_height="@dimen/dimen_480px"
+	        android:scaleType="fitXY"
+	        />
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:includeFontPadding="false"
+	        android:layout_marginTop="@dimen/dimen_15px"
+	        android:textColor="@android:color/black"
+	        android:textSize="@dimen/fontsize_33px"
+	        android:text="@string/scan"
+	        />
+	    <TextView 
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:includeFontPadding="false"
+	        android:layout_marginTop="@dimen/dimen_15px"
+	        android:textColor="@android:color/black"
+	        android:textSize="@dimen/fontsize_33px"
+	        android:text="@string/watch_for_video_add_picture"
+	        />
+    </LinearLayout>
+
+</RelativeLayout>

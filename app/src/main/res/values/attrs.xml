@@ -1,0 +1,347 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="MarkoutTextView">
+        <attr name="markImgRes" format="reference" />
+    </declare-styleable>
+
+    <!-- 淡入的字符串，只能从左到右显示 -->
+    <declare-styleable name="FadeTextView">
+        <attr name="fade_txt_delta" format="reference|integer" />
+        <attr name="fade_txt_wp" format="reference|integer" />
+    </declare-styleable>
+
+    <!-- 图片布局,由于图片在选中时需要显示文本 -->
+    <declare-styleable name="ImageRelativeLayout">
+        <attr name="scaleType">
+            <enum name="matrix" value="0" />
+            <enum name="fitXY" value="1" />
+            <enum name="fitStart" value="2" />
+            <enum name="fitCenter" value="3" />
+            <enum name="fitEnd" value="4" />
+            <enum name="center" value="5" />
+            <enum name="centerCrop" value="6" />
+            <enum name="centerInside" value="7" />
+        </attr>
+        <!-- Sets a drawable as the content of this ImageView. -->
+        <attr name="src" format="reference|color" />
+
+        <!-- textview -->
+        <attr name="txt_align" format="reference|integer" />
+        <attr name="textSize" format="dimension" />
+        <attr name="text" format="string" localization="suggested" />
+        <attr name="textColor" format="reference|color" />
+        <attr name="txtPaddingLeft" format="dimension" />
+        <!-- Sets the padding, in pixels, of the top edge; see {@link android.R.attr#padding}. -->
+        <attr name="txtPaddingTop" format="dimension" />
+        <!-- Sets the padding, in pixels, of the right edge; see {@link android.R.attr#padding}. -->
+        <attr name="txtPaddingRight" format="dimension" />
+        <!-- Sets the padding, in pixels, of the bottom edge; see {@link android.R.attr#padding}. -->
+        <attr name="txtPaddingBottom" format="dimension" />
+        <attr name="alwaysShowTxt" format="boolean" />
+    </declare-styleable>
+
+    <!-- 专题模板3图片布局,由于图片在选中时需要显示文本 -->
+    <declare-styleable name="SpecialTopicImageRelativeLayout">
+        <attr name="specialTopic_scaleType">
+            <enum name="matrix" value="0" />
+            <enum name="fitXY" value="1" />
+            <enum name="fitStart" value="2" />
+            <enum name="fitCenter" value="3" />
+            <enum name="fitEnd" value="4" />
+            <enum name="center" value="5" />
+            <enum name="centerCrop" value="6" />
+            <enum name="centerInside" value="7" />
+        </attr>
+        <!-- Sets a drawable as the content of this ImageView. -->
+        <attr name="specialTopic_src" format="reference|color" />
+
+        <!-- textview -->
+        <attr name="specialTopic_txt_align" format="reference|integer" />
+        <attr name="specialTopic_textSize" format="dimension" />
+        <attr name="specialTopic_text" format="string" localization="suggested" />
+        <attr name="specialTopic_textColor" format="reference|color" />
+        <attr name="specialTopic_txtPaddingLeft" format="dimension" />
+        <!-- Sets the padding, in pixels, of the top edge; see {@link android.R.attr#padding}. -->
+        <attr name="specialTopic_txtPaddingTop" format="dimension" />
+        <!-- Sets the padding, in pixels, of the right edge; see {@link android.R.attr#padding}. -->
+        <attr name="specialTopic_txtPaddingRight" format="dimension" />
+        <!-- Sets the padding, in pixels, of the bottom edge; see {@link android.R.attr#padding}. -->
+        <attr name="specialTopic_txtPaddingBottom" format="dimension" />
+        <attr name="specialTopic_alwaysShowTxt" format="boolean" />
+        <attr name="specialTopic_txtMarginBottom" format="dimension" />
+        <attr name="specialTopic_txtHeight" format="dimension" />
+    </declare-styleable>
+
+    <!-- Style of the tab indicator's tabs. -->
+    <attr name="vpiTabPageIndicatorStyle" format="reference" />
+
+    <declare-styleable name="SelectedBackgroundGridView">
+        <attr name="focusLostSelector" format="reference|color" />
+    </declare-styleable>
+    <declare-styleable name="RoundAngleImageView">
+        <attr name="roundWidth" format="dimension" />
+        <attr name="roundHeight" format="dimension" />
+    </declare-styleable>
+    <declare-styleable name="ProgressButton">
+
+
+
+　　                        <attr name="background" format="color" />
+
+
+
+　　                        <attr name="foreground" format="color" />
+
+
+
+　　                        <attr name="textcolor" format="color" />
+
+
+
+　　                        <attr name="max" format="float" />
+
+
+
+　　                        <attr name="progress" format="float" />
+
+
+
+　　                        <attr name="btntextSize" format="integer" />
+
+
+
+　　                        <attr name="btntext" format="string" />
+    </declare-styleable>
+    <declare-styleable name="FancyCoverFlow">
+        <attr name="unselectedAlpha" format="float" />
+        <attr name="unselectedSaturation" format="float" />
+        <attr name="unselectedScale" format="float" />
+        <attr name="maxRotation" format="integer" />
+        <attr name="scaleDownGravity" format="float" />
+        <attr name="actionDistance" format="integer">
+            <enum name="auto" value="2147483647" />
+        </attr>
+    </declare-styleable>
+    <declare-styleable name="DoubleColumnListView">
+        <attr name="layout_leftlist_width" format="dimension"></attr>
+        <attr name="layout_leftlist_padding_left" format="dimension"></attr>
+        <attr name="layout_leftlist_padding_top" format="dimension"></attr>
+        <attr name="layout_leftlist_padding_right" format="dimension"></attr>
+        <attr name="layout_leftlist_padding_bottom" format="dimension"></attr>
+        <attr name="layout_rightlist_width" format="dimension"></attr>
+        <attr name="layout_rightlist_padding_left" format="dimension"></attr>
+        <attr name="layout_rightlist_padding_top" format="dimension"></attr>
+        <attr name="layout_rightlist_padding_right" format="dimension"></attr>
+        <attr name="layout_rightlist_padding_bottom" format="dimension"></attr>
+        <attr name="left_focus_flow_mode" format="integer"></attr>
+        <attr name="right_focus_flow_mode" format="integer"></attr>
+        <attr name="left_list_bg" format="reference|color"></attr>
+        <attr name="right_list_bg" format="reference|color"></attr>
+        <attr name="left_item_background_focused" format="reference|color"></attr>
+        <attr name="left_item_background_selected" format="reference|color"></attr>
+        <attr name="left_item_background_normal" format="reference|color"></attr>
+        <attr name="right_item_background_focused" format="reference|color"></attr>
+        <attr name="right_item_background_selected" format="reference|color"></attr>
+        <attr name="right_item_background_normal" format="reference|color"></attr>
+    </declare-styleable>
+    
+     <attr name="cursorRes" format="reference"></attr>
+    <attr name="cursorRes_1280" format="reference"></attr>
+    <attr name="cursorRes_1920" format="reference"></attr>
+    <attr name="cursorRes_2560" format="reference"></attr>
+    <attr name="cursorRes_3840" format="reference"></attr>
+    <attr name="imageRes" format="reference"></attr>
+    <attr name="scalable" format="boolean"></attr>
+    <attr name="scale" format="float"></attr>
+    <attr name="animationType">
+        <enum name="DEFAULT" value="0"></enum>
+        <enum name="TRANSLATE" value="1"></enum>
+    </attr>
+    <attr name="focusOption">
+        <enum name="PARENT_ONLY" value="0"></enum>
+        <enum name="CHILD_ONLY" value="1"></enum>
+    </attr>
+    <attr name="durationLarge" format="integer"></attr>
+    <attr name="durationSmall" format="integer"></attr>
+    <attr name="durationScroll" format="integer"></attr>
+    <attr name="durationTranslate" format="integer"></attr>
+    <attr name="delay" format="integer" />
+    <attr name="scrollDelay" format="integer" />
+    <attr name="scrollDuration" format="integer" />
+    <attr name="paddingLeft" format="dimension"></attr>
+    <attr name="paddingTop" format="dimension"></attr>
+    <attr name="boarder" format="dimension"></attr>
+    <attr name="boarderTop" format="dimension"></attr>
+    <attr name="boarderLeft" format="dimension"></attr>
+    <attr name="boarderBottom" format="dimension"></attr>
+    <attr name="boarderRight" format="dimension"></attr>
+    <attr name="boarderInt" format="integer"></attr>
+    <attr name="boarderTopInt" format="integer"></attr>
+    <attr name="boarderLeftInt" format="integer"></attr>
+    <attr name="boarderBottomInt" format="integer"></attr>
+    <attr name="boarderRightInt" format="integer"></attr>
+    <attr name="backgroundColor" format="color" />
+    <attr name="progressStartColor" format="color" />
+    <attr name="progressEndColor" format="color" />
+    <attr name="textStyle">
+        <enum name="DEFAULT" value="0"></enum>
+        <enum name="LTH" value="1"></enum>
+    </attr>
+    <attr name="style">
+        <enum name="RING" value="0"></enum>
+        <enum name="FAN" value="1"></enum>
+        <enum name="RECT" value="2"></enum>
+    </attr>
+    <attr name="focusable" format="boolean"></attr>
+    <attr name="period" format="integer"></attr>
+    <attr name="clockwise" format="boolean"></attr>
+    <!-- 边缘模糊 -->
+    <attr name="vague" format="boolean"></attr>
+    <attr name="columns" format="integer"></attr>
+    <attr name="rows" format="integer"></attr>
+    <attr name="spaceHori" format="dimension"></attr>
+    <attr name="spaceVert" format="dimension"></attr>
+    <attr name="itemWidth" format="dimension"></attr>
+    <attr name="itemHeight" format="dimension"></attr>
+    <attr name="titleWidth" format="dimension"></attr>
+    <attr name="titleHeight" format="dimension"></attr>
+    <attr name="titleSpace" format="dimension"></attr>
+    <attr name="pageWidth" format="dimension"></attr>
+    <attr name="dividerHeight" format="dimension"></attr>
+    <attr name="cursorWidth" format="dimension"></attr>
+    <attr name="cursorHeight" format="dimension"></attr>
+    <attr name="cursorMarginLeft" format="dimension"></attr>
+    <attr name="cursorMarginTop" format="dimension"></attr>
+    <attr name="cursorMarginRight" format="dimension"></attr>
+    <attr name="cursorMarginBottom" format="dimension"></attr>
+    
+    <attr name="initFocus" format="boolean"></attr>
+    
+    <declare-styleable name="TvHorizontalGridView">
+        <attr name="cursorRes"></attr>
+        <attr name="cursorRes_1280"></attr>
+    	<attr name="cursorRes_1920"></attr>
+    	<attr name="cursorRes_2560"></attr>
+   	    <attr name="cursorRes_3840"></attr>
+        <attr name="scalable"></attr>
+        <attr name="scale"></attr>
+        <attr name="animationType"></attr>
+        <attr name="durationLarge"></attr>
+        <attr name="durationSmall"></attr>
+        <attr name="durationTranslate"></attr>
+        <attr name="delay" />
+        <attr name="scrollDelay"></attr>
+    	<attr name="scrollDuration"></attr>
+        <attr name="boarder"></attr>
+        <attr name="boarderTop"></attr>
+        <attr name="boarderLeft"></attr>
+        <attr name="boarderBottom"></attr>
+        <attr name="boarderRight"></attr>
+        <attr name="boarderInt"></attr>
+        <attr name="boarderTopInt"></attr>
+        <attr name="boarderLeftInt"></attr>
+        <attr name="boarderBottomInt"></attr>
+        <attr name="boarderRightInt"></attr>
+        <attr name="rows"></attr>
+        <attr name="spaceHori"></attr>
+        <attr name="spaceVert"></attr>
+        <attr name="itemWidth"></attr>
+        <attr name="itemHeight"></attr>
+        <attr name="paddingLeft"></attr>
+        <attr name="paddingTop"></attr>
+        <attr name="initFocus"></attr>
+    </declare-styleable>
+
+    <item name="DoubleColumnListView.FOCUS_FLOW_MODE_NO_FLOW" format="integer" type="integer">1</item>
+    <item name="DoubleColumnListView.FOCUS_FLOW_MODE_CYCLE" format="integer" type="integer">2</item>
+    <item name="DoubleColumnListView.FOCUS_FLOW_MODE_CONTINUE" format="integer" type="integer">3</item>
+    
+    <declare-styleable name="TextViewWithTTF">
+        <attr name="ttf_name" format="string"/>
+    </declare-styleable>
+
+    <!-- 倒影控件属性 -->
+    <declare-styleable name="reflectItemView">
+        <attr name="isReflect" format="boolean"/>
+        <attr name="isShape" format="boolean"/>
+        <attr name="reflect_height" format="dimension"/>
+        <attr name="radius" format="dimension"/>
+        <attr name="refle_spacing" format="dimension"/>
+    </declare-styleable>
+
+    <!-- 顶层控件属性 -->
+    <declare-styleable name="PopView">
+        <attr name="upImageRes" format="reference"/>
+        <attr name="shadowImageRes" format="reference"/>
+    </declare-styleable>
+
+    <!-- 标签控件 -->
+    <declare-styleable name="LabelView">
+        <!-- 设置文字内容 -->
+        <attr name="lv_text" format="string"/>
+        <!-- 设置文字颜色,默认#ffffff -->
+        <attr name="lv_text_color" format="color"/>
+        <!-- 设置文字大小,默认11sp -->
+        <attr name="lv_text_size" format="dimension"/>
+        <!-- 设置文字是否支持加粗,默认true -->
+        <attr name="lv_text_bold" format="boolean"/>
+        <!-- 设置文字是否支持全部大写,默认true-->
+        <attr name="lv_text_all_caps" format="boolean"/>
+        <!-- 设置背景颜色,默认"#FF4081"-->
+        <attr name="lv_background_color" format="color"/>
+        <!-- 设置LabelView所在矩形最小宽高,默认mFillTriangle?35dp:50dp-->
+        <attr name="lv_min_size" format="dimension"/>
+        <!-- 设置文字上下padding,默认3.5dp,mFillTriangle为true时无效-->
+        <attr name="lv_padding" format="dimension"/>
+        <!-- 设置LabelView方向 -->
+        <attr name="lv_gravity" format="enum">
+            <enum name="TOP_LEFT" value="51"/>
+            <enum name="TOP_RIGHT" value="53"/>
+            <enum name="BOTTOM_LEFT" value="83"/>
+            <enum name="BOTTOM_RIGHT" value="85"/>
+        </attr>
+        <!-- 设置是否填充三角区域,默认false -->
+        <attr name="lv_fill_triangle" format="boolean"/>
+    </declare-styleable>
+
+<!--     <declare-styleable name="TvTabHost"> -->
+<!--         <attr name="cursorRes" format="reference"/> -->
+<!--         <attr name="textColorDefault" format="color"/> -->
+<!--         <attr name="textColorSelected" format="color"/> -->
+<!--         <attr name="titleWidth" format="dimension"></attr> -->
+<!--         <attr name="titleHeight" format="dimension"></attr> -->
+<!--         <attr name="titleSpace" format="dimension"></attr> -->
+<!--         <attr name="dividerHeight" format="dimension"></attr> -->
+<!--         <attr name="durationScroll" format="integer"></attr> -->
+<!--         <attr name="scalable" format="boolean"></attr> -->
+<!--         <attr name="scale" format="float"></attr> -->
+<!--         <attr name="animationType"> -->
+<!--             <enum name="DEFAULT" value="0"></enum> -->
+<!--             <enum name="TRANSLATE" value="1"></enum> -->
+<!--         </attr> -->
+<!--         <attr name="durationLarge" format="integer"></attr> -->
+<!--         <attr name="durationSmall" format="integer"></attr> -->
+<!--         <attr name="delay" format="integer"/> -->
+<!--         <attr name="cursorWidth" format="dimension"></attr> -->
+<!--         <attr name="cursorHeight" format="dimension"></attr> -->
+<!--         <attr name="cursorMarginLeft" format="dimension"></attr> -->
+<!--         <attr name="cursorMarginTop" format="dimension"></attr> -->
+<!--         <attr name="cursorMarginRight" format="dimension"></attr> -->
+<!--         <attr name="cursorMarginBottom" format="dimension"></attr> -->
+<!--     </declare-styleable> -->
+
+    <declare-styleable name="ArcMaskImageView">
+         <attr name="maskBackgroundColor" format="reference|color" />
+         <attr name="maskPercent" format="float"></attr>
+         <attr name="mainTitle" format="reference|string" />
+         <attr name="mainTitleTextSize" format="dimension" />
+         <attr name="mainTitleTextColor" format="reference|color" />
+         <attr name="mainTitleTopPadding" format="dimension" />
+         <attr name="subTitle" format="reference|string" />
+         <attr name="subTitleTextSize" format="dimension" />
+         <attr name="subTitleTextColor" format="reference|color" />
+         <attr name="subTitleTopPadding" format="dimension" />
+    </declare-styleable>
+    
+</resources>
