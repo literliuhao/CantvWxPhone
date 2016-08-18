@@ -1,16 +1,4 @@
-*.iml
-.gradle
-/local.properties
-/.idea/workspace.xml
-/.idea/libraries
 .DS_Store
-/build
-/captures
-.idea
-app/build
-#app/signing.properties
-#app/y_meizi.jks
-
 
 # built application files
 *.apk
@@ -44,6 +32,7 @@ build/
 # Intellij project files
 *.ipr
 *.iws
+*.iml
 .idea/
 
 #gradle

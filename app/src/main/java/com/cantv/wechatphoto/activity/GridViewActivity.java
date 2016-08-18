@@ -138,7 +138,8 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
 						}
 					} else {
 						if (isLock) {
-							if (KeyEvent.KEYCODE_ENTER == keyCode) {
+							if (KeyEvent.KEYCODE_ENTER == keyCode
+									|| KeyEvent.KEYCODE_DPAD_CENTER == keyCode) { // 遥控器OK
 								isLock = false;
 								layoutDelete.setVisibility(View.GONE);
 								PhotoBean photoBean = HelperBean.photoList.get(currentPosition - 1);
@@ -150,7 +151,6 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
 								gridAdapter.notifyDataSetChanged();
 							}
 							return true;
-						} else {
 						}
 					}
 				}

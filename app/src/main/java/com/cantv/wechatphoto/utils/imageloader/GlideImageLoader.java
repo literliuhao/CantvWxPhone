@@ -93,7 +93,7 @@ public class GlideImageLoader implements BaseImageLoader {
 	 * 加载图片
 	 * 
 	 * @param context
-	 * @param ImageInfo
+	 * @param img
 	 *            图片信息
 	 */
 	public void loadByNet(Context context, final ImageInfo img) {
@@ -192,7 +192,7 @@ public class GlideImageLoader implements BaseImageLoader {
 					public void run() {
 						Glide.get(App.getAppContext()).clearDiskCache();
 					}
-				});
+				}).start();
 			} else {
 				Glide.get(App.getAppContext()).clearDiskCache();
 			}
