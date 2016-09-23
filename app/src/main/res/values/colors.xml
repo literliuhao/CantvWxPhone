@@ -2,7 +2,7 @@
 <resources>
 
     <color name="seek_bg">#2a2b30</color>
-
+    <color name="per90_white">#e6FFFFFF</color>
     <!-- See through -->
     <!-- Transparent black -->
     <color name="transparent_black">#CC000000</color>

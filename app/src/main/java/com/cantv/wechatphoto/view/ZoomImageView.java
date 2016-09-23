@@ -12,6 +12,9 @@ import android.view.KeyEvent;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
 
+import com.cantv.wechatphoto.model.SyncImage;
+import com.cantv.wechatphoto.utils.greendao.PhotoBean;
+
 /**
  * @author liuhao
  */
@@ -25,21 +28,38 @@ public class ZoomImageView extends ImageView implements ViewTreeObserver.OnGloba
 
 	private final Matrix mScaleMatrix = new Matrix();
 
-	private int imagePosition;
-	private final int angle = 3;
-	private final int rotateAngle = 90;
-	private float mWidthP;
-	private float mHeightP;
+    private int imagePosition;
+    private final int angle = 6;
+    private final int rotateAngle = 90;
+    private float mWidthP;
+    private float mHeightP;
+    private final int ALLROTATE = 360;
+    private final int time = 16;
+	private PhotoBean mPhotoBean;
 
 	private boolean rotate_enable = true; // 是否可以旋转,旋转的时候设置为false
 
-	public ZoomImageView(Context context) {
-		this(context, null);
-	}
+    private int currentRotate = 0;
+
+    private Context mContext;
+
+//	public ZoomImageView(Context context) {
+//		super(context);
+//	}
+
+    public ZoomImageView(Context context) {
+        this(context, null);
+    }
 
 	public ZoomImageView(Context context, AttributeSet attrs) {
 		super(context, attrs);
 		this.setFocusable(true);
+		this.mContext = context;
+	}
+
+	public void setBean(PhotoBean photoBean){
+		this.mPhotoBean = photoBean;
+		this.currentRotate = mPhotoBean.getDirection();
 	}
 
 	public void setPosition(int position) {
@@ -52,55 +72,73 @@ public class ZoomImageView extends ImageView implements ViewTreeObserver.OnGloba
 		// 电视屏幕宽高
 		mWidthP = getWidth();
 		mHeightP = getHeight();
-		if (rotate_enable) { // 正在旋转的时候就不接收旋转命令,执行完本次旋转才能旋转
-			if (keyCode == 19) {
-				if (imagePosition != 0) {
-					ZoomImageView.this.postDelayed(new RotateRunnable(rotateAngle, angle), 20);
-				}
-			} else if (keyCode == 20) {
-				if (imagePosition != 0) {
-					ZoomImageView.this.postDelayed(new RotateRunnable(-rotateAngle, -angle), 20);
-				}
-			}
-		}
+        if (rotate_enable) { // 正在旋转的时候就不接收旋转命令,执行完本次旋转才能旋转
+            switch (keyCode) {
+                case 19:
+                    if (imagePosition != 0) {
+                        ZoomImageView.this.postDelayed(new RotateRunnable(rotateAngle, angle), time);
+                    }
+                    break;
+                case 20:
+                    if (imagePosition != 0) {
+                        ZoomImageView.this.postDelayed(new RotateRunnable(-rotateAngle, -angle), time);
+                    }
+                    break;
+                case 21:
+                case 22:
+				case KeyEvent.KEYCODE_BACK:
+                    //保存图片
+					if(null != mPhotoBean){
+						mPhotoBean.setDirection(currentRotate % ALLROTATE);
+						SyncImage.getInstance(mContext).saveRotation(mPhotoBean);
+					}
+                    break;
+            }
+
+        }
 		return false;
 	}
 
-	private class RotateRunnable implements Runnable {
-		final float mDegree;
-		private float mDegreeCount;
-		private float mCurrentDegree;
+    private class RotateRunnable implements Runnable {
+        final float mDegree;
+        private float mDegreeCount;
+        private float mCurrentDegree;
+        private float originalRotate;
 
-		public RotateRunnable(float degree, float currentDegree) {
-			this.mDegree = Math.abs(degree);
-			this.mCurrentDegree = currentDegree;
-			rotate_enable = false;
-			ZoomImageView.this.setScaleType(ImageView.ScaleType.MATRIX);
-		}
+        public RotateRunnable(float degree, float currentDegree) {
+            this.mDegree = Math.abs(degree);
+            this.mCurrentDegree = currentDegree;
+            this.originalRotate = degree;
+            rotate_enable = false;
+            ZoomImageView.this.setScaleType(ImageView.ScaleType.MATRIX);
+        }
 
-		@Override
-		public void run() {
-			// 进行旋转
-			mScaleMatrix.postRotate(mCurrentDegree, getWidth() / 2, getHeight() / 2);
-			mDegreeCount += Math.abs(mCurrentDegree);
+        @Override
+        public void run() {
+            // 进行旋转
+            mScaleMatrix.postRotate(mCurrentDegree, getWidth() / 2, getHeight() / 2);
+            mDegreeCount += Math.abs(mCurrentDegree);
 
-			RectF rect = getMatrixRectF();
-			float w = rect.width();
-			float h = rect.height();
-			// 缩放操作
-			onRotaScale(h, w);
+            RectF rect = getMatrixRectF();
+            float w = rect.width();
+            float h = rect.height();
+            // 缩放操作
+            onRotaScale(h, w);
 
-			checkBorderAndCenterWhenScale();
-			setImageMatrix(mScaleMatrix);
+            checkBorderAndCenterWhenScale();
+            setImageMatrix(mScaleMatrix);
 
-			// 如果值在合法范围内，继续缩放
-			if (mDegreeCount < mDegree) {
-				ZoomImageView.this.postDelayed(this, 20);
-			} else {
-				rotate_enable = true;
-			}
-		}
-	}
+            // 如果值在合法范围内，继续缩放
+            if (mDegreeCount < mDegree) {
+                ZoomImageView.this.postDelayed(this, time);
+            } else {
+                rotate_enable = true;
+                currentRotate += originalRotate;
+                Log.i("currentRotate", currentRotate + "");
+                Log.i("currentRotate", (currentRotate % ALLROTATE) + "");
+            }
+        }
+    }
 
 	/**
 	 * 在缩放时，进行图片显示范围的控制
@@ -182,29 +220,29 @@ public class ZoomImageView extends ImageView implements ViewTreeObserver.OnGloba
 	@Override
 	public void onGlobalLayout() {
 		// if (once) {
-//		Drawable d = getDrawable();
-//		if (d == null)
-//			return;
-//		// Log.e(TAG, d.getIntrinsicWidth() + " , " + d.getIntrinsicHeight());
-//		int width = getWidth();
-//		int height = getHeight();
-//		// 拿到图片的宽和高
-//		int dw = d.getIntrinsicWidth();
-//		int dh = d.getIntrinsicHeight();
+		Drawable d = getDrawable();
+		if (d == null)
+			return;
+		// Log.e(TAG, d.getIntrinsicWidth() + " , " + d.getIntrinsicHeight());
+		int width = getWidth();
+		int height = getHeight();
+		// 拿到图片的宽和高
+		int dw = d.getIntrinsicWidth();
+		int dh = d.getIntrinsicHeight();
 
-//		// setScaleType(ScaleType.CENTER);
-//		float scale = 1.0f;
-//		// 如果图片的宽或者高大于屏幕，则缩放至屏幕的宽或者高
-//		if (dw > width && dh <= height) {
-//			scale = width * 1.0f / dw;
-//		}
-//		if (dh > height && dw <= width) {
-//			scale = height * 1.0f / dh;
-//		}
-//		// 如果宽和高都大于屏幕，则让其按按比例适应屏幕大小
-//		if (dw > width && dh > height) {
-//			scale = Math.min(width * 1.0f / dw, height * 1.0f / dh);
-//		}
+		// setScaleType(ScaleType.CENTER);
+		float scale = 1.0f;
+		// 如果图片的宽或者高大于屏幕，则缩放至屏幕的宽或者高
+		if (dw > width && dh <= height) {
+			scale = width * 1.0f / dw;
+		}
+		if (dh > height && dw <= width) {
+			scale = height * 1.0f / dh;
+		}
+		// 如果宽和高都大于屏幕，则让其按按比例适应屏幕大小
+		if (dw > width && dh > height) {
+			scale = Math.min(width * 1.0f / dw, height * 1.0f / dh);
+		}
 	}
 
 	/**

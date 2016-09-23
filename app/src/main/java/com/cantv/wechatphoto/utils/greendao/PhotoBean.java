@@ -176,6 +176,9 @@ public class PhotoBean {
     }
 
     public Integer getDirection() {
+        if(null == direction){
+            direction = 0;
+        }
         return direction;
     }
 

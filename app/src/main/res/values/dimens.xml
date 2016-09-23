@@ -52,6 +52,7 @@
     <dimen name="px_50">33.8dp</dimen>
     <dimen name="px_56">37.8dp</dimen>
     <dimen name="px_64">43.1dp</dimen>
+    <dimen name="px_70">47dp</dimen>
     <dimen name="px_78">52.5dp</dimen>
     <dimen name="px_85">57.1dp</dimen>
     <dimen name="px_96">64.5dp</dimen>

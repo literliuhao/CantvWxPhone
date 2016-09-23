@@ -187,10 +187,8 @@ public class OpenEffectBridge extends BaseEffectBridgeWrapper {
                 if (mNewAnimatorListener != null)
                     mNewAnimatorListener.onAnimationEnd(OpenEffectBridge.this, focusView, animation);
                 if (Utils.getSDKVersion() >= 21) {
-                    int newWidth = (int) (focusView.getMeasuredWidth() *
-                            mScaleX);
-                    int newHeight = (int) (focusView.getMeasuredHeight() *
-                            mScaleY);
+                    int newWidth = (int) (focusView.getMeasuredWidth() * mScaleX);
+                    int newHeight = (int) (focusView.getMeasuredHeight() * mScaleY);
                     getMainUpView().getLayoutParams().width = newWidth;
                     getMainUpView().getLayoutParams().height = newHeight;
                     getMainUpView().requestLayout();

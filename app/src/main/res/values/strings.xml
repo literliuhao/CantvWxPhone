@@ -35,5 +35,9 @@
     <string name="reach_last_page">最后一张了</string>
     <string name="scan">扫一扫</string>
     <string name="watch_for_video_add_picture">影片、照片投屏看</string>
+    <string name="wechat_start_network_error">网络中断,请检查网络</string>
+    <string name="wechat_start_error">空间不足，请及时清理相册照片和电视里安装的应用</string>
+    <string name="wechat_start_error_10MB">空间不足10MB，为了不影响正常使用，请及时清理相册照片和电视里安装的应用</string>
+
 
 </resources>

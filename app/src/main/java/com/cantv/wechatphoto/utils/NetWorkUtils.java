@@ -1,5 +1,14 @@
 package com.cantv.wechatphoto.utils;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.text.TextUtils;
+import android.util.Log;
+
+import com.cantv.wechatphoto.interfaces.ICallBack;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
@@ -13,18 +22,13 @@ import java.net.SocketException;
 import java.util.Enumeration;
 import java.util.Locale;
 
-import android.annotation.SuppressLint;
-import android.text.TextUtils;
-import android.util.Log;
-
 public class NetWorkUtils {
 
 	/**
 	 * @category 判断是否有外网连接（普通方法不能判断外网的网络是否连接，比如连接上局域网）
 	 * @return
 	 */
-	public static final boolean ping() {
-
+	public static final Boolean ping(ICallBack callBack) {
 		String result = null;
 		try {
 			String ip = "www.baidu.com";// ping 的地址，可以换成任何一种可靠的外网
@@ -37,14 +41,14 @@ public class NetWorkUtils {
 			while ((content = in.readLine()) != null) {
 				stringBuffer.append(content);
 			}
-			Log.d("------ping-----", "result content : " + stringBuffer.toString());
+//			Log.i("------ping-----", "result content : " + stringBuffer.toString());
 			// ping的状态
 			int status = p.waitFor();
 			if (status == 0) {
 				result = "success";
 				return true;
 			} else {
-				result = "failed";
+				return false;
 			}
 		} catch (IOException e) {
 			result = "IOException";
@@ -207,5 +211,20 @@ public class NetWorkUtils {
 		} catch (Exception e) {
 			return null;
 		}
+	}
+
+	public static boolean isNetworkAvailable(Context context) {
+		ConnectivityManager connectivity = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		if (connectivity != null) {
+			NetworkInfo info = connectivity.getActiveNetworkInfo();
+			if (info != null && info.isConnected()) {
+				// 当前网络是连接的
+				if (info.getState() == NetworkInfo.State.CONNECTED) {
+					// 当前所连接的网络可用
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 }

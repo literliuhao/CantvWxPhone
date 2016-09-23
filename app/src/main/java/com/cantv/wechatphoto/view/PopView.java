@@ -32,8 +32,7 @@ public class PopView extends FrameLayout {
 
 	private void attach2Window(Activity activity) {
 		ViewGroup rootView = (ViewGroup) activity.findViewById(Window.ID_ANDROID_CONTENT);
-		ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,
-				ViewGroup.LayoutParams.WRAP_CONTENT);
+		ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT,ViewGroup.LayoutParams.WRAP_CONTENT);
 		rootView.addView(this, layoutParams);
 		rootView.setClipChildren(false);
 		rootView.setClipToPadding(false);

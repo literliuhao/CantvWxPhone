@@ -1,9 +1,9 @@
 package com.cantv.wechatphoto.entity;
 
+import com.cantv.wechatphoto.utils.greendao.PhotoBean;
+
 import java.util.ArrayList;
 import java.util.List;
-
-import com.cantv.wechatphoto.utils.greendao.PhotoBean;
 
 
 /**
@@ -12,4 +12,12 @@ import com.cantv.wechatphoto.utils.greendao.PhotoBean;
 
 public class HelperBean {
 	public static List<PhotoBean> photoList = new ArrayList<>();
+
+	public static void updateBean(PhotoBean photoBean){
+		for (int i = 0; i < photoList.size(); i++) {
+			if(photoList.get(i).getId() == photoBean.getId()){
+				photoList.get(i).setDirection(photoBean.getDirection());
+			}
+		}
+	}
 }
