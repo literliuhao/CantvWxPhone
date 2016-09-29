@@ -14,6 +14,9 @@ import com.cantv.wechatphoto.push.domain.PushPhotoProgramMsg;
 import com.cantv.wechatphoto.push.domain.PushSohuProgramMsg;
 import com.cantv.wechatphoto.push.domain.PushSuccessProgramMsg;
 import com.cantv.wechatphoto.push.domain.PushYokuProgramMsg;
+import com.cantv.wechatphoto.push.domainvideo.CanVideo;
+import com.cantv.wechatphoto.push.domainvideo.SohuVideo;
+import com.cantv.wechatphoto.push.domainvideo.YokuVideo;
 import com.cantv.wechatphoto.utils.ToastUtils;
 import com.cantv.wechatphoto.utils.greendao.DaoOpenHelper;
 import com.cantv.wechatphoto.utils.greendao.PhotoBean;
@@ -112,13 +115,19 @@ public class PushMsgHandler {
             closeOnShowProgramPage(context);
             PushYokuProgramMsg msg = (PushYokuProgramMsg) pushMsg;
             if(null != msg){
-                String videoid = msg.getVideo().getVideoid();
-                if (null == videoid) {
+                YokuVideo yokuVideo = msg.getVideo();
+                if(null != yokuVideo){
+                    String videoid = msg.getVideo().getVideoid();
+                    if (null == videoid) {
+                        ToastUtils.showMessage(context, "数据格式异常");
+                        return;
+                    }
+                    intent = new Intent("com.cantv.action.YOKUPLAYER");
+                    intent.putExtra(KEY_VIDEO_INFO, msgStr);
+                }else{
                     ToastUtils.showMessage(context, "数据格式异常");
                     return;
                 }
-                intent = new Intent("com.cantv.action.YOKUPLAYER");
-                intent.putExtra(KEY_VIDEO_INFO, msgStr);
             }else{
                 ToastUtils.showMessage(context, "数据格式异常");
                 return;
@@ -127,13 +136,19 @@ public class PushMsgHandler {
             closeOnShowProgramPage(context);
             PushSohuProgramMsg msg = (PushSohuProgramMsg) pushMsg;
             if(null != msg){
-                String videoid = msg.getVideo().getSohu().getVid();
-                if (null == videoid) {
+                SohuVideo sohuVideo = msg.getVideo();
+                if(null != sohuVideo){
+                    String videoid = sohuVideo.getSohu().getVid();
+                    if (null == videoid) {
+                        ToastUtils.showMessage(context, "数据格式异常");
+                        return;
+                    }
+                    intent = new Intent("com.cantv.action.SOHUPLAYER");
+                    intent.putExtra(KEY_VIDEO_INFO, msgStr);
+                }else{
                     ToastUtils.showMessage(context, "数据格式异常");
                     return;
                 }
-                intent = new Intent("com.cantv.action.SOHUPLAYER");
-                intent.putExtra(KEY_VIDEO_INFO, msgStr);
             }else{
                 ToastUtils.showMessage(context, "数据格式异常");
                 return;
@@ -142,13 +157,19 @@ public class PushMsgHandler {
             closeOnShowProgramPage(context);
             PushCANProgramMsg msg = (PushCANProgramMsg) pushMsg;
             if(null != msg){
-                String videoid = msg.getVideo().getVideoid();
-                if (null == videoid) {
+                CanVideo canVideo = msg.getVideo();
+                if(null != canVideo){
+                    String videoid = canVideo.getVideoid();
+                    if (null == videoid) {
+                        ToastUtils.showMessage(context, "数据格式异常");
+                        return;
+                    }
+                    intent = new Intent("com.cantv.action.CANPLAYER");
+                    intent.putExtra(KEY_VIDEO_INFO, msgStr);
+                }else{
                     ToastUtils.showMessage(context, "数据格式异常");
                     return;
                 }
-                intent = new Intent("com.cantv.action.CANPLAYER");
-                intent.putExtra(KEY_VIDEO_INFO, msgStr);
             }else{
                 ToastUtils.showMessage(context, "数据格式异常");
                 return;
