@@ -149,6 +149,7 @@
 
         <!-- 微信相册 -->
         <activity android:name="com.cantv.wechatphoto.activity.GridViewActivity"
+                  
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
              <!-- <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
