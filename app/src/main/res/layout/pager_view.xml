@@ -1,20 +1,20 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <android.support.v4.view.ViewPager
         android:id="@+id/id_viewpager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"/>
 
     <RelativeLayout
         android:id="@+id/rl_bottom_mask"
-        android:visibility="invisible"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_171px"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/share_photo_page_bottom_mask" >
+        android:background="@drawable/share_photo_page_bottom_mask"
+        android:visibility="invisible">
 
         <LinearLayout
             android:id="@+id/ll_tips"
@@ -24,7 +24,7 @@
             android:layout_marginBottom="@dimen/dimen_84px"
             android:layout_marginStart="@dimen/px_85"
             android:gravity="center_vertical"
-            android:orientation="horizontal" >
+            android:orientation="horizontal">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/press_on"
                 android:textColor="@color/fontColor"
-                android:textSize="@dimen/fontsize_30px" />
+                android:textSize="@dimen/fontsize_30px"/>
 
             <TextView
                 android:layout_width="@dimen/dimen_75px"
@@ -44,7 +44,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/left"
                 android:textColor="@color/fontColor"
-                android:textSize="@dimen/fontsize_30px" />
+                android:textSize="@dimen/fontsize_30px"/>
 
             <TextView
                 android:layout_width="@dimen/dimen_75px"
@@ -54,7 +54,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/right"
                 android:textColor="@color/fontColor"
-                android:textSize="@dimen/fontsize_30px" />
+                android:textSize="@dimen/fontsize_30px"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -64,7 +64,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/could_paging_add_press_on"
                 android:textColor="@color/fontColor"
-                android:textSize="@dimen/fontsize_30px" />
+                android:textSize="@dimen/fontsize_30px"/>
 
             <TextView
                 android:layout_width="@dimen/dimen_75px"
@@ -74,7 +74,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/up"
                 android:textColor="@color/fontColor"
-                android:textSize="@dimen/fontsize_30px" />
+                android:textSize="@dimen/fontsize_30px"/>
 
             <TextView
                 android:layout_width="@dimen/dimen_75px"
@@ -86,7 +86,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/down"
                 android:textColor="@color/fontColor"
-                android:textSize="@dimen/fontsize_30px" />
+                android:textSize="@dimen/fontsize_30px"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -94,26 +94,27 @@
                 android:includeFontPadding="false"
                 android:text="@string/could_rotate"
                 android:textColor="@color/fontColor"
-                android:textSize="@dimen/fontsize_30px" />
+                android:textSize="@dimen/fontsize_30px"/>
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/txt_pager_currectNumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/dimen_70px"
-            android:layout_toLeftOf="@+id/txt_pager_totalnumber" />
-
-        <TextView
-            android:id="@+id/txt_pager_totalnumber"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginBottom="@dimen/dimen_70px"
-            android:layout_marginRight="@dimen/px_30" />
     </RelativeLayout>
+
+    <TextView
+        android:id="@+id/txt_pager_currectNumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="@dimen/dimen_70px"
+        android:layout_toLeftOf="@+id/txt_pager_totalnumber"/>
+
+    <TextView
+        android:id="@+id/txt_pager_totalnumber"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/dimen_70px"
+        android:layout_marginRight="@dimen/px_30"/>
 
     <!-- <Button -->
     <!-- android:layout_width="wrap_content" -->
