@@ -39,4 +39,10 @@
     <style name="dialog_device_share" parent="dialog_menu">
         <item name="android:windowAnimationStyle">@style/animFadeIn</item>
     </style>
+
+    <style name="upgrade_dialog" parent="android:style/Theme.Dialog">
+        <item name="android:windowBackground">@drawable/shape_dialog</item>
+        <item name="android:windowNoTitle">true</item>
+        <item name="android:windowIsFloating">true</item>
+    </style>
 </resources>

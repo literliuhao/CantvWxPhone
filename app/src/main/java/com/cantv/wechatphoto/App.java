@@ -3,17 +3,25 @@ package com.cantv.wechatphoto;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Environment;
 import android.text.TextUtils;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.cantv.wechatphoto.push.PushManager;
 import com.cantv.wechatphoto.push.PushManager.onClientIdUpdateListener;
+import com.cantv.wechatphoto.upgrade.UpgradeManager;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.BuglyStrategy;
+import com.tencent.bugly.beta.Beta;
+import com.tencent.bugly.beta.UpgradeInfo;
+import com.tencent.bugly.beta.upgrade.UpgradeListener;
 
 public class App extends Application {
 
 	private static String mClientId = "";
 	public static RequestQueue gReqQueue = null;
+	public static final String BUGLY_KEY = "900058343";
 	private static Context mContext;
 
 	@Override
@@ -22,6 +30,7 @@ public class App extends Application {
 		mContext = getApplicationContext();
 		// 初始化个推服务
 		PushManager.getInstance(mContext).init();
+		initBugly();
 	}
 
 	public static RequestQueue getVolleyRequestQueues() {
@@ -48,6 +57,26 @@ public class App extends Application {
 			});
 		}
 		return mClientId;
+	}
+
+	private void initBugly() {
+		Beta.autoInit = true;
+		Beta.autoCheckUpgrade = false;
+		Beta.storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+		Beta.upgradeListener = new UpgradeListener() {
+			@Override
+			public void onUpgrade(int ret, UpgradeInfo strategy, boolean isManual, boolean
+					isSilence) {
+				if (strategy != null) {
+					UpgradeManager.getIntance(mContext).init();
+				}
+			}
+		};
+
+		BuglyStrategy strategy = new BuglyStrategy();
+		strategy.setAppChannel("cantv");
+		Bugly.init(this, BUGLY_KEY, false, strategy);
+
 	}
 	
 }

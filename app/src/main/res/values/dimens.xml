@@ -31,19 +31,7 @@
 	
 	<dimen name="default_img_cover_layout_width">260dp</dimen>
 	<dimen name="default_img_cover_layout_height">500dp</dimen>
-	
-	<!-- <dimen name="titlemargintop">80dp</dimen>
-	<dimen name="textpaddingleft">80dp</dimen>
-	<dimen name="textlightsize">45sp</dimen>
-	<dimen name="darklightsize">40sp</dimen>
-	<dimen name="textmargintop">20dp</dimen>
-	<dimen name="buttonwidth">350dp</dimen>
-	<dimen name="buttonheight">100dp</dimen>
-	<dimen name="buttonmargintop">40dp</dimen>
-	<dimen name="buttonmarginside">80dp</dimen>
-	<dimen name="dialogwidth">1000dp</dimen>
-	<dimen name="dialogheight">660dp</dimen> -->
-	
+
 	<dimen name="px_10">6.6dp</dimen>
 	<dimen name="px_20">13.8dp</dimen>
 	<dimen name="px_28">18.6dp</dimen>
@@ -72,5 +60,5 @@
     <dimen name="px_55">37dp</dimen>
     <dimen name="px_90">60dp</dimen>
     <dimen name="px_135">90dp</dimen>
-	
+
 </resources>
