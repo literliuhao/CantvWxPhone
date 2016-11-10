@@ -25,8 +25,13 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_LOGS" />
-    <!-- 个推SDK权限配置开始 -->
 
+    <!--必须配置-->
+    <activity
+        android:name="com.tencent.bugly.beta.ui.BetaActivity"
+        android:theme="@android:style/Theme.Translucent" />
+
+    <!-- 个推SDK权限配置开始 -->
     <!-- 自定义权限 -->
     <uses-permission android:name="getui.permission.GetuiService.com.cantv.wechatphoto" />
     <!-- 自定义provider读取权限 -->
