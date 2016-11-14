@@ -63,7 +63,7 @@ public class ImageAdapter extends PagerAdapter {
 
             @Override
             public void onSuccess() {
-
+                imageView.setBackgroundResource(R.drawable.transparent_image);
             }
 
             @Override
