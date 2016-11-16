@@ -65,7 +65,7 @@ public class App extends Application {
 
 	private void initBugly() {
 		Beta.autoInit = true;
-		Beta.autoCheckUpgrade = false;
+		Beta.autoCheckUpgrade = true;
 		Beta.storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 		Beta.upgradeListener = new UpgradeListener() {
 			@Override

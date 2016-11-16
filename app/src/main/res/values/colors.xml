@@ -60,5 +60,15 @@
     <color name="pager_ac_bg">#EE262626</color>
     <color name="black_per40">#99000000</color>
 
+    <color name="white_opa10">#1AFFFFFF</color>
+    <color name="white_opa20">#33FFFFFF</color>
+    <color name="white_opa50">#80FFFFFF</color>
+    <color name="white_opa80">#CCFFFFFF</color>
+    <color name="white_opa70">#B3FFFFFF</color>
+    <color name="white_opa90">#E6FFFFFF</color>
+    <color name="black_opa10">#1A000000</color>
+    <color name="black_opa20">#33000000</color>
+    <color name="black_opa80">#CC000000</color>
+    <color name="black_opa50">#80000000</color>
 
 </resources>

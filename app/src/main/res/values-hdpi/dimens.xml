@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    
+
     <dimen name="dimen_f36px">-24dp</dimen>
     <dimen name="dimen_f65px">-43dp</dimen>
     <dimen name="dimen_2px">1dp</dimen>
@@ -94,8 +94,6 @@
     <dimen name="dimen_609px">406dp</dimen>
 
 
-
-    
     <dimen name="fontsize_21px">14sp</dimen>
     <dimen name="fontsize_24px">16sp</dimen>
     <dimen name="fontsize_27px">18sp</dimen>
@@ -111,17 +109,19 @@
     <dimen name="fontsize_50px">33sp</dimen>
     <dimen name="fontsize_60px">40sp</dimen>
     <dimen name="fontsize_66px">42sp</dimen>
-    
-    
-     <dimen name="px1280">853.0px</dimen>
-     <dimen name="px300">200.0px</dimen>
-       <dimen name="px230">153.0px</dimen>
-          <dimen name="px31">20.0px</dimen>
-           <dimen name="px21">14.0px</dimen>
-            <dimen name="px170">113.0px</dimen>
-              <dimen name="px130">86.0px</dimen>
-               <dimen name="px40">26.0px</dimen>
-                <dimen name="px13">8.0px</dimen>
-                 <dimen name="px36">24.0px</dimen>
-    
+
+
+    <dimen name="px1280">853.0px</dimen>
+    <dimen name="px300">200.0px</dimen>
+    <dimen name="px230">153.0px</dimen>
+    <dimen name="px31">20.0px</dimen>
+    <dimen name="px21">14.0px</dimen>
+    <dimen name="px170">113.0px</dimen>
+    <dimen name="px130">86.0px</dimen>
+    <dimen name="px40">26.0px</dimen>
+    <dimen name="px13">8.0px</dimen>
+    <dimen name="px36">24.0px</dimen>
+
+    <dimen name="px20">20.0px</dimen>
+    <dimen name="px8">8.0px</dimen>
 </resources>

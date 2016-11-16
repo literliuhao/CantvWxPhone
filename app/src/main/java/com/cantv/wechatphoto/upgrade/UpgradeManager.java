@@ -5,14 +5,14 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.view.WindowManager;
 import android.widget.Button;
-import android.widget.Toast;
 
-import com.cantv.wechatphoto.R;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.download.DownloadListener;
 import com.tencent.bugly.beta.download.DownloadTask;
 
 import java.util.ArrayList;
+
+import com.cantv.wechatphoto.R;
 
 public class UpgradeManager {
 
@@ -47,24 +47,7 @@ public class UpgradeManager {
         mUpgradeInfoList.clear();
         mUpgradeInfoList.add(Beta.getUpgradeInfo().newFeature);
         mTargeVersion = Beta.getUpgradeInfo().versionName;
-        DownloadTask task = Beta.startDownload();
-        Beta.registerDownloadListener(new DownloadListener() {
-            @Override
-            public void onReceive(DownloadTask task) {
-                Toast.makeText(mContext, "没有更新", Toast.LENGTH_LONG).show();
-            }
-
-            @Override
-            public void onCompleted(DownloadTask task) {
-                Toast.makeText(mContext, "没有更新", Toast.LENGTH_LONG).show();
-                show();
-            }
-
-            @Override
-            public void onFailed(DownloadTask task, int code, String extMsg) {
-                Toast.makeText(mContext, "没有更新", Toast.LENGTH_LONG).show();
-            }
-        });
+        show();
     }
 
     public UpgradeManager(final Context context, String upgradeVersion, ArrayList<String> list, String path) {
@@ -82,10 +65,24 @@ public class UpgradeManager {
         customBuilder.setTitle("软件版本更新")
                 .setNewcode("新版本：" + mTargeVersion)
                 .setList(mUpgradeInfoList)
-                .setPositiveButton("升级", new DialogInterface.OnClickListener() {
+                .setPositiveButton("立即升级", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        DownloadTask task = Beta.startDownload();
+                        Beta.registerDownloadListener(new DownloadListener() {
+                            @Override
+                            public void onReceive(DownloadTask task) {
+                            }
+
+                            @Override
+                            public void onCompleted(DownloadTask task) {
+//                                ToastUtils.showMessage(mContext,"下载完成，请安装");
+                            }
+
+                            @Override
+                            public void onFailed(DownloadTask task, int code, String extMsg) {
+                            }
+                        });
                         dialog.dismiss();
-                        Beta.unregisterDownloadListener();
                     }
                 });
 
