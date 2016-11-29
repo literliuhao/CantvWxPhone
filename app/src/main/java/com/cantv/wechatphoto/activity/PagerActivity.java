@@ -21,6 +21,7 @@ import com.cantv.wechatphoto.entity.HelperBean;
 import com.cantv.wechatphoto.interfaces.IPositionListener;
 import com.cantv.wechatphoto.utils.ToastUtils;
 import com.cantv.wechatphoto.utils.greendao.PhotoBean;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,6 +105,19 @@ public class PagerActivity extends Activity implements IPositionListener {
             }
         };
         mBottomMask.postDelayed(mHideBottomMaskRunnable, 3500);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+        MobclickAgent.onEvent(App.getAppContext(),"Photo_Detail_Page");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

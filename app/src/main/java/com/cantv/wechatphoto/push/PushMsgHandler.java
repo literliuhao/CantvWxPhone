@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.cantv.wechatphoto.App;
 import com.cantv.wechatphoto.activity.GridViewActivity;
 import com.cantv.wechatphoto.activity.QRCodePushActivity;
 import com.cantv.wechatphoto.push.domain.IPushMessage;
@@ -22,6 +23,7 @@ import com.cantv.wechatphoto.utils.greendao.DaoOpenHelper;
 import com.cantv.wechatphoto.utils.greendao.PhotoBean;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -197,6 +199,7 @@ public class PushMsgHandler {
             String topActClassName = am.getRunningTasks(1).get(0).topActivity.getClassName();
             boolean topPageIsPhotoPage = topActClassName.equals(QRCodePushActivity.class.getName());
             if (queryExpiredUserCount == 0 && topPageIsPhotoPage) {
+                MobclickAgent.onEvent(App.getAppContext(),"First_Upload");
                 context.startActivity(intentPhoto);
             }
         }
