@@ -69,6 +69,7 @@ dependencies {
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.tencent.bugly:crashreport_upgrade:latest.release'
+    compile 'com.umeng.analytics:analytics:latest.integration'
 }
 
 def releaseDate() {

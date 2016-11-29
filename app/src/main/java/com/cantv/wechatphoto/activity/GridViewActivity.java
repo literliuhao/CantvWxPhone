@@ -25,6 +25,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
+import com.cantv.wechatphoto.App;
 import com.cantv.wechatphoto.GetDataUtils;
 import com.cantv.wechatphoto.R;
 import com.cantv.wechatphoto.adapter.GridAdapter;
@@ -48,6 +49,7 @@ import com.cantv.wechatphoto.utils.volley.VolleyRequest;
 import com.cantv.wechatphoto.view.PopView;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.umeng.analytics.MobclickAgent;
 
 import java.util.List;
 
@@ -149,6 +151,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                                 daoHelper.updatePhoto(photoBean);
                                 HelperBean.photoList.remove(currentPosition - 1);
                                 refrshNumber(currentPosition, HelperBean.photoList.size());
+                                MobclickAgent.onEvent(App.getAppContext(),"Delete_photo");
                                 gridAdapter.notifyDataSetChanged();
                             }
                             return true;
@@ -226,6 +229,13 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+        MobclickAgent.onEvent(App.getAppContext(),"Album_List_Page");
+    }
+
+    @Override
     protected void onStop() {
         super.onStop();
 
@@ -234,6 +244,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     @Override
     protected void onPause() {
         super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override
@@ -316,6 +327,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                 isLock = false;
 
             }
+            MobclickAgent.onEvent(App.getAppContext(),"Successful_Upload");
             HelperBean.photoList.addAll(1, photoList);
             totalNumber.setText("/" + HelperBean.photoList.size());
             gridAdapter.notifyDataSetChanged();

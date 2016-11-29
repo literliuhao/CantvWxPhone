@@ -166,6 +166,12 @@
             android:name="com.cantv.wechatphoto.activity.PagerActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
+        <meta-data
+            android:name="UMENG_APPKEY"
+            android:value="5821ad33f43e48713000291f" />
+        <meta-data
+            android:name="UMENG_CHANNEL"
+            android:value="wechatphoto" />
 
     </application>
 

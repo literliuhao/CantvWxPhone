@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
+import com.cantv.wechatphoto.App;
 import com.cantv.wechatphoto.GetDataUtils;
 import com.cantv.wechatphoto.R;
 import com.cantv.wechatphoto.interfaces.ICallBack;
@@ -28,6 +29,7 @@ import com.cantv.wechatphoto.utils.volley.VolleyRequest;
 import com.cantv.wechatphoto.view.ConfirmDialog;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.umeng.analytics.MobclickAgent;
 
 public class QRCodePushActivity extends Activity {
 
@@ -131,6 +133,20 @@ public class QRCodePushActivity extends Activity {
             mRegisterSucceedIntentFilter = new IntentFilter(ACTION_REGISTER_SUCCEED);
         }
         registerReceiver(mRegisterSucceedReceiver, mRegisterSucceedIntentFilter);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+        MobclickAgent.enableEncrypt(true);
+        MobclickAgent.onEvent(App.getAppContext(),"Tutorial_Page");
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override
