@@ -16,6 +16,7 @@ import com.tencent.bugly.BuglyStrategy;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.bugly.beta.UpgradeInfo;
 import com.tencent.bugly.beta.upgrade.UpgradeListener;
+import com.tencent.bugly.proguard.aa;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -68,6 +69,11 @@ public class App extends Application {
 		Beta.autoCheckUpgrade = true;
 		Beta.storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
 		Beta.upgradeListener = new UpgradeListener() {
+			@Override
+			public boolean onUpgrade(aa aa, int i, String s) {
+				return false;
+			}
+
 			@Override
 			public void onUpgrade(int ret, UpgradeInfo strategy, boolean isManual, boolean
 					isSilence) {

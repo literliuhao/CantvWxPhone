@@ -32,7 +32,7 @@ public class GetDataUtils {
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("mac", mac);
 		params.put("cid", clientId);
-		String url = "http://bms.can-tv.cn/api/UserCenter/Weixin/createPushQrcode";
+		String url = "http://bms.can.cibntv.net/api/UserCenter/Weixin/createPushQrcode";
 		Log.d(TAG, "requestWexinPushQRCode：" + url);
 		VolleyRequest.stringRequestByPost(url, tag, params, null, callback);
 	}
