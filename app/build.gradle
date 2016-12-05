@@ -40,7 +40,7 @@ android {
                 variant.outputs.each { output ->
                     def oldFile = output.outputFile
                     if (variant.buildType.name in ['release', 'update']) {
-                        def releaseApkName = "Market_${variant.flavorName}_V${variant.versionCode}_${getDateTime()}.apk";
+                        def releaseApkName = "WeChatPhoto_${variant.flavorName}_V${variant.versionCode}_${getDateTime()}.apk";
                         if (project.hasProperty("appReleaseDir")) {
                             File releasePath = new File(project.property("appReleaseDir"), getDate());
                             output.outputFile = new File(releasePath, releaseApkName);
