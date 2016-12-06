@@ -21,9 +21,7 @@ android {
     }
 
     buildTypes {
-        update {
-            initWith(release)
-        }
+
         release {
             // 开启混淆
             minifyEnabled false
@@ -33,7 +31,7 @@ android {
                     def newVersionCode = variant.versionCode + 1
                     variant.mergedFlavor.versionCode = newVersionCode
                     def versionCodeStr = formatVersionCodeString(newVersionCode)
-                    def newVersionName = variant.versionName.replaceAll('^\\d(\\.\\d)*', "${versionCodeStr}")
+                    def newVersionName = variant.versionName.replaceAll('\\d(\\.\\d)*$', "${versionCodeStr}")
                     variant.mergedFlavor.versionName = newVersionName
                 }
                 //修改生成的apk名字
@@ -50,6 +48,10 @@ android {
                     }
                 }
             }
+        }
+
+        update {
+            initWith(release)
         }
     }
     productFlavors {
