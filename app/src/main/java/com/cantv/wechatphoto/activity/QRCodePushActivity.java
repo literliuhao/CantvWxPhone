@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -18,9 +19,11 @@ import com.cantv.wechatphoto.R;
 import com.cantv.wechatphoto.interfaces.ICallBack;
 import com.cantv.wechatphoto.push.PushManager;
 import com.cantv.wechatphoto.push.PushManager.onClientIdUpdateListener;
+import com.cantv.wechatphoto.upgrade.MyUpgradeListener;
 import com.cantv.wechatphoto.utils.FakeX509TrustManager;
 import com.cantv.wechatphoto.utils.FileUtils;
 import com.cantv.wechatphoto.utils.NetWorkUtils;
+import com.cantv.wechatphoto.utils.ProcessUtils;
 import com.cantv.wechatphoto.utils.greendao.DaoOpenHelper;
 import com.cantv.wechatphoto.utils.imageloader.ImageInfo;
 import com.cantv.wechatphoto.utils.imageloader.ImageLoader;
@@ -29,11 +32,15 @@ import com.cantv.wechatphoto.utils.volley.VolleyRequest;
 import com.cantv.wechatphoto.view.ConfirmDialog;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.tencent.bugly.Bugly;
+import com.tencent.bugly.BuglyStrategy;
+import com.tencent.bugly.beta.Beta;
 import com.umeng.analytics.MobclickAgent;
 
 public class QRCodePushActivity extends Activity {
 
     private final String TAG = "QRCodePushActivity";
+    public static final String BUGLY_KEY = "b40705f2a9";
 
     private static final String ACTION_CLOSE_QRCODE_PAGE = "com.cantv.wechatphoto.ACTION_CLOSE_QRCODE_PAGE";
     private static final String ACTION_REGISTER_SUCCEED = "com.cantv.wechatphoto.action.REGISTER_SUCCESS";
@@ -54,6 +61,7 @@ public class QRCodePushActivity extends Activity {
         // 进行判断，选择打开界面
         DaoOpenHelper pushDaoOpenHelper = DaoOpenHelper.getInstance(getApplicationContext());
         long count = pushDaoOpenHelper.queryExpiredUserCount();
+        initBugly();
         if (count >= 1) {
             QRCodePushActivity.this.finish();
             Intent intent = new Intent(getApplicationContext(), GridViewActivity.class);
@@ -71,6 +79,18 @@ public class QRCodePushActivity extends Activity {
         if (!TextUtils.isEmpty(clientId)) {
             loadQRCode(clientId);
         }
+    }
+    private void initBugly() {
+        Beta.autoInit = true;
+        Beta.autoCheckUpgrade = true;
+        Beta.storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        Beta.upgradeListener = new MyUpgradeListener();
+        BuglyStrategy strategy = new BuglyStrategy();
+        strategy.setAppChannel("cantv");
+        String processName = ProcessUtils.getProcessName(android.os.Process.myPid());
+        String packageName = this.getPackageName();
+        strategy.setUploadProcess(processName == null || processName.equals(packageName));
+        Bugly.init(this, BUGLY_KEY, true, strategy);
     }
 
     @Override
