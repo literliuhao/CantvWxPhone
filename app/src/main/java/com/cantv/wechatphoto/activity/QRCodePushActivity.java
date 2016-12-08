@@ -14,6 +14,7 @@ import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
 import com.cantv.wechatphoto.App;
+import com.cantv.wechatphoto.BuildConfig;
 import com.cantv.wechatphoto.GetDataUtils;
 import com.cantv.wechatphoto.R;
 import com.cantv.wechatphoto.interfaces.ICallBack;
@@ -23,7 +24,6 @@ import com.cantv.wechatphoto.upgrade.MyUpgradeListener;
 import com.cantv.wechatphoto.utils.FakeX509TrustManager;
 import com.cantv.wechatphoto.utils.FileUtils;
 import com.cantv.wechatphoto.utils.NetWorkUtils;
-import com.cantv.wechatphoto.utils.ProcessUtils;
 import com.cantv.wechatphoto.utils.greendao.DaoOpenHelper;
 import com.cantv.wechatphoto.utils.imageloader.ImageInfo;
 import com.cantv.wechatphoto.utils.imageloader.ImageLoader;
@@ -87,10 +87,8 @@ public class QRCodePushActivity extends Activity {
         Beta.upgradeListener = new MyUpgradeListener();
         BuglyStrategy strategy = new BuglyStrategy();
         strategy.setAppChannel("cantv");
-        String processName = ProcessUtils.getProcessName(android.os.Process.myPid());
-        String packageName = this.getPackageName();
-        strategy.setUploadProcess(processName == null || processName.equals(packageName));
-        Bugly.init(this, BUGLY_KEY, true, strategy);
+        strategy.setUploadProcess(true);
+        Bugly.init(this, BUGLY_KEY, BuildConfig.DEBUG, strategy);
         Beta.checkUpgrade();
     }
 
