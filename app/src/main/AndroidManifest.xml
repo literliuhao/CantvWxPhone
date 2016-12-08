@@ -24,10 +24,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_LOGS" />
 
-    <!--必须配置-->
-    <activity
-        android:name="com.tencent.bugly.beta.ui.BetaActivity"
-        android:theme="@android:style/Theme.Translucent" />
+
 
     <!-- 个推SDK权限配置开始 -->
     <!-- 自定义权限 -->
@@ -49,7 +46,10 @@
         <meta-data
             android:name="com.cantv.wechatphoto.utils.imageloader.GlideManager"
             android:value="GlideModule" />
-
+        <!--必须配置-->
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:theme="@android:style/Theme.Translucent" />
         <!-- 微信投屏 -->
         <activity
             android:name="com.cantv.wechatphoto.activity.QRCodePushActivity"
