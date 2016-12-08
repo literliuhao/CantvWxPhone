@@ -82,7 +82,7 @@ public class QRCodePushActivity extends Activity {
     }
     private void initBugly() {
         Beta.autoInit = true;
-        Beta.autoCheckUpgrade = true;
+        Beta.autoCheckUpgrade = false;
         Beta.storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
         Beta.upgradeListener = new MyUpgradeListener();
         BuglyStrategy strategy = new BuglyStrategy();
@@ -91,6 +91,7 @@ public class QRCodePushActivity extends Activity {
         String packageName = this.getPackageName();
         strategy.setUploadProcess(processName == null || processName.equals(packageName));
         Bugly.init(this, BUGLY_KEY, true, strategy);
+        Beta.checkUpgrade();
     }
 
     @Override
