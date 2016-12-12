@@ -32,7 +32,7 @@ import java.util.List;
 /**
  * Created by liuhao on 2016/6/8.
  */
-public class PagerActivity extends Activity implements IPositionListener ,IPhotoListener {
+public class PagerActivity extends Activity implements IPositionListener, IPhotoListener {
     private ViewPager mViewPager;
     private TextView textCurrect;
     private TextView textTotal;
@@ -45,9 +45,10 @@ public class PagerActivity extends Activity implements IPositionListener ,IPhoto
     List<PhotoBean> mPhotoLists;
     private String mQrCodeUrl = "";
     private PushManager mPushManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Log.i("PagerActivity", "onCreate");
+        Log.d("PagerActivity", "onCreate");
         super.onCreate(savedInstanceState);
         getWindow().getDecorView().setBackgroundResource(android.R.color.black);
         setContentView(R.layout.pager_view);
@@ -56,18 +57,17 @@ public class PagerActivity extends Activity implements IPositionListener ,IPhoto
         mBottomMask = (RelativeLayout) findViewById(R.id.rl_bottom_mask);
         mPushManager = PushManager.getInstance(this);
         String clientId = mPushManager.getClientId();
-//        getWexinPushQRCode(clientId);
         Intent gridIntent = getIntent();
         final int mPosition = gridIntent.getIntExtra("position", 0);
         mPhotoLists = new ArrayList<>();
         //修改打开图片然后回到launcher内存被清理后回到微信相册，图片无法显示的bug
         dataModel = new PushDataModelImpl();
-        dataModel.getDBData(getApplicationContext(),PagerActivity.this);
+        dataModel.getDBData(getApplicationContext(), PagerActivity.this);
         imageAdapter.addListenerPosition(this);
         mViewPager = (ViewPager) findViewById(R.id.id_viewpager);
         mViewPager.setAdapter(imageAdapter);
         mViewPager.setCurrentItem(mPosition);
-        //		mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        //mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mBottomMask.postDelayed(new Runnable() {
             public void run() {
                 if (mPosition != 0) {
@@ -121,7 +121,7 @@ public class PagerActivity extends Activity implements IPositionListener ,IPhoto
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("PagerActivity", "onResume");
+        Log.d("PagerActivity", "onResume");
         MobclickAgent.onResume(this);
         MobclickAgent.onEvent(App.getAppContext(), "Photo_Detail_Page");
     }
@@ -129,7 +129,7 @@ public class PagerActivity extends Activity implements IPositionListener ,IPhoto
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i("PagerActivity", "onPause");
+        Log.d("PagerActivity", "onPause");
         MobclickAgent.onPause(this);
     }
 
@@ -144,7 +144,7 @@ public class PagerActivity extends Activity implements IPositionListener ,IPhoto
 
     @Override
     public void onTotalSize(int total) {
-        Log.i("PagerActivity", total + " ");
+        Log.d("PagerActivity", total + " ");
         this.totalCount = total;
         textTotal.setText("/" + totalCount);
     }
@@ -172,13 +172,13 @@ public class PagerActivity extends Activity implements IPositionListener ,IPhoto
     public void onSuccess(List<PhotoBean> photoList) {
         //添加PagerActivity第一个二维码item
         PhotoBean bean = new PhotoBean();
-        bean.setWxname("扫一扫：影片、照片投屏看");
-        mQrCodeUrl = PreferencesUtils.getString(getApplicationContext(),"MQRCODEURL");
+        bean.setWxname(getString(R.string.scan) + "：" + getString(R.string.watch_for_video_add_picture));
+        mQrCodeUrl = PreferencesUtils.getString(getApplicationContext(), "MQRCODEURL");
         bean.setPhotourl(mQrCodeUrl);
-        photoList.add(0,bean);
+        photoList.add(0, bean);
         mPhotoLists.addAll(photoList);
         imageAdapter = new ImageAdapter(this, mPhotoLists);
-        Log.i("PagerActivity", "mPhotoLists.size() " + mPhotoLists.size());
+        Log.d("PagerActivity", "mPhotoLists.size() " + mPhotoLists.size());
     }
 
     @Override

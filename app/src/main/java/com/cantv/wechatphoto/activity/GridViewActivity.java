@@ -173,7 +173,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                     if (lastView != null) {
                         mHandler.removeMessages(FOCUS_VIEW);
                         popView.setFocusView(view, lastView, 1.1f);
-                        Log.i(TAG, "onItemSelected FOCUS_VIEW");
+                        Log.d(TAG, "onItemSelected FOCUS_VIEW");
                     } else {
                         Message msg = mHandler.obtainMessage(FOCUS_VIEW);
                         msg.obj = view;
@@ -204,7 +204,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                     View newView = gridView.getChildAt(0);
                     newView.bringToFront();
                     popView.setFocusView(newView, 1.1f);
-                    Log.i(TAG, "onLayoutChange FOCUS_VIEW");
+                    Log.d(TAG, "onLayoutChange FOCUS_VIEW");
                 }
             }
         });
@@ -221,7 +221,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     @Override
     protected void onStart() {
         super.onStart();
-        Log.i("GridViewActivity","onStart");
+        Log.d("GridViewActivity","onStart");
         registerReceiver(dataReceiver, intentFilter);
         gridAdapter.notifyDataSetChanged();
     }
@@ -229,13 +229,13 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.i("GridViewActivity","onRestart");
+        Log.d("GridViewActivity","onRestart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.i("GridViewActivity","onResume");
+        Log.d("GridViewActivity","onResume");
         MobclickAgent.onResume(this);
         MobclickAgent.onEvent(App.getAppContext(),"Album_List_Page");
     }
@@ -243,21 +243,21 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     @Override
     protected void onStop() {
         super.onStop();
-        Log.i("GridViewActivity","onStop");
+        Log.d("GridViewActivity","onStop");
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.i("GridViewActivity","onPause");
+        Log.d("GridViewActivity","onPause");
         MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.i("GridViewActivity","onDestroy");
+        Log.d("GridViewActivity","onDestroy");
         GridViewActivity.this.unregisterReceiver(dataReceiver);
         HelperBean.photoList.clear();
         runOnUiThread(new Runnable() {
@@ -303,8 +303,8 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                     break;
                 case FOCUS_VIEW:
                     View view = (View) msg.obj;
-                    Log.i(TAG, "handleMessage FOCUS_VIEW");
-                    Log.i(TAG, view.getWidth() + " " + view.getMeasuredWidth());
+                    Log.d(TAG, "handleMessage FOCUS_VIEW");
+                    Log.d(TAG, view.getWidth() + " " + view.getMeasuredWidth());
 				    popView.setFocusView(view, 1.1f);
                     break;
             }
