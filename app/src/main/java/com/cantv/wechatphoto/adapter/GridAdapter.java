@@ -2,6 +2,7 @@ package com.cantv.wechatphoto.adapter;
 
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import com.cantv.wechatphoto.utils.imageloader.ImageInfo;
 import com.cantv.wechatphoto.utils.imageloader.ImageInfo.OnLoadFinishListener;
 import com.cantv.wechatphoto.utils.imageloader.ImageLoader;
 import com.cantv.wechatphoto.view.CircleImageView;
+import com.cantv.wechatphoto.view.GridViewTV;
 import com.cantv.wechatphoto.view.RoundCornerDrawable;
 import com.cantv.wechatphoto.view.RoundCornerImageView;
 
@@ -74,7 +76,12 @@ public class GridAdapter extends BaseAdapter {
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
+        // 解决getview多次调用问题，二维码占位图重叠bug
+        if (((GridViewTV) parent).isOnMeasure) {
+            return convertView;
+        }
         if (position == 0) {
+            Log.d("getView", "============" + position);
             holder.tipsTv.setVisibility(View.VISIBLE);
             holder.tipsTv.setText(getItem(position).getWxname());
             holder.imgHead.setVisibility(View.INVISIBLE);
@@ -89,6 +96,7 @@ public class GridAdapter extends BaseAdapter {
             holder.image.setScaleType(ImageView.ScaleType.FIT_XY);
             holder.bgIv.setBackground(new RoundCornerDrawable(BitmapFactory.decodeResource(parent.getResources(), R.drawable.bg_share_phone_item)));
         } else {
+            Log.d("getView", "============" + position);
             holder.tipsTv.setVisibility(View.INVISIBLE);
             holder.bgIv.setBackground(null);
             holder.txtName.setText(getItem(position).getWxname());
@@ -117,15 +125,15 @@ public class GridAdapter extends BaseAdapter {
                 .placeHolder(0).rotation(photoLists.get(position).getDirection()).isScale(true)
                 .errorHolder(0).loadListener(new OnLoadFinishListener() {
 
-            @Override
-            public void onSuccess() {
-            }
+                    @Override
+                    public void onSuccess() {
+                    }
 
-            @Override
-            public void onFail() {
-                holder.image.setBackgroundResource(R.drawable.bg_photo_list_item_loading_err);
-            }
-        }).imgView(holder.image).build();
+                    @Override
+                    public void onFail() {
+                        holder.image.setBackgroundResource(R.drawable.bg_photo_list_item_loading_err);
+                    }
+                }).imgView(holder.image).build();
         ImageLoader.getInstance().loadImage(mContext, img);
         return convertView;
     }

@@ -39,6 +39,7 @@ import com.cantv.wechatphoto.push.PushManager.onClientIdUpdateListener;
 import com.cantv.wechatphoto.receiver.DataReceiver;
 import com.cantv.wechatphoto.utils.FakeX509TrustManager;
 import com.cantv.wechatphoto.utils.NetWorkUtils;
+import com.cantv.wechatphoto.utils.PreferencesUtils;
 import com.cantv.wechatphoto.utils.ToastUtils;
 import com.cantv.wechatphoto.utils.greendao.DaoOpenHelper;
 import com.cantv.wechatphoto.utils.greendao.PhotoBean;
@@ -87,6 +88,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("GridViewActivity","onCreate");
         super.onCreate(savedInstanceState);
         getWindow().getDecorView().setBackgroundResource(R.drawable.bg_share_phone_page);
         setContentView(R.layout.grid_view);
@@ -219,6 +221,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     @Override
     protected void onStart() {
         super.onStart();
+        Log.i("GridViewActivity","onStart");
         registerReceiver(dataReceiver, intentFilter);
         gridAdapter.notifyDataSetChanged();
     }
@@ -226,11 +229,13 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     @Override
     protected void onRestart() {
         super.onRestart();
+        Log.i("GridViewActivity","onRestart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.i("GridViewActivity","onResume");
         MobclickAgent.onResume(this);
         MobclickAgent.onEvent(App.getAppContext(),"Album_List_Page");
     }
@@ -238,18 +243,21 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     @Override
     protected void onStop() {
         super.onStop();
+        Log.i("GridViewActivity","onStop");
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.i("GridViewActivity","onPause");
         MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.i("GridViewActivity","onDestroy");
         GridViewActivity.this.unregisterReceiver(dataReceiver);
         HelperBean.photoList.clear();
         runOnUiThread(new Runnable() {
@@ -369,6 +377,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                         JsonObject dataJs = respJs.get("data").getAsJsonObject();
                         qrTicket = dataJs.get("qrTicket").getAsString();
                         mQrCodeUrl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + qrTicket;
+                        PreferencesUtils.putString(getApplicationContext(),"MQRCODEURL",mQrCodeUrl);
                         if (HelperBean.photoList != null && HelperBean.photoList.size() > 0) {
                             HelperBean.photoList.get(0).setPhotourl(mQrCodeUrl);
                         }
