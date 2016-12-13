@@ -123,20 +123,6 @@ public class GridAdapter extends BaseAdapter {
         }
 
         //解决加载图片时占位图和加载失败的图片重合的问题
-        if (position == 0) {
-            ImageInfo img = new ImageInfo.Builder().url(getItem(position).getPhotourl())
-                    .placeHolder(0).errorHolder(R.drawable.bg_photo_list_item_loading_err).rotation(photoLists.get(position).getDirection()).isScale(true)
-                    .loadListener(new OnLoadFinishListener() {
-                        @Override
-                        public void onSuccess() {
-                        }
-
-                        @Override
-                        public void onFail() {
-                        }
-                    }).imgView(holder.image).build();
-            ImageLoader.getInstance().loadImage(mContext, img);
-        } else {
             ImageInfo img = new ImageInfo.Builder().url(getItem(position).getPhotourl())
                     .placeHolder(0).rotation(photoLists.get(position).getDirection()).isScale(true)
                     .errorHolder(0).loadListener(new OnLoadFinishListener() {
@@ -150,7 +136,6 @@ public class GridAdapter extends BaseAdapter {
                         }
                     }).imgView(holder.image).build();
             ImageLoader.getInstance().loadImage(mContext, img);
-        }
         return convertView;
     }
 
