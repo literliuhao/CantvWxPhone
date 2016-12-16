@@ -17,8 +17,8 @@ android {
         applicationId "com.cantv.wechatphoto"
         minSdkVersion 19
         targetSdkVersion 21
-        versionCode 125
-        versionName "WeChatPhoto-20161208-v1.2.5"
+        versionCode 126
+        versionName "WeChatPhoto-20161216-v1.2.6"
     }
 
     buildTypes {
