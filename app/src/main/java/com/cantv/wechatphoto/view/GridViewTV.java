@@ -8,6 +8,9 @@ import android.widget.GridView;
 
 public class GridViewTV extends GridView {
 
+	//是否在测量
+	public boolean isOnMeasure = false;
+
 	public GridViewTV(Context context) {
 		super(context);
 		init(context, null);
@@ -42,6 +45,20 @@ public class GridViewTV extends GridView {
 	@Override
 	protected int getChildDrawingOrder(int childCount, int i) {
 		return mWidgetTvViewBring.getChildDrawingOrder(childCount, i);
+	}
+
+	@Override
+	protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+		isOnMeasure = true;
+		int expandSpec = MeasureSpec.makeMeasureSpec(Integer.MAX_VALUE >> 2,MeasureSpec.AT_MOST);
+		super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+	}
+
+	@Override
+	protected void onLayout(boolean changed, int l, int t, int r, int b) {
+		isOnMeasure = false;
+		super.onLayout(changed, l, t, r, b);
 	}
 
 }

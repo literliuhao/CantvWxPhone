@@ -17,8 +17,11 @@ import android.widget.Toast;
 import com.cantv.wechatphoto.App;
 import com.cantv.wechatphoto.R;
 import com.cantv.wechatphoto.adapter.ImageAdapter;
-import com.cantv.wechatphoto.entity.HelperBean;
+import com.cantv.wechatphoto.interfaces.IPhotoListener;
 import com.cantv.wechatphoto.interfaces.IPositionListener;
+import com.cantv.wechatphoto.model.PushDataModelImpl;
+import com.cantv.wechatphoto.push.PushManager;
+import com.cantv.wechatphoto.utils.PreferencesUtils;
 import com.cantv.wechatphoto.utils.ToastUtils;
 import com.cantv.wechatphoto.utils.greendao.PhotoBean;
 import com.umeng.analytics.MobclickAgent;
@@ -29,7 +32,7 @@ import java.util.List;
 /**
  * Created by liuhao on 2016/6/8.
  */
-public class PagerActivity extends Activity implements IPositionListener {
+public class PagerActivity extends Activity implements IPositionListener, IPhotoListener {
     private ViewPager mViewPager;
     private TextView textCurrect;
     private TextView textTotal;
@@ -38,25 +41,33 @@ public class PagerActivity extends Activity implements IPositionListener {
     private int mPosition;
     private ImageAdapter imageAdapter;
     private Runnable mHideBottomMaskRunnable;
+    private PushDataModelImpl dataModel;
+    List<PhotoBean> mPhotoLists;
+    private String mQrCodeUrl = "";
+    private PushManager mPushManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.d("PagerActivity", "onCreate");
         super.onCreate(savedInstanceState);
         getWindow().getDecorView().setBackgroundResource(android.R.color.black);
         setContentView(R.layout.pager_view);
         textCurrect = (TextView) findViewById(R.id.txt_pager_currectNumber);
         textTotal = (TextView) findViewById(R.id.txt_pager_totalnumber);
         mBottomMask = (RelativeLayout) findViewById(R.id.rl_bottom_mask);
+        mPushManager = PushManager.getInstance(this);
+        String clientId = mPushManager.getClientId();
         Intent gridIntent = getIntent();
         final int mPosition = gridIntent.getIntExtra("position", 0);
-        List<PhotoBean> mPhotoLists = new ArrayList<>();
-        mPhotoLists.addAll(HelperBean.photoList);
-        imageAdapter = new ImageAdapter(this, mPhotoLists);
+        mPhotoLists = new ArrayList<>();
+        //修改打开图片然后回到launcher内存被清理后回到微信相册，图片无法显示的bug
+        dataModel = new PushDataModelImpl();
+        dataModel.getDBData(getApplicationContext(), PagerActivity.this);
         imageAdapter.addListenerPosition(this);
         mViewPager = (ViewPager) findViewById(R.id.id_viewpager);
         mViewPager.setAdapter(imageAdapter);
         mViewPager.setCurrentItem(mPosition);
-//		mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
+        //mViewPager.setPageTransformer(true, new ZoomOutPageTransformer());
         mBottomMask.postDelayed(new Runnable() {
             public void run() {
                 if (mPosition != 0) {
@@ -110,13 +121,15 @@ public class PagerActivity extends Activity implements IPositionListener {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("PagerActivity", "onResume");
         MobclickAgent.onResume(this);
-        MobclickAgent.onEvent(App.getAppContext(),"Photo_Detail_Page");
+        MobclickAgent.onEvent(App.getAppContext(), "Photo_Detail_Page");
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d("PagerActivity", "onPause");
         MobclickAgent.onPause(this);
     }
 
@@ -131,7 +144,7 @@ public class PagerActivity extends Activity implements IPositionListener {
 
     @Override
     public void onTotalSize(int total) {
-        Log.i("PagerActivity", total + " ");
+        Log.d("PagerActivity", total + " ");
         this.totalCount = total;
         textTotal.setText("/" + totalCount);
     }
@@ -154,4 +167,23 @@ public class PagerActivity extends Activity implements IPositionListener {
         }
         return super.onKeyDown(keyCode, event);
     }
+
+    @Override
+    public void onSuccess(List<PhotoBean> photoList) {
+        //添加PagerActivity第一个二维码item
+        PhotoBean bean = new PhotoBean();
+        bean.setWxname(getString(R.string.scan) + "：" + getString(R.string.watch_for_video_add_picture));
+        mQrCodeUrl = PreferencesUtils.getString(getApplicationContext(), "MQRCODEURL");
+        bean.setPhotourl(mQrCodeUrl);
+        photoList.add(0, bean);
+        mPhotoLists.addAll(photoList);
+        imageAdapter = new ImageAdapter(this, mPhotoLists);
+        Log.d("PagerActivity", "mPhotoLists.size() " + mPhotoLists.size());
+    }
+
+    @Override
+    public void onError() {
+
+    }
+
 }

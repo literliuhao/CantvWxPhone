@@ -39,6 +39,7 @@ import com.cantv.wechatphoto.push.PushManager.onClientIdUpdateListener;
 import com.cantv.wechatphoto.receiver.DataReceiver;
 import com.cantv.wechatphoto.utils.FakeX509TrustManager;
 import com.cantv.wechatphoto.utils.NetWorkUtils;
+import com.cantv.wechatphoto.utils.PreferencesUtils;
 import com.cantv.wechatphoto.utils.ToastUtils;
 import com.cantv.wechatphoto.utils.greendao.DaoOpenHelper;
 import com.cantv.wechatphoto.utils.greendao.PhotoBean;
@@ -79,6 +80,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     private String mQrCodeUrl = "";
     private String qrTicket = "";
     private Rect mRect;
+    private Boolean isFocusDelay = false;
 
     /*
      * (non-Javadoc)
@@ -87,6 +89,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
      */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i("GridViewActivity", "onCreate");
         super.onCreate(savedInstanceState);
         getWindow().getDecorView().setBackgroundResource(R.drawable.bg_share_phone_page);
         setContentView(R.layout.grid_view);
@@ -130,9 +133,11 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
         gridView.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
+                Log.d("GridViewActivity", "点击在屏幕上的位置" + v.getVerticalScrollbarPosition());
                 if (event.getAction() == KeyEvent.ACTION_DOWN) {
                     if (keyCode == 8 || keyCode == KeyEvent.KEYCODE_MENU) {
                         showDelete();
+
                     } else if (KeyEvent.KEYCODE_BACK == keyCode) {
                         if (isLock) {
                             showDelete();
@@ -144,6 +149,11 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                         if (isLock) {
                             if (KeyEvent.KEYCODE_ENTER == keyCode || KeyEvent.KEYCODE_DPAD_CENTER == keyCode) { // 遥控器OK
                                 isLock = false;
+                                //解决删除后gridview滚动后焦点错位的问题
+                                int i = HelperBean.photoList.size();
+                                if (i % 3 == 1 && currentPosition > i - 5 && currentPosition < i - 1 && currentPosition % 3 != 0) {
+                                    isFocusDelay = true;
+                                }
                                 layoutDelete.setVisibility(View.GONE);
                                 PhotoBean photoBean = HelperBean.photoList.get(currentPosition - 1);
                                 DaoOpenHelper daoHelper = DaoOpenHelper.getInstance(getApplicationContext());
@@ -151,7 +161,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                                 daoHelper.updatePhoto(photoBean);
                                 HelperBean.photoList.remove(currentPosition - 1);
                                 refrshNumber(currentPosition, HelperBean.photoList.size());
-                                MobclickAgent.onEvent(App.getAppContext(),"Delete_photo");
+                                MobclickAgent.onEvent(App.getAppContext(), "Delete_photo");
                                 gridAdapter.notifyDataSetChanged();
                             }
                             return true;
@@ -171,7 +181,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                     if (lastView != null) {
                         mHandler.removeMessages(FOCUS_VIEW);
                         popView.setFocusView(view, lastView, 1.1f);
-                        Log.i(TAG, "onItemSelected FOCUS_VIEW");
+                        Log.d(TAG, "onItemSelected FOCUS_VIEW");
                     } else {
                         Message msg = mHandler.obtainMessage(FOCUS_VIEW);
                         msg.obj = view;
@@ -202,12 +212,17 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                     View newView = gridView.getChildAt(0);
                     newView.bringToFront();
                     popView.setFocusView(newView, 1.1f);
-                    Log.i(TAG, "onLayoutChange FOCUS_VIEW");
+                    Log.d(TAG, "onLayoutChange FOCUS_VIEW");
+                } else if (isFocusDelay) {
+                    Message msg = mHandler.obtainMessage(FOCUS_VIEW);
+                    msg.obj = gridView.getSelectedView();
+                    mHandler.sendMessageDelayed(msg, 20);
+                    Log.d(TAG, "onLayoutChange FOCUS_VIEW  layoutScorll set Focus");
                 }
             }
         });
         /*
-		 * 将数据源中的第一个位置占位，等待二维码数据
+         * 将数据源中的第一个位置占位，等待二维码数据
 		 */
         PhotoBean bean = new PhotoBean();
         bean.setWxname("扫一扫：影片、照片投屏看");
@@ -219,6 +234,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     @Override
     protected void onStart() {
         super.onStart();
+        Log.d("GridViewActivity", "onStart");
         registerReceiver(dataReceiver, intentFilter);
         gridAdapter.notifyDataSetChanged();
     }
@@ -226,30 +242,35 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     @Override
     protected void onRestart() {
         super.onRestart();
+        Log.d("GridViewActivity", "onRestart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("GridViewActivity", "onResume");
         MobclickAgent.onResume(this);
-        MobclickAgent.onEvent(App.getAppContext(),"Album_List_Page");
+        MobclickAgent.onEvent(App.getAppContext(), "Album_List_Page");
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        Log.d("GridViewActivity", "onStop");
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d("GridViewActivity", "onPause");
         MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        Log.d("GridViewActivity", "onDestroy");
         GridViewActivity.this.unregisterReceiver(dataReceiver);
         HelperBean.photoList.clear();
         runOnUiThread(new Runnable() {
@@ -295,9 +316,9 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                     break;
                 case FOCUS_VIEW:
                     View view = (View) msg.obj;
-                    Log.i(TAG, "handleMessage FOCUS_VIEW");
-                    Log.i(TAG, view.getWidth() + " " + view.getMeasuredWidth());
-				    popView.setFocusView(view, 1.1f);
+                    Log.d(TAG, "handleMessage FOCUS_VIEW");
+                    Log.d(TAG, view.getWidth() + " " + view.getMeasuredWidth());
+                    popView.setFocusView(view, 1.1f);
                     break;
             }
         }
@@ -327,7 +348,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                 isLock = false;
 
             }
-            MobclickAgent.onEvent(App.getAppContext(),"Successful_Upload");
+            MobclickAgent.onEvent(App.getAppContext(), "Successful_Upload");
             HelperBean.photoList.addAll(1, photoList);
             totalNumber.setText("/" + HelperBean.photoList.size());
             gridAdapter.notifyDataSetChanged();
@@ -369,6 +390,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                         JsonObject dataJs = respJs.get("data").getAsJsonObject();
                         qrTicket = dataJs.get("qrTicket").getAsString();
                         mQrCodeUrl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + qrTicket;
+                        PreferencesUtils.putString(getApplicationContext(), "MQRCODEURL", mQrCodeUrl);
                         if (HelperBean.photoList != null && HelperBean.photoList.size() > 0) {
                             HelperBean.photoList.get(0).setPhotourl(mQrCodeUrl);
                         }
