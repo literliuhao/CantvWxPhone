@@ -1,11 +1,5 @@
 package com.cantv.wechatphoto.utils.volley;
 
-import java.util.Map;
-
-import okhttp3.OkHttpClient;
-
-import org.json.JSONObject;
-
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
@@ -20,7 +14,13 @@ import com.android.volley.toolbox.ImageRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.cantv.wechatphoto.App;
+import com.cantv.wechatphoto.SampleApplicationLike;
+
+import org.json.JSONObject;
+
+import java.util.Map;
+
+import okhttp3.OkHttpClient;
 
 public class VolleyManager {
 
@@ -28,7 +28,7 @@ public class VolleyManager {
 	private ImageLoader mImageLoader;
 
 	private static class VolleyManagerHolder {
-		private static final VolleyManager INSTANCE = new VolleyManager(App.getAppContext());
+		private static final VolleyManager INSTANCE = new VolleyManager(SampleApplicationLike.getAppContext());
 	}
 
 	/**

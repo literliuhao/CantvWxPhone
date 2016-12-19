@@ -46,10 +46,7 @@
         <meta-data
             android:name="com.cantv.wechatphoto.utils.imageloader.GlideManager"
             android:value="GlideModule" />
-        <!--必须配置-->
-        <activity
-            android:name="com.tencent.bugly.beta.ui.BetaActivity"
-            android:theme="@android:style/Theme.Translucent" />
+
         <!-- 微信投屏 -->
         <activity
             android:name="com.cantv.wechatphoto.activity.QRCodePushActivity"
@@ -170,6 +167,26 @@
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="wechatphoto" />
+
+        <!-- Bugly升级SDK配置开始
+          注：如果只是使用我们提供的热更新能力，下面的配置可以选择不配置-->
+        <!--必须配置-->
+        <activity
+            android:name="com.tencent.bugly.beta.ui.BetaActivity"
+            android:theme="@android:style/Theme.Translucent" />
+
+        <!--API 24以上配置-->
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.tencent.bugly.hotfix.fileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
+        <!-- Bugly升级SDK配置结束-->
 
     </application>
 

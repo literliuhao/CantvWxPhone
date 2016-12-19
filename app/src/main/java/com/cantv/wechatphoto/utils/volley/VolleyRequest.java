@@ -1,12 +1,5 @@
 package com.cantv.wechatphoto.utils.volley;
 
-import java.io.BufferedReader;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.Map;
-import java.util.zip.GZIPInputStream;
-
 import android.net.Uri;
 
 import com.android.volley.AuthFailureError;
@@ -19,7 +12,14 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.cantv.wechatphoto.App;
+import com.cantv.wechatphoto.SampleApplicationLike;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.Map;
+import java.util.zip.GZIPInputStream;
 
 public class VolleyRequest {
 
@@ -28,7 +28,7 @@ public class VolleyRequest {
 	private final static float BACKOFF_MULT = DefaultRetryPolicy.DEFAULT_BACKOFF_MULT;
 
 	public static void stopRequest(String tag){
-		App.getVolleyRequestQueues().cancelAll(tag);
+		SampleApplicationLike.getVolleyRequestQueues().cancelAll(tag);
 	}
 	
 	public static void stringRequestByGet(String url, String tag, VolleyCallback<String> callback) {
@@ -36,12 +36,12 @@ public class VolleyRequest {
 				callback.onErrorLister());
 		mStringRequest.setTag(tag);
 		mStringRequest.setRetryPolicy(new DefaultRetryPolicy(TIMEOUT_MS, MAX_RETRIES, BACKOFF_MULT));
-		App.getVolleyRequestQueues().add(mStringRequest);
+		SampleApplicationLike.getVolleyRequestQueues().add(mStringRequest);
 	}
 
 	public static void stringRequestByPost(String url, String tag, final Map<String, String> params,
 			final Map<String, String> header, VolleyCallback<String> callback) {
-		App.getVolleyRequestQueues().cancelAll(tag);
+		SampleApplicationLike.getVolleyRequestQueues().cancelAll(tag);
 		StringRequest mStringRequest = new StringRequest(Request.Method.POST, url, callback.onResponseListener(),
 				callback.onErrorLister()) {
 			
@@ -65,16 +65,16 @@ public class VolleyRequest {
 		};
 		mStringRequest.setTag(tag);
 		mStringRequest.setRetryPolicy(new DefaultRetryPolicy(TIMEOUT_MS, MAX_RETRIES, BACKOFF_MULT));
-		App.getVolleyRequestQueues().add(mStringRequest);
+		SampleApplicationLike.getVolleyRequestQueues().add(mStringRequest);
 	}
 
 	public static void jsonRequestByGet(String url, String tag, VolleyCallback callback) {
-		App.getVolleyRequestQueues().cancelAll(tag);
+		SampleApplicationLike.getVolleyRequestQueues().cancelAll(tag);
 		JsonObjectRequest mJsonRequest = new JsonObjectRequest(Request.Method.GET, url, null,
 				callback.onResponseListener(), callback.onErrorLister());
 		mJsonRequest.setTag(tag);
 		mJsonRequest.setRetryPolicy(new DefaultRetryPolicy(TIMEOUT_MS, MAX_RETRIES, BACKOFF_MULT));
-		App.getVolleyRequestQueues().add(mJsonRequest);
+		SampleApplicationLike.getVolleyRequestQueues().add(mJsonRequest);
 	}
 
 //	public static void jsonRequestByGet(String url, String tag, VolleyCallback callback,

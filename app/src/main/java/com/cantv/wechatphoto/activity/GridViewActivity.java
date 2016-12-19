@@ -25,9 +25,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.android.volley.VolleyError;
-import com.cantv.wechatphoto.App;
 import com.cantv.wechatphoto.GetDataUtils;
 import com.cantv.wechatphoto.R;
+import com.cantv.wechatphoto.SampleApplicationLike;
 import com.cantv.wechatphoto.adapter.GridAdapter;
 import com.cantv.wechatphoto.bridge.EffectNoDrawBridge;
 import com.cantv.wechatphoto.entity.HelperBean;
@@ -111,6 +111,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                 getWexinPushQRCode(clientId);
             }
         });
+
         textEmpty = (TextView) findViewById(R.id.txt_empty);
         currectNumber = (TextView) findViewById(R.id.txt_number);
         totalNumber = (TextView) findViewById(R.id.txt_totalnumber);
@@ -161,7 +162,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                                 daoHelper.updatePhoto(photoBean);
                                 HelperBean.photoList.remove(currentPosition - 1);
                                 refrshNumber(currentPosition, HelperBean.photoList.size());
-                                MobclickAgent.onEvent(App.getAppContext(), "Delete_photo");
+                                MobclickAgent.onEvent(SampleApplicationLike.getAppContext(), "Delete_photo");
                                 gridAdapter.notifyDataSetChanged();
                             }
                             return true;
@@ -250,7 +251,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
         super.onResume();
         Log.d("GridViewActivity", "onResume");
         MobclickAgent.onResume(this);
-        MobclickAgent.onEvent(App.getAppContext(), "Album_List_Page");
+        MobclickAgent.onEvent(SampleApplicationLike.getAppContext(), "Album_List_Page");
     }
 
     @Override
@@ -348,7 +349,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                 isLock = false;
 
             }
-            MobclickAgent.onEvent(App.getAppContext(), "Successful_Upload");
+            MobclickAgent.onEvent(SampleApplicationLike.getAppContext(), "Successful_Upload");
             HelperBean.photoList.addAll(1, photoList);
             totalNumber.setText("/" + HelperBean.photoList.size());
             gridAdapter.notifyDataSetChanged();

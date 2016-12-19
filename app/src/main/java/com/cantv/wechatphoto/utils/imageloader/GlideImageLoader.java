@@ -9,7 +9,7 @@ import com.bumptech.glide.load.resource.bitmap.CenterCrop;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
-import com.cantv.wechatphoto.App;
+import com.cantv.wechatphoto.SampleApplicationLike;
 
 import java.io.File;
 import java.math.BigDecimal;
@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 public class GlideImageLoader implements BaseImageLoader {
 
     // App.getContext().getCacheDir() + "/image_cache"
-    private final String ImageExternalCatchDir = App.getAppContext().getExternalCacheDir() + "/image_cache";
+    private final String ImageExternalCatchDir = SampleApplicationLike.getAppContext().getExternalCacheDir() + "/image_cache";
 
     public GlideImageLoader() {
         // initGlide();
@@ -179,11 +179,11 @@ public class GlideImageLoader implements BaseImageLoader {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        Glide.get(App.getAppContext()).clearDiskCache();
+                        Glide.get(SampleApplicationLike.getAppContext()).clearDiskCache();
                     }
                 }).start();
             } else {
-                Glide.get(App.getAppContext()).clearDiskCache();
+                Glide.get(SampleApplicationLike.getAppContext()).clearDiskCache();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -196,7 +196,7 @@ public class GlideImageLoader implements BaseImageLoader {
     public void clearImageMemoryCache() {
         try {
             if (Looper.myLooper() == Looper.getMainLooper()) { // 只能在主线程执行
-                Glide.get(App.getAppContext()).clearMemory();
+                Glide.get(SampleApplicationLike.getAppContext()).clearMemory();
             }
         } catch (Exception e) {
             e.printStackTrace();

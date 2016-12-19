@@ -13,10 +13,10 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
-import com.cantv.wechatphoto.App;
 import com.cantv.wechatphoto.BuildConfig;
 import com.cantv.wechatphoto.GetDataUtils;
 import com.cantv.wechatphoto.R;
+import com.cantv.wechatphoto.SampleApplicationLike;
 import com.cantv.wechatphoto.interfaces.ICallBack;
 import com.cantv.wechatphoto.push.PushManager;
 import com.cantv.wechatphoto.push.PushManager.onClientIdUpdateListener;
@@ -159,7 +159,7 @@ public class QRCodePushActivity extends Activity {
         super.onResume();
         MobclickAgent.onResume(this);
         MobclickAgent.enableEncrypt(true);
-        MobclickAgent.onEvent(App.getAppContext(),"Tutorial_Page");
+        MobclickAgent.onEvent(SampleApplicationLike.getAppContext(),"Tutorial_Page");
     }
 
     @Override
