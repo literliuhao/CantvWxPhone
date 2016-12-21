@@ -54,7 +54,7 @@ public class ImageAdapter extends PagerAdapter {
             imageView.setBean(photoLists.get(position));
             view = imageView;
         }
-
+        imageView.setFocusable(false);
         ViewPager.LayoutParams vl = new ViewPager.LayoutParams();
         vl.width = ViewPager.LayoutParams.MATCH_PARENT;
         vl.height = ViewPager.LayoutParams.MATCH_PARENT;
@@ -63,6 +63,7 @@ public class ImageAdapter extends PagerAdapter {
 
             @Override
             public void onSuccess() {
+                imageView.setFocusable(true);
                 imageView.setBackgroundResource(R.drawable.transparent_image);
             }
 
