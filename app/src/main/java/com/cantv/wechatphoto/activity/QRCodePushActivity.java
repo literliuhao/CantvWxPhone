@@ -6,21 +6,18 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
-import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
-import com.cantv.wechatphoto.BuildConfig;
 import com.cantv.wechatphoto.GetDataUtils;
 import com.cantv.wechatphoto.R;
 import com.cantv.wechatphoto.SampleApplicationLike;
 import com.cantv.wechatphoto.interfaces.ICallBack;
 import com.cantv.wechatphoto.push.PushManager;
 import com.cantv.wechatphoto.push.PushManager.onClientIdUpdateListener;
-import com.cantv.wechatphoto.upgrade.MyUpgradeListener;
 import com.cantv.wechatphoto.utils.FakeX509TrustManager;
 import com.cantv.wechatphoto.utils.FileUtils;
 import com.cantv.wechatphoto.utils.NetWorkUtils;
@@ -32,9 +29,6 @@ import com.cantv.wechatphoto.utils.volley.VolleyRequest;
 import com.cantv.wechatphoto.view.ConfirmDialog;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.tencent.bugly.Bugly;
-import com.tencent.bugly.BuglyStrategy;
-import com.tencent.bugly.beta.Beta;
 import com.umeng.analytics.MobclickAgent;
 
 public class QRCodePushActivity extends Activity {
@@ -61,7 +55,7 @@ public class QRCodePushActivity extends Activity {
         // 进行判断，选择打开界面
         DaoOpenHelper pushDaoOpenHelper = DaoOpenHelper.getInstance(getApplicationContext());
         long count = pushDaoOpenHelper.queryExpiredUserCount();
-        initBugly();
+
         if (count >= 1) {
             QRCodePushActivity.this.finish();
             Intent intent = new Intent(getApplicationContext(), GridViewActivity.class);
@@ -80,17 +74,7 @@ public class QRCodePushActivity extends Activity {
             loadQRCode(clientId);
         }
     }
-    private void initBugly() {
-        Beta.autoInit = true;
-        Beta.autoCheckUpgrade = false;
-        Beta.storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-        Beta.upgradeListener = new MyUpgradeListener();
-        BuglyStrategy strategy = new BuglyStrategy();
-        strategy.setAppChannel("cantv");
-        strategy.setUploadProcess(true);
-        Bugly.init(this, BUGLY_KEY, BuildConfig.DEBUG, strategy);
-        Beta.checkUpgrade();
-    }
+
 
     @Override
     protected void onStart() {

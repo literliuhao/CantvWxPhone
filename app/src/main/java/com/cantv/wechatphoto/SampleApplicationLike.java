@@ -7,16 +7,20 @@ import android.content.Intent;
 import android.content.res.AssetManager;
 import android.content.res.Resources;
 import android.os.Build;
+import android.os.Environment;
 import android.support.multidex.MultiDex;
 import android.text.TextUtils;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
-import com.cantv.wechatphoto.activity.QRCodePushActivity;
 import com.cantv.wechatphoto.push.PushManager;
+import com.cantv.wechatphoto.upgrade.MyUpgradeListener;
 import com.tencent.bugly.Bugly;
+import com.tencent.bugly.BuglyStrategy;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
+
+import static com.cantv.wechatphoto.activity.QRCodePushActivity.BUGLY_KEY;
 
 /**
  * 自定义ApplicationLike类.
@@ -60,16 +64,26 @@ public class SampleApplicationLike extends DefaultApplicationLike {
         super.onCreate();
         mContext = getApplication();
         // TODO: 这里进行Bugly初始化
-        // 设置开发设备
-        Bugly.setIsDevelopmentDevice(getApplication(), true);
-        // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
-        Bugly.init(getApplication(), QRCodePushActivity.BUGLY_KEY, true);
+        initBugly();
 
 
         // 初始化个推服务
         PushManager.getInstance(mContext).init();
     }
-
+    private void initBugly() {
+        Beta.autoInit = true;
+        Beta.autoCheckUpgrade = false;
+        Beta.storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        Beta.upgradeListener = new MyUpgradeListener();
+        BuglyStrategy strategy = new BuglyStrategy();
+        strategy.setAppChannel("cantv");
+        strategy.setUploadProcess(true);
+        //设置开发设备
+        Bugly.setIsDevelopmentDevice(getApplication(), true);
+        // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
+        Bugly.init(mContext, BUGLY_KEY, BuildConfig.DEBUG, strategy);
+        Beta.checkUpgrade(false,true);
+    }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
