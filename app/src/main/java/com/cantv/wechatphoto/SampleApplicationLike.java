@@ -20,8 +20,6 @@ import com.tencent.bugly.BuglyStrategy;
 import com.tencent.bugly.beta.Beta;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
 
-import static com.cantv.wechatphoto.activity.QRCodePushActivity.BUGLY_KEY;
-
 /**
  * 自定义ApplicationLike类.
  *
@@ -36,6 +34,7 @@ public class SampleApplicationLike extends DefaultApplicationLike {
     private static String mClientId = "";
     public static RequestQueue gReqQueue = null;
     private static Context mContext;
+    public static final String BUGLY_KEY = "b40705f2a9";
 
     public static RequestQueue getVolleyRequestQueues() {
         if (gReqQueue == null) {
@@ -82,7 +81,7 @@ public class SampleApplicationLike extends DefaultApplicationLike {
         Bugly.setIsDevelopmentDevice(getApplication(), true);
         // 这里实现SDK初始化，appId替换成你的在Bugly平台申请的appId
         Bugly.init(mContext, BUGLY_KEY, BuildConfig.DEBUG, strategy);
-        Beta.checkUpgrade(false,true);
+
     }
 
     @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
