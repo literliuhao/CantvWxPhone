@@ -14,8 +14,8 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.cantv.wechatphoto.App;
 import com.cantv.wechatphoto.R;
+import com.cantv.wechatphoto.SampleApplicationLike;
 import com.cantv.wechatphoto.adapter.ImageAdapter;
 import com.cantv.wechatphoto.interfaces.IPhotoListener;
 import com.cantv.wechatphoto.interfaces.IPositionListener;
@@ -123,7 +123,7 @@ public class PagerActivity extends Activity implements IPositionListener, IPhoto
         super.onResume();
         Log.d("PagerActivity", "onResume");
         MobclickAgent.onResume(this);
-        MobclickAgent.onEvent(App.getAppContext(), "Photo_Detail_Page");
+        MobclickAgent.onEvent(SampleApplicationLike.getAppContext(), "Photo_Detail_Page");
     }
 
     @Override
@@ -154,12 +154,12 @@ public class PagerActivity extends Activity implements IPositionListener, IPhoto
         switch (keyCode) {
             case KeyEvent.KEYCODE_DPAD_LEFT: // 左
                 if (mPosition == 0) {
-                    ToastUtils.showMessage(App.getAppContext(), getString(R.string.reach_first_page), Toast.LENGTH_LONG);
+                    ToastUtils.showMessage(SampleApplicationLike.getAppContext(), getString(R.string.reach_first_page), Toast.LENGTH_LONG);
                 }
                 break;
             case KeyEvent.KEYCODE_DPAD_RIGHT: // 右
                 if (mPosition == totalCount - 1) {
-                    ToastUtils.showMessage(App.getAppContext(), getString(R.string.reach_last_page), Toast.LENGTH_LONG);
+                    ToastUtils.showMessage(SampleApplicationLike.getAppContext(), getString(R.string.reach_last_page), Toast.LENGTH_LONG);
                 }
                 break;
             default:
