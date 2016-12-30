@@ -28,7 +28,7 @@ public class GlideManager implements GlideModule {
 	@Override
 	public void applyOptions(Context context, GlideBuilder builder) {
 		if(MemoryUtils.getTotalMemorySize(context) > 1000){
-			 builder.setDecodeFormat(DecodeFormat.PREFER_ARGB_8888);
+			 builder.setDecodeFormat(DecodeFormat.PREFER_RGB_565);
 		}
 		ViewTarget.setTagId(R.id.glide_tag_id);
 		MemorySizeCalculator calculator = new MemorySizeCalculator(context);

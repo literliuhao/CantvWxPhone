@@ -123,7 +123,7 @@ public class GridAdapter extends BaseAdapter {
         }
 
         //解决加载图片时占位图和加载失败的图片重合的问题
-            ImageInfo img = new ImageInfo.Builder().url(getItem(position).getPhotourl())
+            ImageInfo img = new ImageInfo.Builder().url(getItem(position).getPhotourl()).width(photoWidth).height(photoHeight)
                     .placeHolder(0).rotation(photoLists.get(position).getDirection()).isScale(true)
                     .errorHolder(0).loadListener(new OnLoadFinishListener() {
                         @Override
