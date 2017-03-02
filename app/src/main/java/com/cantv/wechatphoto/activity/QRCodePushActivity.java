@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.ImageView;
 
 import com.android.volley.VolleyError;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.cantv.wechatphoto.GetDataUtils;
 import com.cantv.wechatphoto.R;
 import com.cantv.wechatphoto.SampleApplicationLike;
@@ -36,7 +37,6 @@ public class QRCodePushActivity extends Activity {
 
     private final String TAG = "QRCodePushActivity";
 
-
     private static final String ACTION_CLOSE_QRCODE_PAGE = "com.cantv.wechatphoto.ACTION_CLOSE_QRCODE_PAGE";
     private static final String ACTION_REGISTER_SUCCEED = "com.cantv.wechatphoto.action.REGISTER_SUCCESS";
 
@@ -56,8 +56,8 @@ public class QRCodePushActivity extends Activity {
         // 进行判断，选择打开界面
         DaoOpenHelper pushDaoOpenHelper = DaoOpenHelper.getInstance(getApplicationContext());
         long count = pushDaoOpenHelper.queryExpiredUserCount();
-        //bugly检查更新
-        Beta.checkUpgrade(false,true);
+        //Bugly检查更新
+        Beta.checkUpgrade(false, true);
         if (count >= 1) {
             QRCodePushActivity.this.finish();
             Intent intent = new Intent(getApplicationContext(), GridViewActivity.class);
@@ -76,7 +76,6 @@ public class QRCodePushActivity extends Activity {
             loadQRCode(clientId);
         }
     }
-
 
     @Override
     protected void onStart() {
@@ -102,7 +101,7 @@ public class QRCodePushActivity extends Activity {
 
                 @Override
                 public void done() {
-                    Log.i("done","存储空间正常...");
+                    Log.i("done", "存储空间正常...");
                 }
             });
         }
@@ -145,7 +144,7 @@ public class QRCodePushActivity extends Activity {
         super.onResume();
         MobclickAgent.onResume(this);
         MobclickAgent.enableEncrypt(true);
-        MobclickAgent.onEvent(SampleApplicationLike.getAppContext(),"Tutorial_Page");
+        MobclickAgent.onEvent(SampleApplicationLike.getAppContext(), "Tutorial_Page");
     }
 
     @Override
@@ -181,7 +180,7 @@ public class QRCodePushActivity extends Activity {
                 mPushManager.removeClientIdUpdateListener();
                 int cornerDp = (int) getResources().getDimension(R.dimen.dimen_30px);
                 FakeX509TrustManager.allowAllSSL();
-                ImageInfo img = new ImageInfo.Builder().url(t).isSkipMemoryCache(true).placeHolder(R.drawable.wechat_cibn).imgView(mQRCodeIv).cornerSizeDp(cornerDp).build();
+                ImageInfo img = new ImageInfo.Builder().url(t).diskCacheStrategy(DiskCacheStrategy.NONE).isSkipMemoryCache(true).placeHolder(R.drawable.wechat_cibn).imgView(mQRCodeIv).cornerSizeDp(cornerDp).build();
                 ImageLoader.getInstance().loadImage(QRCodePushActivity.this, img);
             }
 
