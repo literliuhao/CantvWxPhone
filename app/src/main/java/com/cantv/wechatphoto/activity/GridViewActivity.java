@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.View.OnKeyListener;
 import android.view.View.OnLayoutChangeListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -57,12 +58,12 @@ import java.util.List;
 /**
  * 相册GridView
  */
-public class GridViewActivity extends Activity implements IPhotoListener, IDBInteraction {
+public class GridViewActivity extends Activity implements IPhotoListener, IDBInteraction, OnKeyListener, OnItemSelectedListener, OnItemClickListener, OnLayoutChangeListener, onClientIdUpdateListener {
     private PopView popView;
     private GridView gridView;
     private GridAdapter gridAdapter;
     private TextView textEmpty;
-    private TextView currectNumber;
+    private TextView currentNumber;
     private TextView totalNumber;
     private RelativeLayout layoutDelete;
     private DataReceiver dataReceiver;
@@ -105,15 +106,10 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
             finish();
         }
         getWexinPushQRCode(clientId);
-        mPushManager.setOnClientIdUpdateListener(new onClientIdUpdateListener() {
-            @Override
-            public void onUpdate(String clientId) {
-                getWexinPushQRCode(clientId);
-            }
-        });
+        mPushManager.setOnClientIdUpdateListener(this);
 
         textEmpty = (TextView) findViewById(R.id.txt_empty);
-        currectNumber = (TextView) findViewById(R.id.txt_number);
+        currentNumber = (TextView) findViewById(R.id.txt_number);
         totalNumber = (TextView) findViewById(R.id.txt_totalnumber);
         gridAdapter = new GridAdapter(this, R.layout.grid_item, HelperBean.photoList);
         popView = (PopView) findViewById(R.id.popView_id);
@@ -131,100 +127,11 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
         gridView = (GridView) findViewById(R.id.gridView);
         gridView.setAdapter(gridAdapter);
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
-        gridView.setOnKeyListener(new View.OnKeyListener() {
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                Log.d("GridViewActivity", "点击在屏幕上的位置" + v.getVerticalScrollbarPosition());
-                if (event.getAction() == KeyEvent.ACTION_DOWN) {
-                    if (keyCode == 8 || keyCode == KeyEvent.KEYCODE_MENU) {
-                        showDelete();
-
-                    } else if (KeyEvent.KEYCODE_BACK == keyCode) {
-                        if (isLock) {
-                            showDelete();
-                            return true;
-                        } else {
-                            GridViewActivity.this.finish();
-                        }
-                    } else {
-                        if (isLock) {
-                            if (KeyEvent.KEYCODE_ENTER == keyCode || KeyEvent.KEYCODE_DPAD_CENTER == keyCode) { // 遥控器OK
-                                isLock = false;
-                                //解决删除后gridview滚动后焦点错位的问题
-                                int i = HelperBean.photoList.size();
-                                if (i % 3 == 1 && currentPosition > i - 5 && currentPosition < i - 1 && currentPosition % 3 != 0) {
-                                    isFocusDelay = true;
-                                }
-                                layoutDelete.setVisibility(View.GONE);
-                                PhotoBean photoBean = HelperBean.photoList.get(currentPosition - 1);
-                                DaoOpenHelper daoHelper = DaoOpenHelper.getInstance(getApplicationContext());
-                                photoBean.setBack1("expired");
-                                daoHelper.updatePhoto(photoBean);
-                                HelperBean.photoList.remove(currentPosition - 1);
-                                refrshNumber(currentPosition, HelperBean.photoList.size());
-                                MobclickAgent.onEvent(SampleApplicationLike.getAppContext(), "Delete_photo");
-                                gridAdapter.notifyDataSetChanged();
-                            }
-                            return true;
-                        }
-                    }
-                }
-                return false;
-            }
-        });
-        gridView.setOnItemSelectedListener(new OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, final View view, int position, long id) {
-                if (lastView != view) {
-                    currentPosition = position;
-                    currectNumber.setText(String.valueOf(++currentPosition));
-                    view.bringToFront();
-                    if (lastView != null) {
-                        mHandler.removeMessages(FOCUS_VIEW);
-                        popView.setFocusView(view, lastView, 1.1f);
-                        Log.d(TAG, "onItemSelected FOCUS_VIEW");
-                    } else {
-                        Message msg = mHandler.obtainMessage(FOCUS_VIEW);
-                        msg.obj = view;
-                        mHandler.sendMessageDelayed(msg, 500);
-                    }
-                    lastView = view;
-                }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-            }
-        });
-        gridView.setOnItemClickListener(new OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent();
-                intent.putExtra("position", position);
-                intent.setClass(GridViewActivity.this, PagerActivity.class);
-                startActivity(intent);
-            }
-        });
-        gridView.addOnLayoutChangeListener(new OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
-                if (gridView.getChildCount() > 0 && gridView.getChildAt(0) == view) {
-                    gridView.setSelection(0);
-                    View newView = gridView.getChildAt(0);
-                    newView.bringToFront();
-                    popView.setFocusView(newView, 1.1f);
-                    Log.d(TAG, "onLayoutChange FOCUS_VIEW");
-                } else if (isFocusDelay) {
-                    Message msg = mHandler.obtainMessage(FOCUS_VIEW);
-                    msg.obj = gridView.getSelectedView();
-                    mHandler.sendMessageDelayed(msg, 20);
-                    Log.d(TAG, "onLayoutChange FOCUS_VIEW  layoutScorll set Focus");
-                }
-            }
-        });
-        /*
-         * 将数据源中的第一个位置占位，等待二维码数据
-		 */
+        gridView.setOnKeyListener(this);
+        gridView.setOnItemSelectedListener(this);
+        gridView.setOnItemClickListener(this);
+        gridView.addOnLayoutChangeListener(this);
+        //将数据源中的第一个位置占位，等待二维码数据
         PhotoBean bean = new PhotoBean();
         bean.setWxname("扫一扫：影片、照片投屏看");
         bean.setPhotourl("");
@@ -235,7 +142,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     @Override
     protected void onStart() {
         super.onStart();
-        Log.d("GridViewActivity", "onStart");
+        Log.i("GridViewActivity", "onStart");
         registerReceiver(dataReceiver, intentFilter);
         gridAdapter.notifyDataSetChanged();
     }
@@ -243,13 +150,13 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     @Override
     protected void onRestart() {
         super.onRestart();
-        Log.d("GridViewActivity", "onRestart");
+        Log.i("GridViewActivity", "onRestart");
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d("GridViewActivity", "onResume");
+        Log.i("GridViewActivity", "onResume");
         MobclickAgent.onResume(this);
         MobclickAgent.onEvent(SampleApplicationLike.getAppContext(), "Album_List_Page");
     }
@@ -257,21 +164,21 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     @Override
     protected void onStop() {
         super.onStop();
-        Log.d("GridViewActivity", "onStop");
+        Log.i("GridViewActivity", "onStop");
 
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d("GridViewActivity", "onPause");
+        Log.i("GridViewActivity", "onPause");
         MobclickAgent.onPause(this);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Log.d("GridViewActivity", "onDestroy");
+        Log.i("GridViewActivity", "onDestroy");
         GridViewActivity.this.unregisterReceiver(dataReceiver);
         HelperBean.photoList.clear();
         runOnUiThread(new Runnable() {
@@ -317,8 +224,8 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                     break;
                 case FOCUS_VIEW:
                     View view = (View) msg.obj;
-                    Log.d(TAG, "handleMessage FOCUS_VIEW");
-                    Log.d(TAG, view.getWidth() + " " + view.getMeasuredWidth());
+                    Log.i(TAG, "handleMessage FOCUS_VIEW");
+                    Log.i(TAG, view.getWidth() + " " + view.getMeasuredWidth());
                     popView.setFocusView(view, 1.1f);
                     break;
             }
@@ -357,8 +264,101 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     }
 
     public void refrshNumber(int position, int total) {
-        currectNumber.setText(String.valueOf(position));
+        currentNumber.setText(String.valueOf(position));
         totalNumber.setText("/" + total);
+    }
+
+    @Override
+    public boolean onKey(View v, int keyCode, KeyEvent event) {
+        Log.i("GridViewActivity", "点击在屏幕上的位置" + v.getVerticalScrollbarPosition());
+        if (event.getAction() == KeyEvent.ACTION_DOWN) {
+            if (keyCode == 8 || keyCode == KeyEvent.KEYCODE_MENU) {
+                showDelete();
+
+            } else if (KeyEvent.KEYCODE_BACK == keyCode) {
+                if (isLock) {
+                    showDelete();
+                    return true;
+                } else {
+                    GridViewActivity.this.finish();
+                }
+            } else {
+                if (isLock) {
+                    if (KeyEvent.KEYCODE_ENTER == keyCode || KeyEvent.KEYCODE_DPAD_CENTER == keyCode) { // 遥控器OK
+                        isLock = false;
+                        //解决删除后GridView滚动后焦点错位的问题
+                        int i = HelperBean.photoList.size();
+                        if (i % 3 == 1 && currentPosition > i - 5 && currentPosition < i - 1 && currentPosition % 3 != 0) {
+                            isFocusDelay = true;
+                        }
+                        layoutDelete.setVisibility(View.GONE);
+                        PhotoBean photoBean = HelperBean.photoList.get(currentPosition - 1);
+                        DaoOpenHelper daoHelper = DaoOpenHelper.getInstance(getApplicationContext());
+                        photoBean.setBack1("expired");
+                        daoHelper.updatePhoto(photoBean);
+                        HelperBean.photoList.remove(currentPosition - 1);
+                        refrshNumber(currentPosition, HelperBean.photoList.size());
+                        MobclickAgent.onEvent(SampleApplicationLike.getAppContext(), "Delete_photo");
+                        gridAdapter.notifyDataSetChanged();
+                    }
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        if (lastView != view) {
+            currentPosition = position;
+            currentNumber.setText(String.valueOf(++currentPosition));
+            view.bringToFront();
+            if (lastView != null) {
+                mHandler.removeMessages(FOCUS_VIEW);
+                popView.setFocusView(view, lastView, 1.1f);
+                Log.i(TAG, "onItemSelected FOCUS_VIEW");
+            } else {
+                Message msg = mHandler.obtainMessage(FOCUS_VIEW);
+                msg.obj = view;
+                mHandler.sendMessageDelayed(msg, 500);
+            }
+            lastView = view;
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        Intent intent = new Intent();
+        intent.putExtra("position", position);
+        intent.setClass(GridViewActivity.this, PagerActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
+    public void onLayoutChange(View view, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+        if (gridView.getChildCount() > 0 && gridView.getChildAt(0) == view) {
+            gridView.setSelection(0);
+            View newView = gridView.getChildAt(0);
+            newView.bringToFront();
+            popView.setFocusView(newView, 1.1f);
+            Log.i(TAG, "onLayoutChange FOCUS_VIEW");
+        } else if (isFocusDelay) {
+            Message msg = mHandler.obtainMessage(FOCUS_VIEW);
+            msg.obj = gridView.getSelectedView();
+            mHandler.sendMessageDelayed(msg, 20);
+            Log.i(TAG, "onLayoutChange FOCUS_VIEW  layoutScorll set Focus");
+        }
+    }
+
+    @Override
+    public void onUpdate(String clientId) {
+        getWexinPushQRCode(clientId);
     }
 
     public interface OnRequestFinishCallback<T> {
