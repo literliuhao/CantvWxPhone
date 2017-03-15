@@ -52,9 +52,7 @@ public class SampleApplicationLike extends DefaultApplicationLike {
             boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime,
             long applicationStartMillisTime, Intent tinkerResultIntent, Resources[] resources,
             ClassLoader[] classLoader, AssetManager[] assetManager) {
-        super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime,
-                applicationStartMillisTime, tinkerResultIntent, resources, classLoader,
-                assetManager);
+        super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime, tinkerResultIntent, resources, classLoader, assetManager);
     }
 
 
