@@ -7,12 +7,12 @@
 
     <RelativeLayout
         android:id="@+id/rl_content"
-        android:layout_width="@dimen/dimen_1000px"
-        android:layout_height="@dimen/dimen_660px"
-        android:layout_marginBottom="@dimen/dimen_245px"
-        android:layout_marginEnd="@dimen/dimen_532px"
-        android:layout_marginStart="@dimen/dimen_455px"
-        android:layout_marginTop="@dimen/dimen_240px"
+        android:layout_width="@dimen/dimen_1000"
+        android:layout_height="@dimen/dimen_660"
+        android:layout_marginBottom="@dimen/dimen_245"
+        android:layout_marginEnd="@dimen/dimen_532"
+        android:layout_marginStart="@dimen/dimen_455"
+        android:layout_marginTop="@dimen/dimen_240"
         android:background="@drawable/home_devices_background_new">
 
 
@@ -20,17 +20,17 @@
             android:id="@+id/et_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:paddingLeft="@dimen/dimen_80px"
-            android:paddingRight="@dimen/dimen_80px"
+            android:paddingLeft="@dimen/dimen_80"
+            android:paddingRight="@dimen/dimen_80"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dimen_120px">
+            android:layout_marginTop="@dimen/dimen_120">
 
             <TextView
                 android:id="@+id/text_questions"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@color/per90_white"
-                android:textSize="@dimen/dimen_40px"/>
+                android:textSize="@dimen/dimen_40"/>
 
         </LinearLayout>
 
@@ -41,16 +41,16 @@
             android:weightSum="1"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="@dimen/dimen_50px">
+            android:layout_marginBottom="@dimen/dimen_50">
 
             <Button
                 android:id="@+id/btn_confirm"
-                android:layout_width="@dimen/dimen_480px"
-                android:layout_height="@dimen/dimen_130px"
+                android:layout_width="@dimen/dimen_480"
+                android:layout_height="@dimen/dimen_130"
                 android:background="@drawable/frame_wx_share_item_focus"
                 android:text="确定"
                 android:textColor="@color/per90_white"
-                android:textSize="@dimen/dimen_40px"/>
+                android:textSize="@dimen/dimen_40"/>
 
         </LinearLayout>
     </RelativeLayout>

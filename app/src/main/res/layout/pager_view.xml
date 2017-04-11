@@ -11,7 +11,7 @@
     <RelativeLayout
         android:id="@+id/rl_bottom_mask"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dimen_171px"
+        android:layout_height="@dimen/dimen_171"
         android:layout_alignParentBottom="true"
         android:background="@drawable/share_photo_page_bottom_mask"
         android:visibility="invisible">
@@ -21,8 +21,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="@dimen/dimen_84px"
-            android:layout_marginStart="@dimen/px_85"
+            android:layout_marginBottom="@dimen/dimen_84"
+            android:layout_marginStart="@dimen/dimen_85"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -32,61 +32,61 @@
                 android:includeFontPadding="false"
                 android:text="@string/press_on"
                 android:textColor="@color/fontColor"
-                android:textSize="@dimen/fontsize_30px"/>
+                android:textSize="@dimen/dimen_30"/>
 
             <TextView
-                android:layout_width="@dimen/dimen_75px"
-                android:layout_height="@dimen/dimen_50px"
-                android:layout_marginEnd="@dimen/dimen_8px"
-                android:layout_marginStart="@dimen/dimen_8px"
+                android:layout_width="@dimen/dimen_75"
+                android:layout_height="@dimen/dimen_50"
+                android:layout_marginEnd="@dimen/dimen_8"
+                android:layout_marginStart="@dimen/dimen_8"
                 android:background="@drawable/bg_operation_txt"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:text="@string/left"
                 android:textColor="@color/fontColor"
-                android:textSize="@dimen/fontsize_30px"/>
+                android:textSize="@dimen/dimen_30"/>
 
             <TextView
-                android:layout_width="@dimen/dimen_75px"
-                android:layout_height="@dimen/dimen_50px"
+                android:layout_width="@dimen/dimen_75"
+                android:layout_height="@dimen/dimen_50"
                 android:background="@drawable/bg_operation_txt"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:text="@string/right"
                 android:textColor="@color/fontColor"
-                android:textSize="@dimen/fontsize_30px"/>
+                android:textSize="@dimen/dimen_30"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="@dimen/dimen_8px"
-                android:layout_marginStart="@dimen/dimen_8px"
+                android:layout_marginEnd="@dimen/dimen_8"
+                android:layout_marginStart="@dimen/dimen_8"
                 android:includeFontPadding="false"
                 android:text="@string/could_paging_add_press_on"
                 android:textColor="@color/fontColor"
-                android:textSize="@dimen/fontsize_30px"/>
+                android:textSize="@dimen/dimen_30"/>
 
             <TextView
-                android:layout_width="@dimen/dimen_75px"
-                android:layout_height="@dimen/dimen_50px"
+                android:layout_width="@dimen/dimen_75"
+                android:layout_height="@dimen/dimen_50"
                 android:background="@drawable/bg_operation_txt"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:text="@string/up"
                 android:textColor="@color/fontColor"
-                android:textSize="@dimen/fontsize_30px"/>
+                android:textSize="@dimen/dimen_30"/>
 
             <TextView
-                android:layout_width="@dimen/dimen_75px"
-                android:layout_height="@dimen/dimen_50px"
-                android:layout_marginEnd="@dimen/dimen_8px"
-                android:layout_marginStart="@dimen/dimen_8px"
+                android:layout_width="@dimen/dimen_75"
+                android:layout_height="@dimen/dimen_50"
+                android:layout_marginEnd="@dimen/dimen_8"
+                android:layout_marginStart="@dimen/dimen_8"
                 android:background="@drawable/bg_operation_txt"
                 android:gravity="center"
                 android:includeFontPadding="false"
                 android:text="@string/down"
                 android:textColor="@color/fontColor"
-                android:textSize="@dimen/fontsize_30px"/>
+                android:textSize="@dimen/dimen_30"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -94,7 +94,7 @@
                 android:includeFontPadding="false"
                 android:text="@string/could_rotate"
                 android:textColor="@color/fontColor"
-                android:textSize="@dimen/fontsize_30px"/>
+                android:textSize="@dimen/dimen_30"/>
         </LinearLayout>
 
     </RelativeLayout>
@@ -104,7 +104,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/dimen_70px"
+        android:layout_marginBottom="@dimen/dimen_70"
         android:layout_toLeftOf="@+id/txt_pager_totalnumber"/>
 
     <TextView
@@ -113,8 +113,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="@dimen/dimen_70px"
-        android:layout_marginRight="@dimen/px_30"/>
+        android:layout_marginBottom="@dimen/dimen_70"
+        android:layout_marginRight="@dimen/dimen_30"/>
 
     <!-- <Button -->
     <!-- android:layout_width="wrap_content" -->

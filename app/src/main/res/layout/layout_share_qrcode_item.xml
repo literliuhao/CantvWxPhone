@@ -5,36 +5,36 @@
                 android:background="@drawable/bg_share_qrcode">
 
     <LinearLayout
-        android:layout_width="@dimen/dimen_480px"
+        android:layout_width="@dimen/dimen_480"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dimen_235px"
+        android:layout_marginTop="@dimen/dimen_235"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <com.cantv.wechatphoto.view.ZoomImageView
             android:id="@+id/iv_qrcode"
             android:layout_width="wrap_content"
-            android:layout_height="@dimen/dimen_480px"
+            android:layout_height="@dimen/dimen_480"
             android:scaleType="fitXY"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_15px"
+            android:layout_marginTop="@dimen/dimen_15"
             android:includeFontPadding="false"
             android:text="@string/scan"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/fontsize_33px"/>
+            android:textSize="@dimen/dimen_33"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dimen_15px"
+            android:layout_marginTop="@dimen/dimen_15"
             android:includeFontPadding="false"
             android:text="@string/watch_for_video_add_picture"
             android:textColor="@android:color/black"
-            android:textSize="@dimen/fontsize_33px"/>
+            android:textSize="@dimen/dimen_33"/>
     </LinearLayout>
 
 </RelativeLayout>

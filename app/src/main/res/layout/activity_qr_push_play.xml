@@ -5,18 +5,18 @@
     
     <ImageView 
         android:id="@+id/iv_qrcode"
-        android:layout_width="@dimen/dimen_308px"
-        android:layout_height="@dimen/dimen_308px"
-        android:layout_marginTop="@dimen/dimen_452px"
-        android:layout_marginStart="@dimen/dimen_275px"
+        android:layout_width="@dimen/dimen_308"
+        android:layout_height="@dimen/dimen_308"
+        android:layout_marginTop="@dimen/dimen_452"
+        android:layout_marginStart="@dimen/dimen_275"
         android:scaleType="fitCenter"
         android:src="@drawable/wechat_cibn"/>
 
 	<ImageView 
 	    android:id="@+id/iv_succeed_hint"
-	    android:layout_width="@dimen/dimen_1143px"
-	    android:layout_height="@dimen/dimen_84px"
-	    android:layout_marginBottom="@dimen/dimen_80px"
+	    android:layout_width="@dimen/dimen_1143"
+	    android:layout_height="@dimen/dimen_84"
+	    android:layout_marginBottom="@dimen/dimen_80"
 	    android:layout_alignParentBottom="true"
 	    android:visibility="invisible"
 	    android:layout_centerHorizontal="true"
