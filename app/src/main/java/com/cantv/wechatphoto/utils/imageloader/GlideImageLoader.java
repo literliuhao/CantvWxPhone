@@ -3,6 +3,7 @@ package com.cantv.wechatphoto.utils.imageloader;
 import android.content.Context;
 import android.os.Looper;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CenterCrop;
@@ -36,7 +37,12 @@ public class GlideImageLoader implements BaseImageLoader {
 
     @Override
     public void loadImage(Context ctx, ImageInfo img) {
-        loadByNet(ctx, img);
+        if(img.getWidth()!= 0 && img.getHeight()!= 0){
+            loadByNetOverride(ctx,img);
+        }else{
+            loadByNet(ctx, img);
+        }
+
         // if (NetUtils._checkNet(ctx)) {
         // loadByNet(ctx, img);
         // } else {
@@ -103,35 +109,76 @@ public class GlideImageLoader implements BaseImageLoader {
                 Glide.with(context).load(img.getUrl()).dontAnimate()
                         .skipMemoryCache(img.isSkipMemoryCache).diskCacheStrategy(img.getDiskCacheStrategy())
                         .error(img.getErrorHolder()).placeholder(img.getPlaceHolder()).priority(img.getPriority())
-                        .transform(new RotateTransformation(context, img.getRotation(),img.isScale())).into(img.getImgView());
+                        .transform(new RotateTransformation(context, img.getRotation(), img.isScale())).into(img.getImgView());
             } else {
                 Glide.with(context).load(img.getUrl()).dontAnimate()
                         .skipMemoryCache(img.isSkipMemoryCache).diskCacheStrategy(img.getDiskCacheStrategy())
                         .error(img.getErrorHolder()).placeholder(img.getPlaceHolder()).priority(img.getPriority())
-                        .transform(new RotateTransformation(context, img.getRotation(),img.isScale()))
+                        .transform(new RotateTransformation(context, img.getRotation(), img.isScale()))
                         .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception arg0, String arg1, Target<GlideDrawable> arg2, boolean arg3) {
-                        img.getImgView().setBackgroundResource(img.getErrorHolder());
-                        img.getLoadFinishListener().onFail();
-                        return false;
-                    }
+                            @Override
+                            public boolean onException(Exception arg0, String arg1, Target<GlideDrawable> arg2, boolean arg3) {
+                                img.getImgView().setBackgroundResource(img.getErrorHolder());
+                                img.getLoadFinishListener().onFail();
+                                return false;
+                            }
 
-                    @Override
-                    public boolean onResourceReady(GlideDrawable arg0, String arg1, Target<GlideDrawable> arg2, boolean arg3, boolean arg4) {
-                        if (arg0 != null) {
-                            img.getImgView().setImageDrawable(arg0);
-                        } else {
-                            img.getImgView().setImageDrawable(null);
-                            img.getImgView().setBackgroundResource(img.getPlaceHolder());
-                        }
-                        img.getLoadFinishListener().onSuccess();
-                        return false;
-                    }
-                }).into(img.getImgView());
+                            @Override
+                            public boolean onResourceReady(GlideDrawable arg0, String arg1, Target<GlideDrawable> arg2, boolean arg3, boolean arg4) {
+                                if (arg0 != null) {
+                                    img.getImgView().setImageDrawable(arg0);
+                                } else {
+                                    img.getImgView().setImageDrawable(null);
+                                    img.getImgView().setBackgroundResource(img.getPlaceHolder());
+                                }
+                                img.getLoadFinishListener().onSuccess();
+                                return false;
+                            }
+                        }).into(img.getImgView());
             }
         }
     }
+
+    public void loadByNetOverride(Context context, final ImageInfo img) {
+        Log.d("loadByNetOverride","img-width"+img.getWidth()+",img-heigth"+img.getHeight());
+        if (img.isGif) {
+            Glide.with(context).load(img.getUrl()).asGif().diskCacheStrategy(img.getDiskCacheStrategy()).into(img.getImgView());
+        } else {
+            if (img.getLoadFinishListener() == null) {
+                Glide.with(context).load(img.getUrl()).dontAnimate()
+                        .skipMemoryCache(img.isSkipMemoryCache).diskCacheStrategy(img.getDiskCacheStrategy()).override(img.getWidth(),img.getHeight())
+                        .error(img.getErrorHolder()).placeholder(img.getPlaceHolder()).priority(img.getPriority())
+                        .transform(new RotateTransformation(context, img.getRotation(), img.isScale())).into(img.getImgView());
+            } else {
+                Glide.with(context).load(img.getUrl()).dontAnimate().override(img.getWidth(),img.getHeight())
+                        .skipMemoryCache(img.isSkipMemoryCache).diskCacheStrategy(img.getDiskCacheStrategy())
+                        .error(img.getErrorHolder()).placeholder(img.getPlaceHolder()).priority(img.getPriority())
+                        .transform(new RotateTransformation(context, img.getRotation(), img.isScale()))
+                        .listener(new RequestListener<String, GlideDrawable>() {
+                            @Override
+                            public boolean onException(Exception arg0, String arg1, Target<GlideDrawable> arg2, boolean arg3) {
+                                img.getImgView().setBackgroundResource(img.getErrorHolder());
+                                img.getLoadFinishListener().onFail();
+                                return false;
+                            }
+
+                            @Override
+                            public boolean onResourceReady(GlideDrawable arg0, String arg1, Target<GlideDrawable> arg2, boolean arg3, boolean arg4) {
+                                if (arg0 != null) {
+                                    img.getImgView().setImageDrawable(arg0);
+                                } else {
+                                    img.getImgView().setImageDrawable(null);
+                                    img.getImgView().setBackgroundResource(img.getPlaceHolder());
+                                }
+                                img.getLoadFinishListener().onSuccess();
+                                return false;
+                            }
+                        }).into(img.getImgView());
+            }
+        }
+    }
+
+
 
     public void loadImgByCircle(Context context, ImageInfo img) {
         Glide.with(context).load(img.getUrl()).error(img.getErrorHolder()).transform(new GlideCircleTransform(context)).placeholder(img.getPlaceHolder()).into(img.getImgView());

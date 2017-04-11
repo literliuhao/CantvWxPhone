@@ -15,7 +15,7 @@ public class ImageInfo {
     private int cornerSizeDp;
     private float thumbnail;
     private int errorHolder;
-//    private BitmapTransformation bmpTransfor;
+    //    private BitmapTransformation bmpTransfor;
     private DiskCacheStrategy diskCacheStrategy;
     private int width;
     private int height;
@@ -71,9 +71,9 @@ public class ImageInfo {
         return errorHolder;
     }
 
-//    public BitmapTransformation getBmpTransfor() {
-//        return bmpTransfor;
-//    }
+    //    public BitmapTransformation getBmpTransfor() {
+    //        return bmpTransfor;
+    //    }
 
     public int getRotation() {
         return rotation;
@@ -102,6 +102,7 @@ public class ImageInfo {
     public OnLoadFinishListener getLoadFinishListener() {
         return loadFinishListener;
     }
+
     public Boolean isScale() {
         return isScale;
     }
@@ -119,7 +120,7 @@ public class ImageInfo {
         private boolean isGif;
         private int cornerSizeDp;
         private float thumbnail;
-//        private BitmapTransformation bmpTransfor;
+        //        private BitmapTransformation bmpTransfor;
         private int rotation;
         private DiskCacheStrategy diskCacheStrategy;
         private int width;
@@ -141,7 +142,10 @@ public class ImageInfo {
             this.priority = Priority.NORMAL;
             this.diskCacheStrategy = DiskCacheStrategy.SOURCE;
             this.isScale = false;
+            this.width = 0;
+            this.height = 0;
         }
+
 
         public Builder url(String url) {
             this.url = url;
@@ -183,12 +187,12 @@ public class ImageInfo {
             return this;
         }
 
-//        public Builder transform(BitmapTransformation bmpTransfor) {
-//            if (bmpTransfor != null) {
-//                this.bmpTransfor = bmpTransfor;
-//            }
-//            return this;
-//        }
+        //        public Builder transform(BitmapTransformation bmpTransfor) {
+        //            if (bmpTransfor != null) {
+        //                this.bmpTransfor = bmpTransfor;
+        //            }
+        //            return this;
+        //        }
 
         public Builder rotation(int rotation) {
             this.rotation = rotation;
