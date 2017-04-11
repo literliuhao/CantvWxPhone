@@ -193,9 +193,9 @@ public class QRCodePushActivity extends Activity {
 
     public interface OnRequestFinishCallback<T> {
 
-        public void onSuccess(T t, String... extras);
+        void onSuccess(T t, String... extras);
 
-        public void onFail(Throwable e);
+        void onFail(Throwable e);
     }
 
     /**

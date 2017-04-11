@@ -4,7 +4,7 @@ import com.google.gson.JsonObject;
 
 public interface IPushMessage {
 
-	public IPushMessage parse(JsonObject data);
-	
-	public boolean isLegal();
+    IPushMessage parse(JsonObject data);
+
+    boolean isLegal();
 }

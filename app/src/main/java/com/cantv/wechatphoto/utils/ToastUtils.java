@@ -18,8 +18,6 @@ public class ToastUtils {
 	private static Toast mToast = null;
 	private static TextView mTextView;
 	private static Object synObj = new Object();
-	private int top,
-			right,bottom,left;
 
 
 	/**
