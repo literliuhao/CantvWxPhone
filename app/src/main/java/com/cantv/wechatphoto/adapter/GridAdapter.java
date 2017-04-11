@@ -83,6 +83,7 @@ public class GridAdapter extends BaseAdapter {
         if (((GridViewTV) parent).isOnMeasure) {
             return convertView;
         }
+        
         if (position == 0) {
             Log.d("getView", "============" + position);
             holder.tipsTv.setVisibility(View.VISIBLE);
@@ -111,8 +112,8 @@ public class GridAdapter extends BaseAdapter {
             layoutParams.height = photoHeight;
             layoutParams.topMargin = parent.getContext().getResources().getDimensionPixelSize(R.dimen.dimen_15);
             holder.image.setLayoutParams(layoutParams);
-//            holder.image.setBackgroundResource(R.drawable.pager_background);
-            holder.image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.pager_background,null));
+            holder.image.setBackgroundResource(R.drawable.pager_background);
+//            holder.image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.pager_background,null));
             holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
             RelativeLayout.LayoutParams headLayoutParams = (RelativeLayout.LayoutParams) holder.imgHead.getLayoutParams();
