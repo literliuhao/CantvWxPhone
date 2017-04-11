@@ -1,7 +1,9 @@
 package com.cantv.wechatphoto.adapter;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.BitmapFactory;
+import android.os.Build;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,6 +60,7 @@ public class GridAdapter extends BaseAdapter {
         return photoLists.size();
     }
 
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ViewHolder holder;
@@ -108,7 +111,8 @@ public class GridAdapter extends BaseAdapter {
             layoutParams.height = photoHeight;
             layoutParams.topMargin = parent.getContext().getResources().getDimensionPixelSize(R.dimen.dimen_15);
             holder.image.setLayoutParams(layoutParams);
-            holder.image.setBackgroundResource(R.drawable.pager_background);
+//            holder.image.setBackgroundResource(R.drawable.pager_background);
+            holder.image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.pager_background,null));
             holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
             RelativeLayout.LayoutParams headLayoutParams = (RelativeLayout.LayoutParams) holder.imgHead.getLayoutParams();
@@ -123,7 +127,7 @@ public class GridAdapter extends BaseAdapter {
         }
 
         //解决加载图片时占位图和加载失败的图片重合的问题
-            ImageInfo img = new ImageInfo.Builder().url(getItem(position).getPhotourl())
+            ImageInfo img = new ImageInfo.Builder().url(getItem(position).getPhotourl()).width(photoWidth).height(photoHeight)
                     .placeHolder(0).rotation(photoLists.get(position).getDirection()).isScale(true)
                     .errorHolder(0).loadListener(new OnLoadFinishListener() {
                         @Override

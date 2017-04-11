@@ -177,7 +177,7 @@ public class PagerActivity extends Activity implements IPositionListener, IPhoto
         bean.setPhotourl(mQrCodeUrl);
         photoList.add(0, bean);
         mPhotoLists.addAll(photoList);
-        imageAdapter = new ImageAdapter(this, mPhotoLists);
+        imageAdapter = new ImageAdapter(this, mPhotoLists,this);
         Log.d("PagerActivity", "mPhotoLists.size() " + mPhotoLists.size());
     }
 

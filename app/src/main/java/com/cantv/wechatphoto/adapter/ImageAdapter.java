@@ -1,13 +1,16 @@
 package com.cantv.wechatphoto.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.cantv.wechatphoto.R;
 import com.cantv.wechatphoto.interfaces.IPositionListener;
+import com.cantv.wechatphoto.utils.Utils;
 import com.cantv.wechatphoto.utils.greendao.PhotoBean;
 import com.cantv.wechatphoto.utils.imageloader.ImageInfo;
 import com.cantv.wechatphoto.utils.imageloader.ImageInfo.OnLoadFinishListener;
@@ -22,6 +25,7 @@ public class ImageAdapter extends PagerAdapter {
     private View[] mImageViews;
     private Context mContext;
     private IPositionListener listener;
+    private int[] realResolution;
 
     @Override
     public void setPrimaryItem(ViewGroup container, int position, Object object) {
@@ -29,11 +33,13 @@ public class ImageAdapter extends PagerAdapter {
         super.setPrimaryItem(container, position, object);
     }
 
-    public ImageAdapter(Context context, List<PhotoBean> photoList) {
+    public ImageAdapter(Context context, List<PhotoBean> photoList, Activity activity) {
         this.mContext = context;
         this.photoLists = photoList;
         this.photoSize = photoList.size();
         this.mImageViews = new View[photoSize];
+        realResolution = Utils.getRealResolution(activity);
+        Log.d("ImageAdapter","realResolution:width:"+realResolution[0]+",height"+realResolution[1]);
     }
 
     public void addListenerPosition(IPositionListener listener) {
@@ -59,7 +65,8 @@ public class ImageAdapter extends PagerAdapter {
         vl.width = ViewPager.LayoutParams.MATCH_PARENT;
         vl.height = ViewPager.LayoutParams.MATCH_PARENT;
         view.setLayoutParams(vl);
-        ImageInfo img = new ImageInfo.Builder().url(photoLists.get(position).getPhotourl()).placeHolder(0).rotation(photoLists.get(position).getDirection()).errorHolder(0).loadListener(new OnLoadFinishListener() {
+        Log.d("ImageAdapter",photoLists.get(position).getPhotourl());
+        ImageInfo img = new ImageInfo.Builder().width(realResolution[0]).height(realResolution[1]).url(photoLists.get(position).getPhotourl()).placeHolder(0).rotation(photoLists.get(position).getDirection()).errorHolder(0).loadListener(new OnLoadFinishListener() {
 
             @Override
             public void onSuccess() {
