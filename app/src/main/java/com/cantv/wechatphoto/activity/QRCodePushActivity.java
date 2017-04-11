@@ -178,7 +178,7 @@ public class QRCodePushActivity extends Activity {
             @Override
             public void onSuccess(String t, String... extras) {
                 mPushManager.removeClientIdUpdateListener();
-                int cornerDp = (int) getResources().getDimension(R.dimen.dimen_30px);
+                int cornerDp = (int) getResources().getDimension(R.dimen.dimen_30);
                 FakeX509TrustManager.allowAllSSL();
                 ImageInfo img = new ImageInfo.Builder().url(t).diskCacheStrategy(DiskCacheStrategy.NONE).isSkipMemoryCache(true).placeHolder(R.drawable.wechat_cibn).imgView(mQRCodeIv).cornerSizeDp(cornerDp).build();
                 ImageLoader.getInstance().loadImage(QRCodePushActivity.this, img);

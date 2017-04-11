@@ -105,6 +105,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
             ToastUtils.showMessageLong(this, "设备ID获取失败，请稍候重试。");
             finish();
         }
+
         getWexinPushQRCode(clientId);
         mPushManager.setOnClientIdUpdateListener(this);
 
@@ -118,10 +119,10 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
         bridget.setTranDurAnimTime(ANIMATION_TIME);
         popView.setUpRectResource(R.drawable.frame_wx_share_item_focus);
         Resources r = getResources();
-        int left = (int) r.getDimension(R.dimen.px_28);
-        int top = (int) r.getDimension(R.dimen.px_10);
-        int Right = (int) r.getDimension(R.dimen.px_28);
-        int bottom = (int) r.getDimension(R.dimen.px_28);
+        int left = (int) r.getDimension(R.dimen.dimen_f_25);
+        int top = (int) r.getDimension(R.dimen.dimen_f_12);
+        int Right = (int) r.getDimension(R.dimen.dimen_f_25);
+        int bottom = (int) r.getDimension(R.dimen.dimen_f_25);
         mRect = new Rect(left, top, Right, bottom);
         popView.setDrawUpRectPadding(mRect);
         gridView = (GridView) findViewById(R.id.gridView);

@@ -36,11 +36,11 @@ public class GridAdapter extends BaseAdapter {
     public GridAdapter(Context context, int resource, List<PhotoBean> photoList) {
         this.mContext = context;
         this.photoLists = photoList;
-        qrCodeSize = context.getResources().getDimensionPixelSize(R.dimen.dimen_265px);
-        photoWidth = context.getResources().getDimensionPixelSize(R.dimen.px_504);
-        photoHeight = context.getResources().getDimensionPixelSize(R.dimen.px_380);
-        headWidth = context.getResources().getDimensionPixelSize(R.dimen.px_70);
-        headHeight = context.getResources().getDimensionPixelSize(R.dimen.px_70);
+        qrCodeSize = context.getResources().getDimensionPixelSize(R.dimen.dimen_265);
+        photoWidth = context.getResources().getDimensionPixelSize(R.dimen.dimen_504);
+        photoHeight = context.getResources().getDimensionPixelSize(R.dimen.dimen_380);
+        headWidth = context.getResources().getDimensionPixelSize(R.dimen.dimen_70);
+        headHeight = context.getResources().getDimensionPixelSize(R.dimen.dimen_70);
     }
 
     @Override
@@ -90,7 +90,7 @@ public class GridAdapter extends BaseAdapter {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.image.getLayoutParams();
             layoutParams.width = qrCodeSize;
             layoutParams.height = qrCodeSize;
-            layoutParams.topMargin = parent.getContext().getResources().getDimensionPixelSize(R.dimen.dimen_39px);
+            layoutParams.topMargin = parent.getContext().getResources().getDimensionPixelSize(R.dimen.dimen_39);
             layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
             holder.image.setLayoutParams(layoutParams);
             holder.image.setScaleType(ImageView.ScaleType.FIT_XY);
@@ -106,7 +106,7 @@ public class GridAdapter extends BaseAdapter {
             RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams) holder.image.getLayoutParams();
             layoutParams.width = photoWidth;
             layoutParams.height = photoHeight;
-            layoutParams.topMargin = parent.getContext().getResources().getDimensionPixelSize(R.dimen.dimen_15px);
+            layoutParams.topMargin = parent.getContext().getResources().getDimensionPixelSize(R.dimen.dimen_15);
             holder.image.setLayoutParams(layoutParams);
             holder.image.setBackgroundResource(R.drawable.pager_background);
             holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
