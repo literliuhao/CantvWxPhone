@@ -83,7 +83,7 @@ public class GridAdapter extends BaseAdapter {
         if (((GridViewTV) parent).isOnMeasure) {
             return convertView;
         }
-        
+
         if (position == 0) {
             Log.d("getView", "============" + position);
             holder.tipsTv.setVisibility(View.VISIBLE);
