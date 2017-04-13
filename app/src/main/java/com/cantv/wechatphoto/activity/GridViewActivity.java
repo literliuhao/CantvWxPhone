@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
@@ -138,6 +139,14 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
         bean.setPhotourl("");
         HelperBean.photoList.add(0, bean);
         dataModel.getDBData(getApplicationContext(), GridViewActivity.this);
+
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+        int width = metric.widthPixels;  // 屏幕宽度（像素）
+        int height = metric.heightPixels;  // 屏幕高度（像素）
+
+        Log.e(TAG + "  DisplayMetrics", "width = " + width);
+        Log.e(TAG + "  DisplayMetrics", "height =" + height);
     }
 
     @Override

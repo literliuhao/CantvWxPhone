@@ -1923,4 +1923,6 @@
 
     <dimen name="dimen_f_12">10.0px</dimen>
     <dimen name="dimen_f_25">17.0px</dimen>
+
+    <dimen name="dimen_qr_top">200.68px</dimen>
 </resources>
