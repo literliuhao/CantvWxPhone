@@ -25,6 +25,17 @@ android {
         }
     }
 
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+
+        update {
+            initWith(release)
+        }
+    }
+
 //    buildTypes {
 //        release {
 //            // 开启混淆
@@ -64,6 +75,7 @@ android {
     }
 
     productFlavors {
+//        can {}
     }
 
     lintOptions {
