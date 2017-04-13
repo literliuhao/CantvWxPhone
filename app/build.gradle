@@ -1,60 +1,63 @@
-import java.text.SimpleDateFormat
-
 apply plugin: 'com.android.application'
+apply plugin: 'cn.can.apk.generator'
 
-
-ext.SIGN_CONFIG_FILE = ['sign_app.properties'] // 签名配置文件
-apply from: 'sign.gradle' // 自动签名配置，勿删
-
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
+apkGenerator {
+    outputFileName "WeChatPhoto/{date}/WechatPhoto-v{versionString}.{flavorCode}-{flavor}-{buildType}-{date}{hour}"
+    outputFilePath "@appReleaseDir"
+    signingConfPath "@sign_config_path"
+    versionNamePattern "v{versionString}.{flavorCode}-{buildType}-{date}"
+    signingMapping = ['default': "sign_can.properties"]
 }
+
 android {
     compileSdkVersion 23
     buildToolsVersion "25.0.0"
+
     useLibrary 'org.apache.http.legacy'
     defaultConfig {
         applicationId "com.cantv.wechatphoto"
         minSdkVersion 19
         targetSdkVersion 21
         versionCode 128
-        versionName "WeChatPhoto-20170412-v1.2.8"
-    }
-
-    buildTypes {
-
-        release {
-            // 开启混淆
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            applicationVariants.all { variant ->
-                if (variant.buildType.name == 'update') {
-                    def newVersionCode = variant.versionCode + 1
-                    variant.mergedFlavor.versionCode = newVersionCode
-                    def versionCodeStr = formatVersionCodeString(newVersionCode)
-                    def newVersionName = variant.versionName.replaceAll('\\d(\\.\\d)*$', "${versionCodeStr}")
-                    variant.mergedFlavor.versionName = newVersionName
-                }
-                //修改生成的apk名字
-                variant.outputs.each { output ->
-                    def oldFile = output.outputFile
-                    if (variant.buildType.name in ['release', 'update']) {
-                        def releaseApkName = "WeChatPhoto_${variant.flavorName}_V${variant.versionCode}_${getDateTime()}.apk";
-                        if (project.hasProperty("appReleaseDir")) {
-                            File releasePath = new File(project.property("appReleaseDir"), getDate());
-                            output.outputFile = new File(releasePath, releaseApkName);
-                        } else {
-                            output.outputFile = new File(oldFile.parent, releaseApkName)
-                        }
-                    }
-                }
-            }
-        }
-
-        update {
-            initWith(release)
+        compileOptions {
+            sourceCompatibility JavaVersion.VERSION_1_7
+            targetCompatibility JavaVersion.VERSION_1_7
         }
     }
+
+//    buildTypes {
+//        release {
+//            // 开启混淆
+//            minifyEnabled false
+//            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+//            applicationVariants.all { variant ->
+//                if (variant.buildType.name == 'update') {
+//                    def newVersionCode = variant.versionCode + 1
+//                    variant.mergedFlavor.versionCode = newVersionCode
+//                    def versionCodeStr = formatVersionCodeString(newVersionCode)
+//                    def newVersionName = variant.versionName.replaceAll('\\d(\\.\\d)*$', "${versionCodeStr}")
+//                    variant.mergedFlavor.versionName = newVersionName
+//                }
+//                //修改生成的apk名字
+//                variant.outputs.each { output ->
+//                    def oldFile = output.outputFile
+//                    if (variant.buildType.name in ['release', 'update']) {
+//                        def releaseApkName = "WeChatPhoto_${variant.flavorName}_V${variant.versionCode}_${getDateTime()}.apk";
+//                        if (project.hasProperty("appReleaseDir")) {
+//                            File releasePath = new File(project.property("appReleaseDir"), getDate());
+//                            output.outputFile = new File(releasePath, releaseApkName);
+//                        } else {
+//                            output.outputFile = new File(oldFile.parent, releaseApkName)
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+//        update {
+//            initWith(release)
+//        }
+//    }
     // recommend bugly 添加配置
     dexOptions {
         jumboMode = true
@@ -66,10 +69,7 @@ android {
     lintOptions {
         abortOnError false
     }
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
-    }
+
 
     //================bugly添加配置===========
     repositories {
@@ -93,26 +93,6 @@ dependencies {
     // 多dex配置  bugly添加配置
     compile "com.android.support:multidex:1.0.1"
 //    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
-}
-
-
-def releaseDate() {
-    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("UTC"))
-}
-def releaseTime(){
-    return new SimpleDateFormat("yyyyMMddHHmm").format(new Date())
-}
-def getDateTime() {
-    return formatDateTime('yyyyMMddHHmmss')
-}
-def getDate() {
-    return formatDateTime('yyyyMMdd');
-}
-def formatDateTime(String format) {
-    return new Date().format(format)
-}
-def formatVersionCodeString(int versionCode) {
-    versionCode.toString().toCharArray().join('.').toString()
 }
 
 //===========================bugly热修复配置区============================================
@@ -199,7 +179,7 @@ if (buildWithTinker()) {
         buildConfig {
             applyMapping = getApplyMappingPath() //  可选，设置mapping文件，建议保持旧apk的proguard混淆方式
             applyResourceMapping = getApplyResourceMappingPath() // 可选，设置R.txt文件，通过旧apk文件保持ResId的分配
-            tinkerId = "WeChatPhoto-20161222-v1.2.7" // 必选，默认为null ***  TODO 每次下发补丁包是需要修改的tinkerId
+            tinkerId = "WeChatPhoto-20170412-v1.2.8" // 必选，默认为null ***  TODO 每次下发补丁包是需要修改的tinkerId
         }
 
         // dex相关配置项

@@ -7,7 +7,7 @@
         android:id="@+id/iv_qrcode"
         android:layout_width="@dimen/dimen_308"
         android:layout_height="@dimen/dimen_308"
-        android:layout_marginTop="@dimen/dimen_452"
+        android:layout_marginTop="@dimen/dimen_qr_top"
         android:layout_marginStart="@dimen/dimen_275"
         android:scaleType="fitCenter"
         android:src="@drawable/wechat_cibn"/>
