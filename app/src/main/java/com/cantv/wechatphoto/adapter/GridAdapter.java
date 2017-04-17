@@ -133,6 +133,7 @@ public class GridAdapter extends BaseAdapter {
                     .errorHolder(0).loadListener(new OnLoadFinishListener() {
                         @Override
                         public void onSuccess() {
+                            holder.image.setBackgroundResource(0);
                         }
 
                         @Override

@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:clipChildren="false" >
+    android:clipChildren="false">
 
     <TextView
         android:id="@+id/txt_empty"
@@ -13,23 +13,66 @@
         android:textStyle="bold"
         android:visibility="gone" />
 
+    <LinearLayout
+        android:id="@+id/ll_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/txt_wechatID"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="@dimen/dimen_12"
+        android:layout_marginEnd="@dimen/dimen_230"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="@string/press"
+            android:textColor="@color/fontColor"
+            android:textSize="@dimen/dimen_30" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="@dimen/dimen_75"
+            android:layout_height="@dimen/dimen_50"
+            android:layout_marginEnd="@dimen/dimen_8"
+            android:layout_marginStart="@dimen/dimen_8"
+            android:background="@drawable/bg_operation_txt"
+            android:gravity="center"
+            android:includeFontPadding="false"
+            android:paddingStart="@dimen/dimen_2"
+            android:text="@string/menu"
+            android:textColor="@color/fontColor"
+            android:textSize="@dimen/dimen_30" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:text="@string/key_to_delete"
+            android:textColor="@color/fontColor"
+            android:textSize="@dimen/dimen_30" />
+    </LinearLayout>
+
     <TextView
         android:id="@+id/txt_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignTop="@+id/txt_wechatID"
+        android:layout_alignBottom="@+id/txt_wechatID"
+        android:layout_marginBottom="@dimen/dimen_18"
         android:layout_toLeftOf="@+id/txt_totalnumber"
         android:text=""
         android:textColor="@color/fontColor"
         android:textSize="@dimen/dimen_30" />
 
     <TextView
-        android:layout_marginRight="@dimen/dimen_90"
         android:id="@+id/txt_totalnumber"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/txt_wechatID"
         android:layout_alignParentRight="true"
-        android:layout_alignTop="@id/txt_wechatID"
+        android:layout_marginBottom="@dimen/dimen_18"
+        android:layout_marginRight="@dimen/dimen_90"
         android:text=""
         android:textColor="@color/fontColor"
         android:textSize="@dimen/dimen_30" />
@@ -43,68 +86,30 @@
             android:id="@+id/gridView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:numColumns="auto_fit"
             android:columnWidth="@dimen/dimen_504"
             android:horizontalSpacing="@dimen/dimen_20"
-            android:verticalSpacing="@dimen/dimen_10"
-            android:paddingTop="@dimen/dimen_5"
+            android:numColumns="auto_fit"
             android:paddingBottom="@dimen/dimen_144"
             android:paddingLeft="@dimen/dimen_175"
             android:paddingRight="@dimen/dimen_175"
-            android:scrollbars="none" />
+            android:paddingTop="@dimen/dimen_5"
+            android:scrollbars="none"
+            android:verticalSpacing="@dimen/dimen_10" />
     </LinearLayout>
 
     <ImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dimen_171"
-        android:scaleType="fitXY"
         android:layout_alignParentBottom="true"
-        android:background="@drawable/share_photo_page_bottom_mask" />
+        android:background="@drawable/share_photo_page_bottom_mask"
+        android:scaleType="fitXY" />
 
     <com.cantv.wechatphoto.view.PopView
         android:id="@+id/popView_id"
         android:layout_width="@dimen/dimen_609"
         android:layout_height="@dimen/dimen_455" />
 
-    <LinearLayout
-        android:id="@+id/ll_tips"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/dimen_84"
-        android:layout_marginStart="@dimen/dimen_85"
-        android:orientation="horizontal">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:text="@string/press"
-            android:textColor="@color/fontColor"
-            android:textSize="@dimen/dimen_30" />
-
-        <TextView
-            android:layout_width="@dimen/dimen_75"
-            android:layout_height="@dimen/dimen_50"
-            android:layout_marginEnd="@dimen/dimen_8"
-            android:layout_marginStart="@dimen/dimen_8"
-            android:paddingStart="@dimen/dimen_2"
-            android:background="@drawable/bg_operation_txt"
-            android:gravity="center"
-            android:includeFontPadding="false"
-            android:text="@string/menu"
-            android:textColor="@color/fontColor"
-            android:textSize="@dimen/dimen_30" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:includeFontPadding="false"
-            android:text="@string/key_to_delete"
-            android:textColor="@color/fontColor"
-            android:textSize="@dimen/dimen_30" />
-    </LinearLayout>
 
     <TextView
         android:id="@+id/txt_wechatID"
