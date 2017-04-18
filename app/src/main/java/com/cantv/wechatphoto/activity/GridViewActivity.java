@@ -83,7 +83,6 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     private String qrTicket = "";
     private Rect mRect;
     private Boolean isFocusDelay = false;
-
     /*
      * (non-Javadoc)
      *
@@ -142,11 +141,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
 
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
-        int width = metric.widthPixels;  // 屏幕宽度（像素）
-        int height = metric.heightPixels;  // 屏幕高度（像素）
 
-        Log.e(TAG + "  DisplayMetrics", "width = " + width);
-        Log.e(TAG + "  DisplayMetrics", "height =" + height);
     }
 
     @Override
@@ -235,7 +230,6 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                 case FOCUS_VIEW:
                     View view = (View) msg.obj;
                     Log.i(TAG, "handleMessage FOCUS_VIEW");
-                    Log.i(TAG, view.getWidth() + " " + view.getMeasuredWidth());
                     popView.setFocusView(view, 1.1f);
                     break;
             }
@@ -269,7 +263,9 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
             MobclickAgent.onEvent(SampleApplicationLike.getAppContext(), "Successful_Upload");
             HelperBean.photoList.addAll(1, photoList);
             totalNumber.setText("/" + HelperBean.photoList.size());
-            gridAdapter.notifyDataSetChanged();
+            mHandler.removeMessages(UPDATE_DATA);
+            mHandler.sendEmptyMessageDelayed(UPDATE_DATA,1000);
+//            gridAdapter.notifyDataSetChanged();
         }
     }
 
@@ -331,7 +327,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
             } else {
                 Message msg = mHandler.obtainMessage(FOCUS_VIEW);
                 msg.obj = view;
-                mHandler.sendMessageDelayed(msg, 500);
+                mHandler.sendMessageDelayed(msg, 1000);
             }
             lastView = view;
         }
