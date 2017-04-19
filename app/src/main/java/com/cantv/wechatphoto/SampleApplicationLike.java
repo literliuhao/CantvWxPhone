@@ -63,7 +63,6 @@ public class SampleApplicationLike extends DefaultApplicationLike {
         // TODO: 这里进行Bugly初始化
         initBugly();
 
-
         // 初始化个推服务
         PushManager.getInstance(mContext).init();
     }

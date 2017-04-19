@@ -48,7 +48,6 @@ import com.cantv.wechatphoto.utils.greendao.PhotoBean;
 import com.cantv.wechatphoto.utils.imageloader.ImageInfo;
 import com.cantv.wechatphoto.utils.imageloader.ImageLoader;
 import com.cantv.wechatphoto.utils.volley.VolleyCallback;
-import com.cantv.wechatphoto.utils.volley.VolleyRequest;
 import com.cantv.wechatphoto.view.PopView;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -77,6 +76,8 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     private final int UPDATE_DATA = 0x000001;
     private final int FOCUS_VIEW = 0x000002;
     private final int ANIMATION_TIME = 260;
+    private final int DELAYED_TIME = 1000;
+    private final float SCALE = 1.1f;
     private final String TAG = GridViewActivity.class.getSimpleName();
     private PushManager mPushManager;
     private String mQrCodeUrl = "";
@@ -84,11 +85,6 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     private Rect mRect;
     private Boolean isFocusDelay = false;
 
-    /*
-     * (non-Javadoc)
-     *
-     * @see android.app.Activity#onCreate(android.os.Bundle)
-     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         Log.i("GridViewActivity", "onCreate");
@@ -142,11 +138,6 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
 
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
-        int width = metric.widthPixels;  // 屏幕宽度（像素）
-        int height = metric.heightPixels;  // 屏幕高度（像素）
-
-        Log.e(TAG + "  DisplayMetrics", "width = " + width);
-        Log.e(TAG + "  DisplayMetrics", "height =" + height);
     }
 
     @Override
@@ -175,7 +166,6 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     protected void onStop() {
         super.onStop();
         Log.i("GridViewActivity", "onStop");
-
     }
 
     @Override
@@ -192,13 +182,11 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
         GridViewActivity.this.unregisterReceiver(dataReceiver);
         HelperBean.photoList.clear();
         runOnUiThread(new Runnable() {
-
             @Override
             public void run() {
                 ImageLoader.getInstance().clearMemCache();
             }
         });
-        System.gc();
     }
 
     public boolean showDelete() {
@@ -235,8 +223,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                 case FOCUS_VIEW:
                     View view = (View) msg.obj;
                     Log.i(TAG, "handleMessage FOCUS_VIEW");
-                    Log.i(TAG, view.getWidth() + " " + view.getMeasuredWidth());
-                    popView.setFocusView(view, 1.1f);
+                    popView.setFocusView(view, SCALE);
                     break;
             }
         }
@@ -264,16 +251,16 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
             if (null != layoutDelete && layoutDelete.getVisibility() == View.VISIBLE) {
                 layoutDelete.setVisibility(View.INVISIBLE);
                 isLock = false;
-
             }
             MobclickAgent.onEvent(SampleApplicationLike.getAppContext(), "Successful_Upload");
             HelperBean.photoList.addAll(1, photoList);
             totalNumber.setText("/" + HelperBean.photoList.size());
-            gridAdapter.notifyDataSetChanged();
+            mHandler.removeMessages(UPDATE_DATA);
+            mHandler.sendEmptyMessageDelayed(UPDATE_DATA, DELAYED_TIME);
         }
     }
 
-    public void refrshNumber(int position, int total) {
+    public void refreshNumber(int position, int total) {
         currentNumber.setText(String.valueOf(position));
         totalNumber.setText("/" + total);
     }
@@ -307,7 +294,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                         photoBean.setBack1("expired");
                         daoHelper.updatePhoto(photoBean);
                         HelperBean.photoList.remove(currentPosition - 1);
-                        refrshNumber(currentPosition, HelperBean.photoList.size());
+                        refreshNumber(currentPosition, HelperBean.photoList.size());
                         MobclickAgent.onEvent(SampleApplicationLike.getAppContext(), "Delete_photo");
                         gridAdapter.notifyDataSetChanged();
                     }
@@ -326,12 +313,12 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
             view.bringToFront();
             if (lastView != null) {
                 mHandler.removeMessages(FOCUS_VIEW);
-                popView.setFocusView(view, lastView, 1.1f);
+                popView.setFocusView(view, lastView, SCALE);
                 Log.i(TAG, "onItemSelected FOCUS_VIEW");
             } else {
                 Message msg = mHandler.obtainMessage(FOCUS_VIEW);
                 msg.obj = view;
-                mHandler.sendMessageDelayed(msg, 500);
+                mHandler.sendMessageDelayed(msg, DELAYED_TIME);
             }
             lastView = view;
         }
@@ -356,25 +343,19 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
             gridView.setSelection(0);
             View newView = gridView.getChildAt(0);
             newView.bringToFront();
-            popView.setFocusView(newView, 1.1f);
+            popView.setFocusView(newView, SCALE);
             Log.i(TAG, "onLayoutChange FOCUS_VIEW");
         } else if (isFocusDelay) {
             Message msg = mHandler.obtainMessage(FOCUS_VIEW);
             msg.obj = gridView.getSelectedView();
             mHandler.sendMessageDelayed(msg, 20);
-            Log.i(TAG, "onLayoutChange FOCUS_VIEW  layoutScorll set Focus");
+            Log.i(TAG, "onLayoutChange FOCUS_VIEW  layoutScroll set Focus");
         }
     }
 
     @Override
     public void onUpdate(String clientId) {
         getWexinPushQRCode(clientId);
-    }
-
-    public interface OnRequestFinishCallback<T> {
-        void onSuccess(T t, String... extras);
-
-        void onFail(Throwable e);
     }
 
     /**
@@ -422,9 +403,5 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                 Log.w(TAG, "failed to getWexinPushQRCode: " + error.getClass().getSimpleName());
             }
         });
-    }
-
-    public void cancelAllRequest() {
-        VolleyRequest.stopRequest("getWexinPushQRCode");
     }
 }
