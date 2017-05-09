@@ -5,6 +5,6 @@ package com.cantv.wechatphoto.interfaces;
  */
 
 public interface ICallBack {
-    void result(int sourceid);
+    void result(int sourceId);
     void done();
 }

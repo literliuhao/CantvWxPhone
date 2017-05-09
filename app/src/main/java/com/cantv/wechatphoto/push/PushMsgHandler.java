@@ -113,19 +113,19 @@ public class PushMsgHandler {
                 if (null != yokuVideo) {
                     String videoId = msg.getVideo().getVideoid();
                     if (null == videoId) {
-                        ToastUtils.showMessage(context, "数据格式异常");
+                        ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
                         return;
                     }
                     intent = new Intent("com.cantv.action.YOKUPLAYER");
                     intent.putExtra(KEY_VIDEO_INFO, msgStr);
                 } else {
-                    Log.i(TAG, "Video. " + "【数据格式异常】");
-                    ToastUtils.showMessage(context, "数据格式异常");
+                    Log.i(TAG, "Video. " + "【数据获取异常，请按遥控返回键】");
+                    ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
                     return;
                 }
             } else {
-                Log.i(TAG, "PushYokuProgramMsg. " + "【数据格式异常】");
-                ToastUtils.showMessage(context, "数据格式异常");
+                Log.i(TAG, "PushYokuProgramMsg. " + "【数据获取异常，请按遥控返回键】");
+                ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
                 return;
             }
         } else if (type == PUSH_TYPE_PUSH_SOHU_PROGRAM) {
@@ -136,19 +136,19 @@ public class PushMsgHandler {
                 if (null != sohuVideo) {
                     String videoId = sohuVideo.getSohu().getVid();
                     if (null == videoId) {
-                        ToastUtils.showMessage(context, "数据格式异常");
+                        ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
                         return;
                     }
                     intent = new Intent("com.cantv.action.SOHUPLAYER");
                     intent.putExtra(KEY_VIDEO_INFO, msgStr);
                 } else {
-                    Log.i(TAG, "Video. " + "【数据格式异常】");
-                    ToastUtils.showMessage(context, "数据格式异常");
+                    Log.i(TAG, "Video. " + "【数据获取异常，请按遥控返回键】");
+                    ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
                     return;
                 }
             } else {
-                Log.i(TAG, "PushSohuProgramMsg. " + "【数据格式异常】");
-                ToastUtils.showMessage(context, "数据格式异常");
+                Log.i(TAG, "PushSohuProgramMsg. " + "【数据获取异常，请按遥控返回键】");
+                ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
                 return;
             }
         } else if (type == PUSH_TYPE_PUSH_CAN_PROGRAM) {
@@ -159,19 +159,19 @@ public class PushMsgHandler {
                 if (null != canVideo) {
                     String videoId = canVideo.getVideoid();
                     if (null == videoId) {
-                        ToastUtils.showMessage(context, "数据格式异常");
+                        ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
                         return;
                     }
                     intent = new Intent("com.cantv.action.CANPLAYER");
                     intent.putExtra(KEY_VIDEO_INFO, msgStr);
                 } else {
-                    Log.i(TAG, "Video. " + "【数据格式异常】");
-                    ToastUtils.showMessage(context, "数据格式异常");
+                    Log.i(TAG, "Video. " + "【数据获取异常，请按遥控返回键】");
+                    ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
                     return;
                 }
             } else {
-                Log.i(TAG, "PushCANProgramMsg. " + "【数据格式异常】");
-                ToastUtils.showMessage(context, "数据格式异常");
+                Log.i(TAG, "PushCANProgramMsg. " + "【数据获取异常，请按遥控返回键】");
+                ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
                 return;
             }
         }

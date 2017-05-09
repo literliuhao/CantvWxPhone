@@ -82,7 +82,7 @@
         android:id="@+id/rl_delete"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dimen_18"
+        android:layout_marginTop="@dimen/dimen_12"
         android:visibility="gone" >
 
         <TextView
