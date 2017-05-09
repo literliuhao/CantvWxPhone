@@ -22,38 +22,32 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.android.volley.VolleyError;
-import com.cantv.wechatphoto.GetDataUtils;
 import com.cantv.wechatphoto.R;
 import com.cantv.wechatphoto.SampleApplicationLike;
 import com.cantv.wechatphoto.adapter.GridAdapter;
 import com.cantv.wechatphoto.bridge.EffectNoDrawBridge;
-import com.cantv.wechatphoto.entity.HelperBean;
 import com.cantv.wechatphoto.interfaces.IDBInteraction;
 import com.cantv.wechatphoto.interfaces.IPhotoListener;
 import com.cantv.wechatphoto.model.PushDataModelImpl;
+import com.cantv.wechatphoto.model.QRManager;
 import com.cantv.wechatphoto.push.PushManager;
 import com.cantv.wechatphoto.push.PushManager.onClientIdUpdateListener;
 import com.cantv.wechatphoto.receiver.DataReceiver;
-import com.cantv.wechatphoto.utils.FakeX509TrustManager;
-import com.cantv.wechatphoto.utils.NetWorkUtils;
 import com.cantv.wechatphoto.utils.PreferencesUtils;
 import com.cantv.wechatphoto.utils.ToastUtils;
 import com.cantv.wechatphoto.utils.greendao.DaoOpenHelper;
 import com.cantv.wechatphoto.utils.greendao.PhotoBean;
-import com.cantv.wechatphoto.utils.imageloader.ImageInfo;
 import com.cantv.wechatphoto.utils.imageloader.ImageLoader;
-import com.cantv.wechatphoto.utils.volley.VolleyCallback;
 import com.cantv.wechatphoto.view.PopView;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.umeng.analytics.MobclickAgent;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * 相册GridView
@@ -77,13 +71,16 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     private final int FOCUS_VIEW = 0x000002;
     private final int ANIMATION_TIME = 260;
     private final int DELAYED_TIME = 1000;
+    private final int TIMER_PERIOD = 5000;
     private final float SCALE = 1.1f;
     private final String TAG = GridViewActivity.class.getSimpleName();
     private PushManager mPushManager;
-    private String mQrCodeUrl = "";
-    private String qrTicket = "";
     private Rect mRect;
     private Boolean isFocusDelay = false;
+    private List<PhotoBean> picList;
+    private Timer timer;
+    private String clientId;
+    private Boolean isLoaded = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,20 +93,20 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
         intentFilter = new IntentFilter("com.cibn.ott.action.WECHAT_PHOTO");
         dataReceiver.setDBInteractionListener(this);
         mPushManager = PushManager.getInstance(this);
-        String clientId = mPushManager.getClientId();
+        clientId = mPushManager.getClientId();
         // 校验clientId，如果获取不到clientId无法加载二维码与获取推送消息。
         if (TextUtils.isEmpty(clientId)) {
             ToastUtils.showMessageLong(this, "设备ID获取失败，请稍候重试。");
             finish();
         }
+        picList = new ArrayList<>();
 
-        getWexinPushQRCode(clientId);
         mPushManager.setOnClientIdUpdateListener(this);
 
         textEmpty = (TextView) findViewById(R.id.txt_empty);
         currentNumber = (TextView) findViewById(R.id.txt_number);
         totalNumber = (TextView) findViewById(R.id.txt_totalnumber);
-        gridAdapter = new GridAdapter(this, R.layout.grid_item, HelperBean.photoList);
+        gridAdapter = new GridAdapter(this, R.layout.grid_item, picList);
         popView = (PopView) findViewById(R.id.popView_id);
         popView.setEffectBridge(new EffectNoDrawBridge());
         EffectNoDrawBridge bridget = (EffectNoDrawBridge) popView.getEffectBridge();
@@ -133,11 +130,12 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
         PhotoBean bean = new PhotoBean();
         bean.setWxname("扫一扫：影片、照片投屏看");
         bean.setPhotourl("");
-        HelperBean.photoList.add(0, bean);
+        picList.add(0, bean);
         dataModel.getDBData(getApplicationContext(), GridViewActivity.this);
-
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
+
+        pullQRUrl();
     }
 
     @Override
@@ -180,7 +178,9 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
         super.onDestroy();
         Log.i("GridViewActivity", "onDestroy");
         GridViewActivity.this.unregisterReceiver(dataReceiver);
-        HelperBean.photoList.clear();
+        //应用每次关闭时候清空CODE_URL防止过期
+        PreferencesUtils.putString(this, QRManager.getInstance(this).CODE_URL, "");
+//        picList.clear();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -234,8 +234,8 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
         if (null == photoList) {
             mHandler.sendEmptyMessage(SHOW_EMPTY);
         } else {
-            HelperBean.photoList.addAll(photoList);
-            totalNumber.setText("/" + HelperBean.photoList.size());
+            picList.addAll(photoList);
+            totalNumber.setText("/" + picList.size());
             mHandler.sendEmptyMessage(UPDATE_DATA);
         }
     }
@@ -247,14 +247,14 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
     @Override
     public void updateData(List<PhotoBean> photoList) {
         // 增量更新
-        if (null != HelperBean.photoList && HelperBean.photoList.size() >= 1 && null != photoList) {
+        if (null != picList && picList.size() >= 1 && null != photoList) {
             if (null != layoutDelete && layoutDelete.getVisibility() == View.VISIBLE) {
                 layoutDelete.setVisibility(View.INVISIBLE);
                 isLock = false;
             }
             MobclickAgent.onEvent(SampleApplicationLike.getAppContext(), "Successful_Upload");
-            HelperBean.photoList.addAll(1, photoList);
-            totalNumber.setText("/" + HelperBean.photoList.size());
+            picList.addAll(1, photoList);
+            totalNumber.setText("/" + picList.size());
             mHandler.removeMessages(UPDATE_DATA);
             mHandler.sendEmptyMessageDelayed(UPDATE_DATA, DELAYED_TIME);
         }
@@ -284,17 +284,17 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
                     if (KeyEvent.KEYCODE_ENTER == keyCode || KeyEvent.KEYCODE_DPAD_CENTER == keyCode) { // 遥控器OK
                         isLock = false;
                         //解决删除后GridView滚动后焦点错位的问题
-                        int i = HelperBean.photoList.size();
+                        int i = picList.size();
                         if (i % 3 == 1 && currentPosition > i - 5 && currentPosition < i - 1 && currentPosition % 3 != 0) {
                             isFocusDelay = true;
                         }
                         layoutDelete.setVisibility(View.GONE);
-                        PhotoBean photoBean = HelperBean.photoList.get(currentPosition - 1);
+                        PhotoBean photoBean = picList.get(currentPosition - 1);
                         DaoOpenHelper daoHelper = DaoOpenHelper.getInstance(getApplicationContext());
                         photoBean.setBack1("expired");
                         daoHelper.updatePhoto(photoBean);
-                        HelperBean.photoList.remove(currentPosition - 1);
-                        refreshNumber(currentPosition, HelperBean.photoList.size());
+                        picList.remove(currentPosition - 1);
+                        refreshNumber(currentPosition, picList.size());
                         MobclickAgent.onEvent(SampleApplicationLike.getAppContext(), "Delete_photo");
                         gridAdapter.notifyDataSetChanged();
                     }
@@ -355,7 +355,7 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
 
     @Override
     public void onUpdate(String clientId) {
-        getWexinPushQRCode(clientId);
+//        getWXQRCode(clientId);
     }
 
     /**
@@ -363,45 +363,50 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
      *
      * @param
      */
-    public void getWexinPushQRCode(String clientId) {
-        if (TextUtils.isEmpty(clientId)) {
-            return;
-        }
-        String mac = NetWorkUtils.getEthernetMac();
-        GetDataUtils.getIntance().requestWexinPushQRCode(mac, clientId, "getWexinPushQRCode", new VolleyCallback<String>() {
+    public void getWXQRCode(String clientId) {
+        QRManager.getInstance(this).getWXQRCode(clientId, new QRCodePushActivity.OnRequestFinishCallback<String>() {
             @Override
-            public void onSuccess(String response) {
-                if (TextUtils.isEmpty(response)) {
-                    response = "";
-                }
-                try {
-                    JsonObject respJs = new JsonParser().parse(response).getAsJsonObject();
-                    int status = respJs.get("status").getAsInt();
-                    Log.w(TAG, "getWexinPushQRCode, status = " + status);
-                    if (status == 200) {
-                        JsonObject dataJs = respJs.get("data").getAsJsonObject();
-                        qrTicket = dataJs.get("qrTicket").getAsString();
-                        mQrCodeUrl = "https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + qrTicket;
-                        PreferencesUtils.putString(getApplicationContext(), "MQRCODEURL", mQrCodeUrl);
-                        if (HelperBean.photoList != null && HelperBean.photoList.size() > 0) {
-                            HelperBean.photoList.get(0).setPhotourl(mQrCodeUrl);
-                        }
-                        if (gridView != null && gridView.getChildAt(0) != null) {
-                            ImageView img = (ImageView) gridView.getChildAt(0).findViewById(R.id.id_imgView);
-                            ImageInfo imgInfo = new ImageInfo.Builder().url(mQrCodeUrl).isSkipMemoryCache(true).imgView(img).build();
-                            FakeX509TrustManager.allowAllSSL();
-                            ImageLoader.getInstance().loadImage(GridViewActivity.this, imgInfo);
-                        }
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+            public void onSuccess(String codeURL, String... extras) {
+                isLoaded = true;
+                drawQRCode(codeURL);
             }
 
             @Override
-            public void onFail(VolleyError error) {
-                Log.w(TAG, "failed to getWexinPushQRCode: " + error.getClass().getSimpleName());
+            public void onFail(Throwable e) {
+                Log.w(TAG, "Failed to getWXQRCode.", e);
             }
         });
+    }
+
+    private void pullQRUrl() {
+        timer = new Timer();
+        timer.schedule(new PoolTask(), 0, TIMER_PERIOD);
+    }
+
+    private void drawQRCode(String codeURL) {
+        if (picList != null && picList.size() > 0) {
+            picList.get(0).setPhotourl(codeURL);
+        }
+        //通过观察后发现由于异步原因可能导致刷新不及时，因此手动再次触发刷新
+        GridViewActivity.this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (null != gridAdapter) gridAdapter.notifyDataSetChanged();
+            }
+        });
+
+    }
+
+    class PoolTask extends TimerTask {
+        @Override
+        public void run() {
+            if (!isLoaded) {
+                Log.i(TAG, "run...");
+                getWXQRCode(clientId);
+            } else {
+                Log.i(TAG, "run...cancel");
+                timer.cancel();
+            }
+        }
     }
 }

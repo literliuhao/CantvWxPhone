@@ -2,7 +2,6 @@ package com.cantv.wechatphoto.model;
 
 import android.content.Context;
 
-import com.cantv.wechatphoto.entity.HelperBean;
 import com.cantv.wechatphoto.utils.greendao.DaoOpenHelper;
 import com.cantv.wechatphoto.utils.greendao.PhotoBean;
 
@@ -39,6 +38,5 @@ public class SyncImage {
         /* 数据层操作 */
         DaoOpenHelper daoHelper = DaoOpenHelper.getInstance(mContext);
         daoHelper.updatePhoto(photoBean);
-        HelperBean.updateBean(photoBean);
     }
 }

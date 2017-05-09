@@ -20,6 +20,7 @@ import com.cantv.wechatphoto.adapter.ImageAdapter;
 import com.cantv.wechatphoto.interfaces.IPhotoListener;
 import com.cantv.wechatphoto.interfaces.IPositionListener;
 import com.cantv.wechatphoto.model.PushDataModelImpl;
+import com.cantv.wechatphoto.model.QRManager;
 import com.cantv.wechatphoto.push.PushManager;
 import com.cantv.wechatphoto.utils.PreferencesUtils;
 import com.cantv.wechatphoto.utils.ToastUtils;
@@ -33,8 +34,9 @@ import java.util.List;
  * Created by liuhao on 2016/6/8.
  */
 public class PagerActivity extends Activity implements IPositionListener, IPhotoListener {
+    private String TAG = "PagerActivity";
     private ViewPager mViewPager;
-    private TextView textCurrect;
+    private TextView textCurrent;
     private TextView textTotal;
     private RelativeLayout mBottomMask;
     private int totalCount;
@@ -42,8 +44,7 @@ public class PagerActivity extends Activity implements IPositionListener, IPhoto
     private ImageAdapter imageAdapter;
     private Runnable mHideBottomMaskRunnable;
     private PushDataModelImpl dataModel;
-    List<PhotoBean> mPhotoLists;
-    private String mQrCodeUrl = "";
+    private List<PhotoBean> mPhotoLists;
     private PushManager mPushManager;
 
     @Override
@@ -52,17 +53,18 @@ public class PagerActivity extends Activity implements IPositionListener, IPhoto
         super.onCreate(savedInstanceState);
         getWindow().getDecorView().setBackgroundResource(android.R.color.black);
         setContentView(R.layout.pager_view);
-        textCurrect = (TextView) findViewById(R.id.txt_pager_currectNumber);
+        textCurrent = (TextView) findViewById(R.id.txt_pager_currectNumber);
         textTotal = (TextView) findViewById(R.id.txt_pager_totalnumber);
         mBottomMask = (RelativeLayout) findViewById(R.id.rl_bottom_mask);
         mPushManager = PushManager.getInstance(this);
-        String clientId = mPushManager.getClientId();
+
         Intent gridIntent = getIntent();
         final int mPosition = gridIntent.getIntExtra("position", 0);
         mPhotoLists = new ArrayList<>();
         //修改打开图片然后回到launcher内存被清理后回到微信相册，图片无法显示的bug
         dataModel = new PushDataModelImpl();
         dataModel.getDBData(getApplicationContext(), PagerActivity.this);
+        imageAdapter = new ImageAdapter(this, mPhotoLists,this);
         imageAdapter.addListenerPosition(this);
         mViewPager = (ViewPager) findViewById(R.id.id_viewpager);
         mViewPager.setAdapter(imageAdapter);
@@ -139,7 +141,7 @@ public class PagerActivity extends Activity implements IPositionListener, IPhoto
         if (position == 0 && mBottomMask.getVisibility() == View.VISIBLE) {
             mHideBottomMaskRunnable.run();
         }
-        textCurrect.setText(String.valueOf(position + 1));
+        textCurrent.setText(String.valueOf(position + 1));
     }
 
     @Override
@@ -169,15 +171,14 @@ public class PagerActivity extends Activity implements IPositionListener, IPhoto
     }
 
     @Override
-    public void onSuccess(List<PhotoBean> photoList) {
+    public void onSuccess(final List<PhotoBean> photoList) {
+        String mQrCodeUrl = PreferencesUtils.getString(getApplicationContext(), QRManager.getInstance(this).CODE_URL);
         //添加PagerActivity第一个二维码item
         PhotoBean bean = new PhotoBean();
         bean.setWxname(getString(R.string.scan) + "：" + getString(R.string.watch_for_video_add_picture));
-        mQrCodeUrl = PreferencesUtils.getString(getApplicationContext(), "MQRCODEURL");
         bean.setPhotourl(mQrCodeUrl);
         photoList.add(0, bean);
         mPhotoLists.addAll(photoList);
-        imageAdapter = new ImageAdapter(this, mPhotoLists,this);
         Log.d("PagerActivity", "mPhotoLists.size() " + mPhotoLists.size());
     }
 
