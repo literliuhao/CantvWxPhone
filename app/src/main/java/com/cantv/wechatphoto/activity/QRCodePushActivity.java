@@ -11,12 +11,10 @@ import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.android.volley.VolleyError;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.cantv.wechatphoto.GetDataUtils;
 import com.cantv.wechatphoto.R;
 import com.cantv.wechatphoto.SampleApplicationLike;
 import com.cantv.wechatphoto.interfaces.ICallBack;
+import com.cantv.wechatphoto.model.QRManager;
 import com.cantv.wechatphoto.push.PushManager;
 import com.cantv.wechatphoto.push.PushManager.onClientIdUpdateListener;
 import com.cantv.wechatphoto.utils.FakeX509TrustManager;
@@ -25,11 +23,8 @@ import com.cantv.wechatphoto.utils.NetWorkUtils;
 import com.cantv.wechatphoto.utils.greendao.DaoOpenHelper;
 import com.cantv.wechatphoto.utils.imageloader.ImageInfo;
 import com.cantv.wechatphoto.utils.imageloader.ImageLoader;
-import com.cantv.wechatphoto.utils.volley.VolleyCallback;
 import com.cantv.wechatphoto.utils.volley.VolleyRequest;
 import com.cantv.wechatphoto.view.ConfirmDialog;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.tencent.bugly.beta.Beta;
 import com.umeng.analytics.MobclickAgent;
 
@@ -173,20 +168,19 @@ public class QRCodePushActivity extends Activity {
     }
 
     private void loadQRCode(String clientId) {
-        getWexinPushQRCode(clientId, new OnRequestFinishCallback<String>() {
-
+        QRManager.getInstance(this).getWXQRCode(clientId, new OnRequestFinishCallback<String>() {
             @Override
             public void onSuccess(String t, String... extras) {
                 mPushManager.removeClientIdUpdateListener();
                 int cornerDp = (int) getResources().getDimension(R.dimen.dimen_30);
                 FakeX509TrustManager.allowAllSSL();
-                ImageInfo img = new ImageInfo.Builder().url(t).diskCacheStrategy(DiskCacheStrategy.NONE).isSkipMemoryCache(true).placeHolder(R.drawable.wechat_cibn).imgView(mQRCodeIv).cornerSizeDp(cornerDp).build();
+                ImageInfo img = new ImageInfo.Builder().url(t).isSkipMemoryCache(true).placeHolder(R.drawable.wechat_cibn).imgView(mQRCodeIv).cornerSizeDp(cornerDp).build();
                 ImageLoader.getInstance().loadImage(QRCodePushActivity.this, img);
             }
 
             @Override
             public void onFail(Throwable e) {
-                Log.w(TAG, "Failed to getWexinPushQRCode.", e);
+                Log.w(TAG, "Failed to getWXQRCode.", e);
             }
         });
     }
@@ -196,62 +190,6 @@ public class QRCodePushActivity extends Activity {
         void onSuccess(T t, String... extras);
 
         void onFail(Throwable e);
-    }
-
-    /**
-     * 获取微信推送二维码
-     *
-     * @param callback
-     */
-    public void getWexinPushQRCode(String clientId, final OnRequestFinishCallback<String> callback) {
-        if (TextUtils.isEmpty(clientId)) {
-            Log.w(TAG, "Failed to getWexinPushQRCode[ clientId = NULL].");
-            if (callback != null) {
-                callback.onFail(null);
-            }
-            return;
-        }
-        String mac = NetWorkUtils.getEthernetMac();
-        Log.i(TAG, "getWexinPushQRCode ......");
-        GetDataUtils.getIntance().requestWexinPushQRCode(mac, clientId, "getWexinPushQRCode", new VolleyCallback<String>() {
-
-            @Override
-            public void onSuccess(String response) {
-                if (TextUtils.isEmpty(response)) {
-                    response = "";
-                }
-                Log.i(TAG, "getWexinPushQRCode ...... finish [ response = " + response + "].");
-                String scanId = null;
-
-                try {
-                    JsonObject respJs = new JsonParser().parse(response).getAsJsonObject();
-                    int status = respJs.get("status").getAsInt();
-                    if (status == 200) {
-                        JsonObject dataJs = respJs.get("data").getAsJsonObject();
-                        String qrTicket = dataJs.get("qrTicket").getAsString();
-                        scanId = dataJs.get("scanid").getAsString();
-                        if (callback != null) {
-                            callback.onSuccess("https://mp.weixin.qq.com/cgi-bin/showqrcode?ticket=" + qrTicket, scanId);
-                        }
-                        return;
-                    }
-                    Log.w(TAG, "failed to getWexinPushQRCode, status = " + status);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    if (callback != null) {
-                        callback.onFail(e);
-                    }
-                }
-            }
-
-            @Override
-            public void onFail(VolleyError error) {
-                Log.w(TAG, "failed to getWexinPushQRCode: " + error.getClass().getSimpleName());
-                if (callback != null) {
-                    callback.onFail(error.getCause());
-                }
-            }
-        });
     }
 
     public void cancelAllRequest() {

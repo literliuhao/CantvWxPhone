@@ -39,7 +39,7 @@ public class ImageAdapter extends PagerAdapter {
         this.photoSize = photoList.size();
         this.mImageViews = new View[photoSize];
         realResolution = Utils.getRealResolution(activity);
-        Log.d("ImageAdapter","realResolution:width:"+realResolution[0]+",height"+realResolution[1]);
+        Log.d("ImageAdapter", "realResolution:width:" + realResolution[0] + ",height" + realResolution[1]);
     }
 
     public void addListenerPosition(IPositionListener listener) {
@@ -65,7 +65,7 @@ public class ImageAdapter extends PagerAdapter {
         vl.width = ViewPager.LayoutParams.MATCH_PARENT;
         vl.height = ViewPager.LayoutParams.MATCH_PARENT;
         view.setLayoutParams(vl);
-        Log.d("ImageAdapter",photoLists.get(position).getPhotourl());
+        Log.d("ImageAdapter", photoLists.get(position).getPhotourl());
         ImageInfo img = new ImageInfo.Builder().width(realResolution[0]).height(realResolution[1]).url(photoLists.get(position).getPhotourl()).placeHolder(0).rotation(photoLists.get(position).getDirection()).errorHolder(0).loadListener(new OnLoadFinishListener() {
 
             @Override
