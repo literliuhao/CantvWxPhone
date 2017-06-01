@@ -40,7 +40,6 @@ import com.cantv.wechatphoto.utils.PreferencesUtils;
 import com.cantv.wechatphoto.utils.ToastUtils;
 import com.cantv.wechatphoto.utils.greendao.DaoOpenHelper;
 import com.cantv.wechatphoto.utils.greendao.PhotoBean;
-import com.cantv.wechatphoto.utils.imageloader.ImageLoader;
 import com.cantv.wechatphoto.view.PopView;
 import com.umeng.analytics.MobclickAgent;
 
@@ -48,6 +47,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import cn.can.tvlib.imageloader.ImageLoader;
 
 /**
  * 相册GridView
@@ -184,7 +185,8 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                ImageLoader.getInstance().clearMemCache();
+//                ImageLoader.getInstance().clearMemCache();
+                ImageLoader.getInstance().clearMemoryCache(GridViewActivity.this);
             }
         });
     }

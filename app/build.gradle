@@ -104,6 +104,7 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     // 多dex配置  bugly添加配置
     compile "com.android.support:multidex:1.0.1"
+    compile 'cn.can.tvlib:libCantv:1.1.9.1'
 //    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
 }
 

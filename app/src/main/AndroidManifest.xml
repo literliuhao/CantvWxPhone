@@ -43,9 +43,18 @@
         android:label="@string/app_name"
         android:largeHeap="true"
         android:theme="@style/AppTheme" >
-        <meta-data
+    <!--    <meta-data
             android:name="com.cantv.wechatphoto.utils.imageloader.GlideManager"
-            android:value="GlideModule" />
+            android:value="GlideModule" />-->
+        <meta-data
+            android:name="com.cantv.wechatphoto.utils.glide.GlideDiskCacheModule"
+            android:value="GlideModule"/>
+        <meta-data
+            android:name="cn.can.tvlib.imageloader.module.ViewTagModule"
+            android:value="GlideModule"/>
+        <meta-data
+            android:name="com.cantv.wechatphoto.utils.glide.NoBitmapPoolModule"
+            android:value="GlideModule"/>
 
         <!-- 微信投屏 -->
         <activity
