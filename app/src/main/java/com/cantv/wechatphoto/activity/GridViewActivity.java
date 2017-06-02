@@ -185,7 +185,6 @@ public class GridViewActivity extends Activity implements IPhotoListener, IDBInt
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-//                ImageLoader.getInstance().clearMemCache();
                 ImageLoader.getInstance().clearMemoryCache(GridViewActivity.this);
             }
         });

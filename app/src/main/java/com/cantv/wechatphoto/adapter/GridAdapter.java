@@ -17,7 +17,6 @@ import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.target.Target;
 import com.cantv.wechatphoto.R;
 import com.cantv.wechatphoto.utils.greendao.PhotoBean;
-import com.cantv.wechatphoto.view.CircleImageView;
 import com.cantv.wechatphoto.view.GridViewTV;
 import com.cantv.wechatphoto.view.RoundCornerDrawable;
 import com.cantv.wechatphoto.view.RoundCornerImageView;
@@ -25,7 +24,7 @@ import com.cantv.wechatphoto.view.RoundCornerImageView;
 import java.util.List;
 
 import cn.can.tvlib.imageloader.GlideLoadTask;
-import cn.can.tvlib.imageloader.ImageLoader;
+import cn.can.tvlib.imageloader.transformation.GlideCircleTransform;
 import cn.can.tvlib.imageloader.transformation.GlideRotateTransformation;
 
 public class GridAdapter extends BaseAdapter {
@@ -71,7 +70,7 @@ public class GridAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_item, parent, false);
             holder = new ViewHolder();
             holder.bgIv = (ImageView) convertView.findViewById(R.id.iv_bg);
-            holder.imgHead = (CircleImageView) convertView.findViewById(R.id.img_head);
+            holder.imgHead = (ImageView) convertView.findViewById(R.id.img_head);
             holder.tipsTv = (TextView) convertView.findViewById(R.id.tv_tips);
             holder.txtName = (TextView) convertView.findViewById(R.id.txt_Name);
             holder.txtTime = (TextView) convertView.findViewById(R.id.txt_time);
@@ -128,37 +127,18 @@ public class GridAdapter extends BaseAdapter {
             holder.imgHead.setLayoutParams(headLayoutParams);
             holder.imgHead.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-//            ImageInfo headInfo = new ImageInfo.Builder().url(getItem(position).getWxheadimgurl()).placeHolder(R
-// .drawable.default_image).errorHolder(R.drawable.default_image).imgView(holder.imgHead).build();
-//            ImageLoader.getInstance().loadImage(mContext, headInfo);
-//            Glide.with(mContext).load(getItem(position).getWxheadimgurl()).placeholder(R.drawable.default_image)
-// .into(holder.imgHead);
-            ImageLoader.getInstance().load(mContext, holder.imgHead, getItem(position).getWxheadimgurl(), R.drawable
-                    .default_image, R.drawable.errorholder);
+
+            GlideLoadTask.Builder builder = new GlideLoadTask.Builder();
+            builder.bitmapTransformation(new GlideCircleTransform(mContext)).view(holder.imgHead).placeholder(R
+                    .drawable.default_image).url(getItem(position).getWxheadimgurl()).start(mContext);
             holder.imgHead.setVisibility(View.VISIBLE);
         }
 
-        //解决加载图片时占位图和加载失败的图片重合的问题
-//        ImageInfo img = new ImageInfo.Builder().url(getItem(position).getPhotourl()).width(photoWidth).height
-// (photoHeight).placeHolder(0).rotation(photoLists.get(position).getDirection()).isScale(true).errorHolder(0)
-// .loadListener(new OnLoadFinishListener() {
-//            @Override
-//            public void onSuccess() {
-//                holder.image.setBackgroundResource(0);
-//            }
-//
-//            @Override
-//            public void onFail() {
-//                holder.image.setBackgroundResource(R.drawable.bg_photo_list_item_loading_err);
-//            }
-//        }).imgView(holder.image).build();
-//        ImageLoader.getInstance().loadImage(mContext, img);
 
         GlideLoadTask.Builder builder = new GlideLoadTask.Builder();
-        builder.url(getItem(position).getPhotourl()).view(holder.image).placeholder(0)
-                .errorHolder(R.drawable.errorholder).bitmapTransformation(new GlideRotateTransformation(mContext,
-                photoLists.get(position).getDirection())).cacheInMemory(true).successCallback(new GlideLoadTask
-                .SuccessCallback() {
+        builder.url(getItem(position).getPhotourl()).view(holder.image).placeholder(0).errorHolder(0)
+                .bitmapTransformation(new GlideRotateTransformation(mContext, photoLists.get(position).getDirection()
+                )).cacheInMemory(true).successCallback(new GlideLoadTask.SuccessCallback() {
             @Override
             public boolean onSuccess(GlideDrawable glideDrawable, String s, Target<GlideDrawable> target, boolean b,
                                      boolean b1) {
@@ -178,7 +158,7 @@ public class GridAdapter extends BaseAdapter {
 
     public static class ViewHolder {
         ImageView bgIv;
-        CircleImageView imgHead;
+        ImageView imgHead;
         TextView tipsTv;
         TextView txtName;
         TextView txtTime;

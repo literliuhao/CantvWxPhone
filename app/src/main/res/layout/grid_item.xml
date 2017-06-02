@@ -28,7 +28,7 @@
             android:scaleType="fitXY"
             android:src="@drawable/grid_item_mask" />
 
-        <com.cantv.wechatphoto.view.CircleImageView
+        <ImageView
             android:id="@+id/img_head"
             android:layout_width="@dimen/dimen_70"
             android:layout_height="@dimen/dimen_70"

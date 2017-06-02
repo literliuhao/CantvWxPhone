@@ -21,10 +21,6 @@ import java.util.List;
 import cn.can.tvlib.imageloader.GlideLoadTask;
 import cn.can.tvlib.imageloader.transformation.GlideRotateTransformation;
 
-//import com.cantv.wechatphoto.utils.imageloader.ImageInfo;
-//import com.cantv.wechatphoto.utils.imageloader.ImageInfo.OnLoadFinishListener;
-//import com.cantv.wechatphoto.utils.imageloader.ImageLoader;
-
 public class ImageAdapter extends PagerAdapter {
     private List<PhotoBean> photoLists;
     private int photoSize;
@@ -72,22 +68,6 @@ public class ImageAdapter extends PagerAdapter {
         vl.height = ViewPager.LayoutParams.MATCH_PARENT;
         view.setLayoutParams(vl);
         Log.d("ImageAdapter", photoLists.get(position).getPhotourl());
-//        ImageInfo img = new ImageInfo.Builder().width(realResolution[0]).height(realResolution[1]).url(photoLists
-// .get(position).getPhotourl()).placeHolder(0).rotation(photoLists.get(position).getDirection()).errorHolder(0)
-// .loadListener(new OnLoadFinishListener() {
-//
-//            @Override
-//            public void onSuccess() {
-//                imageView.setFocusable(true);
-//                imageView.setBackgroundResource(R.drawable.transparent_image);
-//            }
-//
-//            @Override
-//            public void onFail() {
-//                imageView.setBackgroundResource(R.drawable.bg_photo_fullscreen_loading_err);
-//            }
-//        }).imgView(imageView).build();
-//        ImageLoader.getInstance().loadImage(mContext, img);
         GlideLoadTask.Builder builder = new GlideLoadTask.Builder();
         builder.view(imageView).url(photoLists.get(position).getPhotourl()).placeholder(0)
                 .errorHolder(R.drawable.errorholder).bitmapTransformation(new GlideRotateTransformation(mContext,

@@ -174,9 +174,6 @@ public class QRCodePushActivity extends Activity {
                 mPushManager.removeClientIdUpdateListener();
                 int cornerDp = (int) getResources().getDimension(R.dimen.dimen_30);
                 FakeX509TrustManager.allowAllSSL();
-               /* ImageInfo img = new ImageInfo.Builder().url(t).isSkipMemoryCache(true).placeHolder(R.drawable.wechat_cibn).imgView(mQRCodeIv).cornerSizeDp(cornerDp).build();
-                ImageLoader.getInstance().loadImage(QRCodePushActivity.this, img);*/
-//                Glide.with(QRCodePushActivity.this).load(t).error(R.drawable.errorholder).placeholder(R.drawable.wechat_cibn).into(mQRCodeIv);
                 ImageLoader.getInstance().load(QRCodePushActivity.this,mQRCodeIv,t,0,R.drawable.errorholder);
 
             }
