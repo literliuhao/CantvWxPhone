@@ -174,7 +174,7 @@ public class QRCodePushActivity extends Activity {
                 mPushManager.removeClientIdUpdateListener();
                 int cornerDp = (int) getResources().getDimension(R.dimen.dimen_30);
                 FakeX509TrustManager.allowAllSSL();
-                ImageLoader.getInstance().load(QRCodePushActivity.this,mQRCodeIv,t,0,R.drawable.errorholder);
+                ImageLoader.getInstance().load(QRCodePushActivity.this,mQRCodeIv,t,R.drawable.wechat_cibn,R.drawable.errorholder);
 
             }
 

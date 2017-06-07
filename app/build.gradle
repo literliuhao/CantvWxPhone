@@ -18,7 +18,7 @@ android {
         applicationId "com.cantv.wechatphoto"
         minSdkVersion 19
         targetSdkVersion 21
-        versionCode 129
+        versionCode 130
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_7
             targetCompatibility JavaVersion.VERSION_1_7
@@ -98,7 +98,7 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.android.support:support-v4:21.0.3'
+    compile 'com.android.support:support-v4:+'
     compile 'com.google.code.gson:gson:2.4'
     compile 'com.tencent.bugly:crashreport_upgrade:1.2.2.0'
     compile 'com.umeng.analytics:analytics:latest.integration'
@@ -135,7 +135,7 @@ ext {
 
     // for normal build  TODO 每次下发补丁包的时候需要改动的基准包路径
     // old apk file to build patch apk 基准包版本
-    tinkerOldApkPath = "${bakPath}/WeChatPhoto__V127_20161219110808.apk"
+    tinkerOldApkPath = "${bakPath}/WeChatPhoto__V130_20161219110808.apk"
     // proguard mapping file to build patch apk  混淆文件路径
     tinkerApplyMappingPath = "${bakPath}/app-debug-1130-14-23-45-mapping.txt"
     // resource R.txt to build patch apk, must input if there is resource changed  资源文件修改记录路径
