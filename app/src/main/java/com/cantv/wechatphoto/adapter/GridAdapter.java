@@ -130,7 +130,7 @@ public class GridAdapter extends BaseAdapter {
 
             GlideLoadTask.Builder builder = new GlideLoadTask.Builder();
             builder.bitmapTransformation(new GlideCircleTransform(mContext)).view(holder.imgHead).placeholder(R
-                    .drawable.default_image).url(getItem(position).getWxheadimgurl()).start(mContext);
+                    .drawable.default_image).url(getItem(position).getWxheadimgurl()).cacheInMemory(true).start(mContext);
             holder.imgHead.setVisibility(View.VISIBLE);
         }
 
