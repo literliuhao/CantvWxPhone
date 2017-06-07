@@ -21,12 +21,12 @@ import com.cantv.wechatphoto.utils.FakeX509TrustManager;
 import com.cantv.wechatphoto.utils.FileUtils;
 import com.cantv.wechatphoto.utils.NetWorkUtils;
 import com.cantv.wechatphoto.utils.greendao.DaoOpenHelper;
-import com.cantv.wechatphoto.utils.imageloader.ImageInfo;
-import com.cantv.wechatphoto.utils.imageloader.ImageLoader;
 import com.cantv.wechatphoto.utils.volley.VolleyRequest;
 import com.cantv.wechatphoto.view.ConfirmDialog;
 import com.tencent.bugly.beta.Beta;
 import com.umeng.analytics.MobclickAgent;
+
+import cn.can.tvlib.imageloader.ImageLoader;
 
 public class QRCodePushActivity extends Activity {
 
@@ -61,7 +61,7 @@ public class QRCodePushActivity extends Activity {
             return;
         }
 
-        this.getWindow().setBackgroundDrawableResource(R.drawable.new_bg_qr_push);
+//        this.getWindow().setBackgroundDrawableResource(R.drawable.new_bg_qr_push);
         setContentView(R.layout.activity_qr_push_play);
         mQRCodeIv = (ImageView) findViewById(R.id.iv_qrcode);
         mSucceedHint = (ImageView) findViewById(R.id.iv_succeed_hint);
@@ -174,8 +174,8 @@ public class QRCodePushActivity extends Activity {
                 mPushManager.removeClientIdUpdateListener();
                 int cornerDp = (int) getResources().getDimension(R.dimen.dimen_30);
                 FakeX509TrustManager.allowAllSSL();
-                ImageInfo img = new ImageInfo.Builder().url(t).isSkipMemoryCache(true).placeHolder(R.drawable.wechat_cibn).imgView(mQRCodeIv).cornerSizeDp(cornerDp).build();
-                ImageLoader.getInstance().loadImage(QRCodePushActivity.this, img);
+                ImageLoader.getInstance().load(QRCodePushActivity.this,mQRCodeIv,t,R.drawable.wechat_cibn,R.drawable.errorholder);
+
             }
 
             @Override

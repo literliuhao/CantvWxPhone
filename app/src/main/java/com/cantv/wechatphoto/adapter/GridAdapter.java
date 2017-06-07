@@ -13,17 +13,19 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.target.Target;
 import com.cantv.wechatphoto.R;
 import com.cantv.wechatphoto.utils.greendao.PhotoBean;
-import com.cantv.wechatphoto.utils.imageloader.ImageInfo;
-import com.cantv.wechatphoto.utils.imageloader.ImageInfo.OnLoadFinishListener;
-import com.cantv.wechatphoto.utils.imageloader.ImageLoader;
-import com.cantv.wechatphoto.view.CircleImageView;
 import com.cantv.wechatphoto.view.GridViewTV;
 import com.cantv.wechatphoto.view.RoundCornerDrawable;
 import com.cantv.wechatphoto.view.RoundCornerImageView;
 
 import java.util.List;
+
+import cn.can.tvlib.imageloader.GlideLoadTask;
+import cn.can.tvlib.imageloader.transformation.GlideCircleTransform;
+import cn.can.tvlib.imageloader.transformation.GlideRotateTransformation;
 
 public class GridAdapter extends BaseAdapter {
 
@@ -68,13 +70,14 @@ public class GridAdapter extends BaseAdapter {
             convertView = LayoutInflater.from(mContext).inflate(R.layout.grid_item, parent, false);
             holder = new ViewHolder();
             holder.bgIv = (ImageView) convertView.findViewById(R.id.iv_bg);
-            holder.imgHead = (CircleImageView) convertView.findViewById(R.id.img_head);
+            holder.imgHead = (ImageView) convertView.findViewById(R.id.img_head);
             holder.tipsTv = (TextView) convertView.findViewById(R.id.tv_tips);
             holder.txtName = (TextView) convertView.findViewById(R.id.txt_Name);
             holder.txtTime = (TextView) convertView.findViewById(R.id.txt_time);
             holder.image = (RoundCornerImageView) convertView.findViewById(R.id.id_imgView);
             holder.deleteView = (ViewGroup) convertView.findViewById(R.id.rl_delete);
-            holder.deleteView.setBackground(new RoundCornerDrawable(parent.getResources().getColor(R.color.black_per40)));
+            holder.deleteView.setBackground(new RoundCornerDrawable(parent.getResources().getColor(R.color
+                    .black_per40)));
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -98,7 +101,8 @@ public class GridAdapter extends BaseAdapter {
             layoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
             holder.image.setLayoutParams(layoutParams);
             holder.image.setScaleType(ImageView.ScaleType.FIT_XY);
-            holder.bgIv.setBackground(new RoundCornerDrawable(BitmapFactory.decodeResource(parent.getResources(), R.drawable.bg_share_phone_item)));
+            holder.bgIv.setBackground(new RoundCornerDrawable(BitmapFactory.decodeResource(parent.getResources(), R
+                    .drawable.bg_share_phone_item)));
         } else {
             Log.d("getView", "============" + position);
             holder.tipsTv.setVisibility(View.INVISIBLE);
@@ -116,36 +120,45 @@ public class GridAdapter extends BaseAdapter {
 //            holder.image.setImageDrawable(mContext.getResources().getDrawable(R.drawable.pager_background,null));
             holder.image.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            RelativeLayout.LayoutParams headLayoutParams = (RelativeLayout.LayoutParams) holder.imgHead.getLayoutParams();
+            RelativeLayout.LayoutParams headLayoutParams = (RelativeLayout.LayoutParams) holder.imgHead
+                    .getLayoutParams();
             headLayoutParams.width = headWidth;
             headLayoutParams.height = headHeight;
             holder.imgHead.setLayoutParams(headLayoutParams);
             holder.imgHead.setScaleType(ImageView.ScaleType.CENTER_CROP);
 
-            ImageInfo headInfo = new ImageInfo.Builder().url(getItem(position).getWxheadimgurl()).placeHolder(R.drawable.default_image).errorHolder(R.drawable.default_image).imgView(holder.imgHead).build();
-            ImageLoader.getInstance().loadImage(mContext, headInfo);
+
+            GlideLoadTask.Builder builder = new GlideLoadTask.Builder();
+            builder.bitmapTransformation(new GlideCircleTransform(mContext)).view(holder.imgHead).placeholder(R
+                    .drawable.default_image).url(getItem(position).getWxheadimgurl()).cacheInMemory(true).start(mContext);
             holder.imgHead.setVisibility(View.VISIBLE);
         }
 
-        //解决加载图片时占位图和加载失败的图片重合的问题
-        ImageInfo img = new ImageInfo.Builder().url(getItem(position).getPhotourl()).width(photoWidth).height(photoHeight).placeHolder(0).rotation(photoLists.get(position).getDirection()).isScale(true).errorHolder(0).loadListener(new OnLoadFinishListener() {
-            @Override
-            public void onSuccess() {
-                holder.image.setBackgroundResource(0);
-            }
 
+        GlideLoadTask.Builder builder = new GlideLoadTask.Builder();
+        builder.url(getItem(position).getPhotourl()).view(holder.image).placeholder(0).errorHolder(0)
+                .bitmapTransformation(new GlideRotateTransformation(mContext, photoLists.get(position).getDirection()
+                )).cacheInMemory(true).successCallback(new GlideLoadTask.SuccessCallback() {
             @Override
-            public void onFail() {
-                holder.image.setBackgroundResource(R.drawable.bg_photo_list_item_loading_err);
+            public boolean onSuccess(GlideDrawable glideDrawable, String s, Target<GlideDrawable> target, boolean b,
+                                     boolean b1) {
+                holder.image.setBackgroundResource(0);
+                return false;
             }
-        }).imgView(holder.image).build();
-        ImageLoader.getInstance().loadImage(mContext, img);
+        }).failCallback(new GlideLoadTask.FailCallback() {
+            @Override
+            public boolean onFail(Exception e, String s, Target<GlideDrawable> target, boolean b) {
+                holder.image.setBackgroundResource(R.drawable.bg_photo_list_item_loading_err);
+                return false;
+            }
+        }).start(mContext);
+
         return convertView;
     }
 
     public static class ViewHolder {
         ImageView bgIv;
-        CircleImageView imgHead;
+        ImageView imgHead;
         TextView tipsTv;
         TextView txtName;
         TextView txtTime;
