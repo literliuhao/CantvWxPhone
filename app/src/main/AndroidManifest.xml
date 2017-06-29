@@ -24,15 +24,13 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.READ_LOGS" />
 
-
-
     <!-- 个推SDK权限配置开始 -->
     <!-- 自定义权限 -->
     <uses-permission android:name="getui.permission.GetuiService.com.cantv.wechatphoto" />
     <!-- 自定义provider读取权限 -->
     <permission
         android:name="getui.permission.GetuiService.com.cantv.wechatphoto"
-        android:protectionLevel="normal" >
+        android:protectionLevel="normal">
     </permission>
 
     <application
@@ -42,26 +40,29 @@
         android:icon="@drawable/video_share_icon"
         android:label="@string/app_name"
         android:largeHeap="true"
-        android:theme="@style/AppTheme" >
-    <!--    <meta-data
+        android:theme="@style/AppTheme">
+
+        <!--
+            <meta-data
             android:name="com.cantv.wechatphoto.utils.imageloader.GlideManager"
-            android:value="GlideModule" />-->
+            android:value="GlideModule" />
+        -->
         <meta-data
             android:name="com.cantv.wechatphoto.utils.glide.GlideDiskCacheModule"
-            android:value="GlideModule"/>
+            android:value="GlideModule" />
         <meta-data
             android:name="cn.can.tvlib.imageloader.module.ViewTagModule"
-            android:value="GlideModule"/>
+            android:value="GlideModule" />
         <meta-data
             android:name="com.cantv.wechatphoto.utils.glide.NoBitmapPoolModule"
-            android:value="GlideModule"/>
+            android:value="GlideModule" />
 
         <!-- 微信投屏 -->
         <activity
-            android:name="com.cantv.wechatphoto.activity.QRCodePushActivity"
+            android:name=".activity.QRCodePushActivity"
             android:label="@string/app_name"
-            android:theme="@style/activityTheme" >
-             <intent-filter>
+            android:theme="@style/activityTheme">
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -79,8 +80,8 @@
             android:value="p2QuD5HppY8jRdXape4TH4" />
 
         <receiver
-            android:name="com.cantv.wechatphoto.push.receiver.PushReceiver"
-            android:exported="false" >
+            android:name=".push.receiver.PushReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.igexin.sdk.action.VxiWTDaAwN66xcmoV4DyE2" />
             </intent-filter>
@@ -99,7 +100,7 @@
             android:exported="true"
             android:label="NotificationCenterUser" />
 
-        <receiver android:name="com.igexin.sdk.PushReceiver" >
+        <receiver android:name="com.igexin.sdk.PushReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -113,7 +114,7 @@
         </receiver>
         <receiver
             android:name="com.igexin.sdk.PushManagerReceiver"
-            android:exported="false" >
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.igexin.sdk.action.pushmanager" />
             </intent-filter>
@@ -140,7 +141,7 @@
             android:name="com.igexin.download.DownloadService"
             android:process=":pushservice" />
 
-        <receiver android:name="com.igexin.download.DownloadReceiver" >
+        <receiver android:name="com.igexin.download.DownloadReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
@@ -157,19 +158,23 @@
             android:process=":pushservice" />
 
         <!-- 微信相册 -->
-        <activity android:name="com.cantv.wechatphoto.activity.GridViewActivity"
-
+        <activity
+            android:name=".activity.GridViewActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
-             <!-- <intent-filter>
+
+            <!--
+            <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter> -->
+            </intent-filter>
+            -->
         </activity>
         <activity
-            android:name="com.cantv.wechatphoto.activity.PagerActivity"
+            android:name=".activity.PagerActivity"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         </activity>
+
         <meta-data
             android:name="UMENG_APPKEY"
             android:value="5821ad33f43e48713000291f" />
@@ -177,14 +182,16 @@
             android:name="UMENG_CHANNEL"
             android:value="wechatphoto" />
 
-        <!-- Bugly升级SDK配置开始
-          注：如果只是使用我们提供的热更新能力，下面的配置可以选择不配置-->
-        <!--必须配置-->
+        <!--
+          Bugly升级SDK配置开始
+          注：如果只是使用我们提供的热更新能力，下面的配置可以选择不配置
+        -->
+        <!-- 必须配置 -->
         <activity
             android:name="com.tencent.bugly.beta.ui.BetaActivity"
             android:theme="@android:style/Theme.Translucent" />
 
-        <!--API 24以上配置-->
+        <!-- API 24以上配置 -->
         <provider
             android:name="android.support.v4.content.FileProvider"
             android:authorities="com.tencent.bugly.hotfix.fileProvider"
@@ -192,10 +199,10 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/provider_paths"/>
+                android:resource="@xml/provider_paths" />
         </provider>
 
-        <!-- Bugly升级SDK配置结束-->
+        <!-- Bugly升级SDK配置结束 -->
 
     </application>
 
