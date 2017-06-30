@@ -18,7 +18,7 @@ android {
         applicationId "com.cantv.wechatphoto"
         minSdkVersion 19
         targetSdkVersion 21
-        versionCode 130
+        versionCode 131
         compileOptions {
             sourceCompatibility JavaVersion.VERSION_1_7
             targetCompatibility JavaVersion.VERSION_1_7
