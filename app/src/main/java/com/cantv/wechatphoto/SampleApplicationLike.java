@@ -102,6 +102,8 @@ public class SampleApplicationLike extends DefaultApplicationLike {
          * 设置sd卡的Download为更新资源保存目录;.
          * 后续更新资源会保存在此目录，需要在manifest中添加WRITE_EXTERNAL_STORAGE权限;
          */
+        Beta.storageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
+        Beta.upgradeListener = new BuglyUpgradeListener();
         BuglyStrategy strategy = new BuglyStrategy();
         strategy.setAppChannel("cantv");
         strategy.setUploadProcess(true);
