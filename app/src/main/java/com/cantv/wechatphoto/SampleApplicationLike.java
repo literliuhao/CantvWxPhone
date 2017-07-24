@@ -81,7 +81,6 @@ public class SampleApplicationLike extends DefaultApplicationLike {
     private void initUpgrade() {
         Upgrade.init(mContext, UPGRADE_SN, UPGRADE_CHANNEL_NO, BuildConfig.DEBUG);
         Upgrade.setUpgradeListener(new WechatUpgradeListener(mContext.getApplicationContext()));
-        Upgrade.checkUpdate();
     }
 
     private void initBugly() {

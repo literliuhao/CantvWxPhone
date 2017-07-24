@@ -27,6 +27,7 @@ import com.tencent.bugly.beta.Beta;
 import com.umeng.analytics.MobclickAgent;
 
 import cn.can.tvlib.imageloader.ImageLoader;
+import cn.can.tvlib.upgrade.Upgrade;
 
 public class QRCodePushActivity extends Activity {
 
@@ -51,8 +52,10 @@ public class QRCodePushActivity extends Activity {
         // 进行判断，选择打开界面
         DaoOpenHelper pushDaoOpenHelper = DaoOpenHelper.getInstance(getApplicationContext());
         long count = pushDaoOpenHelper.queryExpiredUserCount();
+        //自有升级检测
+        Upgrade.checkUpdate();
         //Bugly检查更新
-        Beta.checkUpgrade(false, true);
+//        Beta.checkUpgrade(false, true);
         if (count >= 1) {
             QRCodePushActivity.this.finish();
             Intent intent = new Intent(getApplicationContext(), GridViewActivity.class);
