@@ -63,6 +63,7 @@ public class PushMsgHandler {
     public static void solveMessage(Context context, String msgStr) {
         if (TextUtils.isEmpty(msgStr)) {
             Log.w(TAG, "Failed to solve PushMessage[Empty msg string].");
+            
             return;
         }
         Log.i(TAG, "received push message. " + msgStr);
