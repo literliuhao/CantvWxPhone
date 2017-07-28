@@ -22,11 +22,10 @@ import com.tencent.bugly.beta.Beta;
 import com.tencent.tinker.loader.app.DefaultApplicationLike;
 
 import cn.can.tvlib.upgrade.Upgrade;
-import cn.can.tvlib.upgrade.UpgradeListener;
 
 /**
  * 自定义ApplicationLike类.
- *
+ * <p>
  * 注意：这个类是Application的代理类，以前所有在Application的实现必须要全部拷贝到这里<br/>
  *
  * @author wenjiewu
@@ -54,15 +53,9 @@ public class SampleApplicationLike extends DefaultApplicationLike {
         return mContext;
     }
 
-
-    public SampleApplicationLike(Application application, int tinkerFlags,
-                                 boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime,
-                                 long applicationStartMillisTime, Intent tinkerResultIntent, Resources[] resources,
-                                 ClassLoader[] classLoader, AssetManager[] assetManager) {
-        super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime,
-              tinkerResultIntent, resources, classLoader, assetManager);
+    public SampleApplicationLike(Application application, int tinkerFlags, boolean tinkerLoadVerifyFlag, long applicationStartElapsedTime, long applicationStartMillisTime, Intent tinkerResultIntent, Resources[] resources, ClassLoader[] classLoader, AssetManager[] assetManager) {
+        super(application, tinkerFlags, tinkerLoadVerifyFlag, applicationStartElapsedTime, applicationStartMillisTime, tinkerResultIntent, resources, classLoader, assetManager);
     }
-
 
     @Override
     public void onCreate() {
@@ -79,7 +72,7 @@ public class SampleApplicationLike extends DefaultApplicationLike {
      *
      */
     private void initUpgrade() {
-        Upgrade.init(mContext, UPGRADE_SN, UPGRADE_CHANNEL_NO, BuildConfig.DEBUG);
+        Upgrade.init(mContext, UPGRADE_SN, UPGRADE_CHANNEL_NO, false, BuildConfig.DEBUG);
         Upgrade.setUpgradeListener(new WechatUpgradeListener(mContext.getApplicationContext()));
     }
 
