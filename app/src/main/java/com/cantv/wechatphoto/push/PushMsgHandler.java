@@ -10,11 +10,13 @@ import com.cantv.wechatphoto.SampleApplicationLike;
 import com.cantv.wechatphoto.activity.GridViewActivity;
 import com.cantv.wechatphoto.activity.QRCodePushActivity;
 import com.cantv.wechatphoto.push.domain.IPushMessage;
+import com.cantv.wechatphoto.push.domain.PushAliProgramMsg;
 import com.cantv.wechatphoto.push.domain.PushCANProgramMsg;
 import com.cantv.wechatphoto.push.domain.PushPhotoProgramMsg;
 import com.cantv.wechatphoto.push.domain.PushSohuProgramMsg;
 import com.cantv.wechatphoto.push.domain.PushSuccessProgramMsg;
 import com.cantv.wechatphoto.push.domain.PushYokuProgramMsg;
+import com.cantv.wechatphoto.push.domainvideo.AliVideo;
 import com.cantv.wechatphoto.push.domainvideo.CanVideo;
 import com.cantv.wechatphoto.push.domainvideo.SohuVideo;
 import com.cantv.wechatphoto.push.domainvideo.YokuVideo;
@@ -34,20 +36,13 @@ public class PushMsgHandler {
     public static int PUSH_TYPE_PUSH_CAN_PROGRAM = 3;// 播CIBN节目
     public static int PUSH_TYPE_PUSH_WECHAT_PHOTO = 4;// 发送微信照片
     public static int PUSH_TYPE_REGISTER_SUCCESS = 5;// 登陆成功
-    public static final String KEY_CLIENT_ID = "clientId";// 个推clientId
-    public static final String KEY_MOVIE_DETAIL = "moviedetail";
-    public static final String KEY_SPECIFIED_PLAY_INDEX = "specifiedPlayIndex";
-    public static final String KEY_FREE_PLAY_EPISODE = "freePlayEpisode";
-    public static final String KEY_FREE_PLAY_TIME = "freePlayTime";
-    public static final String KEY_CHARGE_TYPE = "chargeType";
-    public static final String KEY_PLAY_TYPE = "playType";// 取值为PlayConstants中"PLAY_TYPE"，其他非法
-    public static final String KEY_PROGRAM_ID = "programId";
-    public static final String KEY_VIDEO = "videoInfo";// 进播放器默认播放的剧集数据
+    public static int PUSH_TYPE_PUSH_ALI_PROGRAM = 13;// 播放阿里节目
     public static final String KEY_VIDEO_INFO = "videoInfo";
 
-    public static final String ACTION_START_CAN_PLAYER = "cn.cibntv.ott.canplayer";
-    public static final String ACTION_START_YOUKU_PLAYER = "cn.cibntv.ott.sohuplayer";
-    public static final String ACTION_START_SOHU_PLAYER = "cn.cibntv.ott.yokuplayer";
+    public static final String ACTION_START_CAN_PLAYER = "com.cantv.action.CANPLAYER";
+    public static final String ACTION_START_YOUKU_PLAYER = "com.cantv.action.SOHUPLAYER";
+    public static final String ACTION_START_SOHU_PLAYER = "com.cantv.action.YOKUPLAYER";
+    public static final String ACTION_START_ALI_PLAYER = "com.cantv.action.ALIPLAYER";
     public static final String ACTION_CLOSE_QRCODE_PAGE = "com.cantv.wechatphoto.ACTION_CLOSE_QRCODE_PAGE";
     public static final String ACTION_START_PHOTO = "com.cibn.ott.action.WECHAT_PHOTO";
     public static final String ACTION_REGISTER_SUCCESS = "com.cantv.wechatphoto.action.REGISTER_SUCCESS";
@@ -73,6 +68,7 @@ public class PushMsgHandler {
             JsonObject msgJs = new JsonParser().parse(msgStr).getAsJsonObject();
             type = msgJs.get("type").getAsInt();
             JsonObject dataJs = msgJs.get("data").getAsJsonObject();
+
             if (type == PUSH_TYPE_PUSH_YOUKU_PROGRAM) {
                 Log.i(TAG, "received push message. " + "【优酷节目】推送消息");
                 pushMsg = new PushYokuProgramMsg().parse(dataJs);
@@ -88,6 +84,9 @@ public class PushMsgHandler {
             } else if (type == PUSH_TYPE_PUSH_WECHAT_PHOTO) {
                 Log.i(TAG, "received push message. " + "【微信相册】推送消息");
                 pushMsg = new PushPhotoProgramMsg().parse(dataJs);
+            } else if(type == PUSH_TYPE_PUSH_ALI_PROGRAM){
+                Log.i(TAG, "received push message. " + "【阿里节目】推送消息");
+                pushMsg = new PushAliProgramMsg().parse(dataJs);
             } else {
                 Log.w(TAG, "Failed to solve PushMessage [Unknown push type : " + type + "].");
                 return;
@@ -117,7 +116,7 @@ public class PushMsgHandler {
                         ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
                         return;
                     }
-                    intent = new Intent("com.cantv.action.YOKUPLAYER");
+                    intent = new Intent(ACTION_START_SOHU_PLAYER);
                     intent.putExtra(KEY_VIDEO_INFO, msgStr);
                 } else {
                     Log.i(TAG, "Video. " + "【数据获取异常，请按遥控返回键】");
@@ -140,7 +139,7 @@ public class PushMsgHandler {
                         ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
                         return;
                     }
-                    intent = new Intent("com.cantv.action.SOHUPLAYER");
+                    intent = new Intent(ACTION_START_YOUKU_PLAYER);
                     intent.putExtra(KEY_VIDEO_INFO, msgStr);
                 } else {
                     Log.i(TAG, "Video. " + "【数据获取异常，请按遥控返回键】");
@@ -163,7 +162,7 @@ public class PushMsgHandler {
                         ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
                         return;
                     }
-                    intent = new Intent("com.cantv.action.CANPLAYER");
+                    intent = new Intent(ACTION_START_CAN_PLAYER);
                     intent.putExtra(KEY_VIDEO_INFO, msgStr);
                 } else {
                     Log.i(TAG, "Video. " + "【数据获取异常，请按遥控返回键】");
@@ -172,6 +171,29 @@ public class PushMsgHandler {
                 }
             } else {
                 Log.i(TAG, "PushCANProgramMsg. " + "【数据获取异常，请按遥控返回键】");
+                ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
+                return;
+            }
+        }else if(type == PUSH_TYPE_PUSH_ALI_PROGRAM){
+            closeIndexPage(context);
+            PushAliProgramMsg msg = (PushAliProgramMsg) pushMsg;
+            if (null != msg) {
+                AliVideo aVideo = msg.getVideo();
+                if (null != aVideo) {
+                    String videoId = msg.getVideo().getVideoid();
+                    if (null == videoId) {
+                        ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
+                        return;
+                    }
+                    intent = new Intent(ACTION_START_ALI_PLAYER);
+                    intent.putExtra(KEY_VIDEO_INFO, msgStr);
+                } else {
+                    Log.i(TAG, "Video. " + "【数据获取异常，请按遥控返回键】");
+                    ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
+                    return;
+                }
+            } else {
+                Log.i(TAG, "PushAliProgramMsg. " + "【数据获取异常，请按遥控返回键】");
                 ToastUtils.showMessage(context, "数据获取异常，请按遥控返回键");
                 return;
             }

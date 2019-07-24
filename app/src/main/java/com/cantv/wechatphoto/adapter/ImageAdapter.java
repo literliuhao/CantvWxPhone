@@ -69,13 +69,9 @@ public class ImageAdapter extends PagerAdapter {
         view.setLayoutParams(vl);
         Log.d("ImageAdapter", photoLists.get(position).getPhotourl());
         GlideLoadTask.Builder builder = new GlideLoadTask.Builder();
-        builder.view(imageView).url(photoLists.get(position).getPhotourl()).placeholder(0)
-                .errorHolder(R.drawable.errorholder).bitmapTransformation(new GlideRotateTransformation(mContext,
-                photoLists.get(position).getDirection())).cacheInMemory(true).successCallback(new GlideLoadTask
-                .SuccessCallback() {
+        builder.view(imageView).url(photoLists.get(position).getPhotourl()).placeholder(0).errorHolder(R.drawable.errorholder).bitmapTransformation(new GlideRotateTransformation(mContext, photoLists.get(position).getDirection())).cacheInMemory(true).successCallback(new GlideLoadTask.SuccessCallback() {
             @Override
-            public boolean onSuccess(GlideDrawable glideDrawable, String s, Target<GlideDrawable> target, boolean b,
-                                     boolean b1) {
+            public boolean onSuccess(GlideDrawable glideDrawable, String s, Target<GlideDrawable> target, boolean b, boolean b1) {
                 imageView.setFocusable(true);
                 imageView.setBackgroundResource(R.drawable.transparent_image);
                 return false;
